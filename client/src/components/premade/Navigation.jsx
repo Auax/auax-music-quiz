@@ -18,18 +18,23 @@ const Navigation = () => {
             </div>
             <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                 <div className="text-sm lg:flex-grow">
-                    <Link to="/play" className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-300 mr-4">
+                    <Link to="/play" className="block mt-4 lg:inline-block lg:mt-0 dark:text-white text-black 
+                    hover:text-blue-300 mr-4">
                         Play
                     </Link>
-                    <Link to="/about" className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-300 mr-4">
+                    <Link to="/about" className="block mt-4 lg:inline-block lg:mt-0 dark:text-white text-black 
+                    hover:text-blue-300 mr-4">
                         About
                     </Link>
-                    <a href="https://github.com/auax" className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-300" target="blank">
+                    <a href="https://github.com/auax" className="block mt-4 lg:inline-block lg:mt-0 dark:text-white
+                     text-black hover:text-blue-300" target="blank">
                         GitHub
                     </a>
                 </div>
                 <div>
-                    <a href="https://paypal.me/zellius" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-black hover:bg-white mt-4 lg:mt-0">Donate</a>
+                    <a href="https://paypal.me/zellius" className="inline-block text-sm px-4 py-2 leading-none 
+                    border rounded dark:text-white text-black dark:border-white border-black hover:border-transparent 
+                    dark:hover:text-black hover:text-white dark:hover:bg-white hover:bg-black mt-4 lg:mt-0">Donate</a>
                 </div>
             </div>
         </nav>

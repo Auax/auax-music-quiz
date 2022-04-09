@@ -1,7 +1,7 @@
-from api.views import app, socketio
+import uvicorn
 
-"""You can edit the routes in the views.py file"""
+from api.routes import app
 
-# Run app
 if __name__ == "__main__":
-    socketio.run(app, port=8888)
+    uvicorn.run(app, port=8000)
+    # uvicorn.run(app, host="0.0.0.0", port=8000)
