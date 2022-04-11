@@ -44,6 +44,13 @@ code {
         focus:ring-opacity-75
         hover:border-blue-600;
     }
+
+    .countdown-span {
+        @apply
+        text-sm 
+        dark:text-neutral-300
+        text-neutral-600
+    }
 }
 
 .navbar {
