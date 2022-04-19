@@ -1,9 +1,9 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import VerticalCard from "./premade/Card";
-import * as variables from "./premade/Variables"
+import VerticalCard from "../components/Card/ImageCard";
+import * as variables from "../Variables"
 
-const PlayLobby = () => {
+const SelectMusicGenre = () => {
 
     let cards = []
     const genresClass = new variables.MusicGenres();
@@ -12,10 +12,10 @@ const PlayLobby = () => {
     });
 
     return (
-        <div className="dark:bg-c-black bg-neutral-100 overflow-auto">
+        <div className="bg-base-300 overflow-auto">
             <div className="container mx-auto text-center overflow-auto">
-                <h1 className="text-7xl font-bold dark:text-neutral-100 text-neutral-900 sm:px-0 tracking-tight mt-12">Play</h1>
-                <p className="dark:text-neutral-300 text-neutral-900 mt-2">Choose a music genre.</p>
+                <h1 className="text-7xl font-bold text-base-300-content sm:px-0 tracking-tight mt-12">Play</h1>
+                <p className="text-base-300-content/50 mt-2">Choose a music genre.</p>
                 <div className="card-container py-6 px-4 flex flex-wrap justify-center ">
                     {cards}
                 </div>
@@ -24,4 +24,4 @@ const PlayLobby = () => {
     );
 }
 
-export default withRouter(PlayLobby);
+export default withRouter(SelectMusicGenre);

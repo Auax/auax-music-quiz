@@ -1,26 +1,22 @@
 import React from "react";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // Routes
-import Navigation from "./components/premade/Navigation";
-import Home from "./components/Home";
-import Footer from "./components/premade/Footer";
-import PlayLobby from "./components/SelectGenre";
-import GenrePage from "./components/GenrePage";
-import Play from "./components/Play";
+import { Home, SelectMusicGenre, GenrePage, Play } from "views";
+import { Footer, NavBar } from "components";
 
 function App() {
     return (
         <div className="App">
             <Router>
-                <Navigation/>
+                <NavBar />
                 <Switch>
-                    <Route path="/" exact component={() => <Home/>}/>
-                    <Route path="/play" exact component={() => <PlayLobby/>}/>
-                    <Route path="/play/genre" exact component={() => <GenrePage/>}/>
-                    <Route path="/play/:gamemode" exact component={() => <Play/>}/>
+                    <Route path="/" exact component={() => <Home />} />
+                    <Route path="/play" exact component={() => <SelectMusicGenre />} />
+                    <Route path="/play/genre" exact component={() => <GenrePage />} />
+                    <Route path="/play/:mode" exact component={() => <Play />} />
                 </Switch>
-                <Footer/>
+                <Footer />
             </Router>
         </div>
     );

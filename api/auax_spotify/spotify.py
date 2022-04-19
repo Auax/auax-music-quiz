@@ -30,21 +30,23 @@ class SpotifyAPI:
             "pop": "spotify:playlist:6mtYuOxzl58vSGnEDtZ9uB"
         }
 
-    def random_song_of_playlist(self, playlist_id: str):
+    def random_song_of_playlist(self, playlist_id: str) -> list:
+        """
+        Return the preview_url of a random track of a playlist
+        :param playlist_id: the id of the playlist
+        :return: track [list]
+        """
         playlist = self.spotify.playlist_items(playlist_id)
-        return random.choice(playlist["items"])["track"]["href"]
+        preview_url = None
+        song = None
+
+        while preview_url is None:
+            song = random.choice(playlist["items"])["track"]
+            preview_url = song["preview_url"]
+
+        return song
 
     def random_song_by_genre(self, genre: str) -> str:
         if genre not in self.genres.keys():
             return None
         return self.random_song_of_playlist(self.genres[genre])
-
-    def get_song_from_playlist(self):
-        results = self.spotify.artist_albums("spotify:artist:7dGJo4pcD2V6oG8kP0tJRR", album_type='album')
-        albums = results['items']
-        while results['next']:
-            results = self.spotify.next(results)
-            albums.extend(results['items'])
-
-        for album in albums:
-            print(album['name'])

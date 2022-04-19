@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .footer {
+        @apply p-4 
+        bg-white 
+        md:flex 
+        md:items-center 
+        md:justify-between 
+        md:p-6 
+        dark:bg-black;
+    }
+}
+
+.footer {
+    height: var(--footer-height);
+    box-shadow: 0px -4px 6px 0px rgba(0, 0, 0, 0.1);
+}

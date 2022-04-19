@@ -9,7 +9,7 @@ from api.auax_spotify.spotify import SpotifyAPI
 load_dotenv()
 
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS")
-SPOTIFY_API_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
+# SPOTIFY_API_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
 # Create APP
 app = FastAPI(
@@ -31,9 +31,20 @@ app.add_middleware(
 spotify_api = SpotifyAPI()
 
 
-@app.get("/api/get/{genre}/")
-async def random_song_by_genre(genre: str):
-    song = spotify_api.random_song_by_genre(genre)
-    if not song:
-        raise HTTPException(status_code=400, details="Song is null")
-    return {"song": song}
+@app.get("/api/get/{genre}/{ammount}")
+async def random_song_by_genre(genre: str, ammount: int):
+    songs = []
+    for _ in range(ammount):
+        song = spotify_api.random_song_by_genre(genre)
+
+        if not song:
+            raise HTTPException(status_code=400, details="Song is null")
+
+        songs.append({
+            "preview_url": song["preview_url"],
+            "name": song["name"],
+            "artist": song["artists"][0]["name"],
+            "image": song["album"]["images"][0]["url"]
+        })
+
+    return songs

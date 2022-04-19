@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @layer components {
+    .genre-card {
+        @apply max-w-sm 
+        bg-white
+        shadow-md 
+        dark:bg-neutral-200 
+        mx-2 
+        my-2 
+        border 
+        dark:border-neutral-800 
+        border-neutral-200
+    }
+} */
+
+/* Select music-genre card */
+/* .genre-card {
+    border-radius: 15px;
+    transition-duration: 20ms;
+}
+
+.genre-card:hover {
+    transform: scale(104%);
+}
+
+.genre-card > img {
+    border-radius: 15px 15px 0 0;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.genre-card h5 {
+    text-decoration-color: #0ea4e95e;
+}
+
+.genre-card:hover h5 {
+    text-decoration: underline;
+    text-decoration-color: #0ea4e95e;
+} */
+
