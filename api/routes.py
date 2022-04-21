@@ -34,12 +34,17 @@ spotify_api = SpotifyAPI()
 @app.get("/api/get/{genre}/{ammount}")
 async def random_song_by_genre(genre: str, ammount: int):
     songs = []
+    ammount = ammount or 10
+
+    # TODO : Changed function to return the ammount of songs altogether
+
     for _ in range(ammount):
         song = spotify_api.random_song_by_genre(genre)
 
         if not song:
             raise HTTPException(status_code=400, details="Song is null")
 
+        print(song)
         songs.append({
             "preview_url": song["preview_url"],
             "name": song["name"],
