@@ -1,3 +1,4 @@
+import math
 import os
 import random
 
@@ -8,9 +9,6 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 class SpotifyAPI:
     def __init__(self):
-        # Base url
-        self.base_url = "https://accounts.spotify.com"
-
         # Auth
         load_dotenv()
         self.CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
@@ -30,23 +28,40 @@ class SpotifyAPI:
             "pop": "spotify:playlist:6mtYuOxzl58vSGnEDtZ9uB"
         }
 
-    def get_songs_of_playlist(self, playlist_id: str) -> list:
+    def get_songs_of_playlist(self, playlist_id: str, limit: int = 100) -> list:
         """
         Return the preview_url of a random track of a playlist
         :param playlist_id: the id of the playlist
         :return: track [list]
+        :param limit: ammount of tracks [int]
         """
-        playlist = self.spotify.playlist_items(playlist_id)
-        song = None
+        songs = []
+        iters = math.ceil(limit / 100)
+        limit = int(limit / iters)
 
-        # Only songs with preview_url
-        filtered_song = list(filter(lambda x: x["track"]["preview_url"] is not None, playlist["items"]))
-        # Shuffle songs
-        random.shuffle(filtered_song)
+        for i in range(iters):
+            playlist = self.spotify.playlist_items(playlist_id, limit=limit, offset=limit * i)["items"]
+            # Only songs with preview_url
+            songs.extend(list(filter(lambda x: x["track"]["preview_url"] is not None, playlist)))
+        return songs
 
-        return filtered_song
+    def random_songs_by_genre(self, genre: str, limit: int) -> list | None:
+        """
+        Get a list of random songs by a genre identifier.
+        :param genre: music genre identifier [str]
+        :param limit: number of songs [int]
+        :return: songs [list | None]
+        """
+        if genre not in self.genres.keys():
+            return None
+        return random.shuffle(self.get_songs_of_playlist(self.genres[genre], limit=limit))
 
-    def random_song_by_genre(self, genre: str) -> str | None:
+    def random_song_by_genre(self, genre: str) -> dict | None:
+        """
+        Get a random song by a genre identifier.
+        :param genre: music genre identifier [str]
+        :return: song [dict | None]
+        """
         if genre not in self.genres.keys():
             return None
         return random.choice(self.get_songs_of_playlist(self.genres[genre]))
