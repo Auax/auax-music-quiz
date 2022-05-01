@@ -1,8 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Link, Redirect, withRouter} from "react-router-dom";
 import * as variables from "Variables"
+import {AssertSpotifyLogin} from "../api";
 
 const GenrePage = () => {
+    useEffect(() => {
+        AssertSpotifyLogin(window.location.href);
+    }, [])
 
     const genreIdentifier = new URL(window.location.href).searchParams.get("mg"); // GET the genre from the URL
     const genresClass = new variables.MusicGenres(); // Genres class instance

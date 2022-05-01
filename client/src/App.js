@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Home, SelectMusicGenre, GenrePage, Play} from "views";
 import {Game} from "components";
 import {Footer, NavBar} from "components";
+import LoginCallback from "./api/auth";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                     <Route path="/play" exact component={() => <SelectMusicGenre/>}/>
                     <Route path="/play/genre" exact component={() => <GenrePage/>}/>
                     <Route path="/play/:mode" exact component={() => <Game timePerRound={30}/>}/>
+                    <Route path="/login/callback" exact component={() => <LoginCallback/>}/>
                 </Switch>
                 <Footer/>
             </Router>

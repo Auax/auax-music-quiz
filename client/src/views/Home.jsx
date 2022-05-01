@@ -1,6 +1,7 @@
 import React from "react";
 import {Link, withRouter} from "react-router-dom";
 
+
 const Home = () => {
     return (
         <div className="hero-main-page hero-height bg-neutral-80 overflow-auto">
@@ -10,6 +11,9 @@ const Home = () => {
                 <Link to="/play">
                     <button className="btn btn-primary mt-5 px-10">PLAY</button>
                 </Link>
+                {/*<a href={process.env.REACT_APP_API_URL + "/api/login" }>*/}
+                {/*    <button className="btn btn-primary mt-5 px-10">Login</button>*/}
+                {/*</a>*/}
             </div>
         </div>
     );

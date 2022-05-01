@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withRouter, useLocation, useHistory} from "react-router-dom";
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,10 +6,14 @@ import stringSimilarity from "string-similarity";
 
 import * as variables from "Variables";
 import {Modal, ProgressBar, useCountdown, useScore} from 'components';
-import {fetchTracks} from "api";
 import Track from "./Track";
+import {AssertSpotifyLogin, fetchTracks} from "api";
+import {MusicGenres} from "Variables";
 
-const AssertMusicGenre = (identifier: string, redirect_to: string = "/play", history: any) => {
+// TODO: fix progress bar progression when window's not focused
+// TODO: ADD skip button and volume controller
+
+const assertMusicGenre = (identifier: string, redirect_to: string = "/play", history: any) => {
     // Genres className instance
     const genresClass = new variables.MusicGenres();
 
@@ -41,23 +45,30 @@ const Game = (props) => {
     const setSongRoundAnswer = (b: boolean) => setRoundAnswer(prev => ({...prev, song: b}));
 
     const [throwError, setThrowError] = useState(null);
-    const {countdown, startCountdown, pauseCountdown, resetCountdown, printTime} = useCountdown(props.timePerRound);
+    const {
+        countdown,
+        startCountdown,
+        pauseCountdown,
+        resetCountdown,
+        zeroCountdown,
+        printTime
+    } = useCountdown(props.timePerRound);
     const {score, scoreAddPoint, resetScore} = useScore();
 
     // Fetch the tracks (already shuffled and filtered) from the server
     useEffect(() => {
-        AssertMusicGenre(location.state.mg, "/play", history);
+        AssertSpotifyLogin(window.location.href); // Must have valid tokens to get the songs
+        assertMusicGenre(location.state.mg, "/play", history);
 
+        const musicGenres = new MusicGenres();
         const execute = async () => {
             const fetchedTracks = await fetchTracks(
-                location.state.mg, // Music genre
+                musicGenres.getGenre(location.state.mg).playlist_id, // Music genre
                 location.state.tn, // Tracks number
             );
             setTracks(fetchedTracks);
         };
-        execute().then(() => {
-            if (tracks == null) setThrowError("Error loading the songs!");
-        });
+        execute().catch(() => setThrowError("Error loading the songs!"));
     }, []);
 
     // Game states
@@ -112,8 +123,9 @@ const Game = (props) => {
         let track = tracks[currentTrackNo];
         let inputAnswer = (event.target.value).toLowerCase(); // Get answer in lowercase
 
-        let similarityWithSong = stringSimilarity.compareTwoStrings(inputAnswer, track.name.toLowerCase());
-        let similarityWithArtist = stringSimilarity.compareTwoStrings(inputAnswer, track.artist.toLowerCase());
+        // Compare strings (punctuation removed in the comparison)
+        let similarityWithSong = stringSimilarity.compareTwoStrings(inputAnswer, track.name.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
+        let similarityWithArtist = stringSimilarity.compareTwoStrings(inputAnswer, track.artist.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
 
         // Artist
         if (!roundAnswer.artist) {
@@ -195,7 +207,7 @@ const Game = (props) => {
                     <div>
                         <p className="text-base-content/50 mt-2">Guess the song and the artist!</p>
                         <button id="startRoundBtn"
-                                className={`btn font-bold btn-primary mt-4 ${gameState === "init" ? "visible" : "hidden"}`}
+                                className="btn font-bold btn-primary mt-4"
                                 onClick={() => {
                                     setGameState("started")
                                 }}>Start
@@ -217,6 +229,19 @@ const Game = (props) => {
                 <Track track={tracks[currentTrackNo]} running={gameState === 'started'}/>
                 <input type="text" placeholder="Song or artist's name" className="input w-full"
                        autoComplete="off" onKeyDown={checkAnswer} id="userInput"/>
+                <div className="text-left">
+                    <button id="skipRoundBtn"
+                            className="btn font-bold btn-ghost bg-base-100 mt-2"
+                            onClick={() => {
+                                if (gameState === "started") zeroCountdown();
+                            }}>
+                        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polygon points="5 4 15 12 5 20 5 4"/>
+                            <line x1="19" y1="5" x2="19" y2="19"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     );

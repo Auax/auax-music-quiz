@@ -1,5 +1,7 @@
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
+import Cookies from 'js-cookie';
 import * as MetadataFilter from 'metadata-filter';
+import * as queryString from "query-string";
 
 // TODO CREATE TRACK OBJECT
 const filterSet = {
@@ -14,18 +16,24 @@ const filterSet = {
         MetadataFilter.removeZeroWidth
     ],
 };
+
+
 const metadataCustomFilter = MetadataFilter.createFilter(filterSet);
 
 const fetchTracks = async (
-    searchTerm: string = "hiphop",
-    tracksNo: number = 10,
-    loadingErrors: number = 0): Object => {
-
-    const handleError = loadingErrors < 3 ? () => fetchTracks(searchTerm, tracksNo, loadingErrors++) : null;
+    playlist_id: string,
+    tracksNo: number = 10): Object => {
     let songs_ = []
 
+    // Craft params
+    let params = queryString.stringify({
+        token: Cookies.get("accessToken"),
+        playlist_id: playlist_id,
+        amount: tracksNo
+    })
+
     // Send POST req to server to get a new auth link
-    await axios.get(process.env.REACT_APP_API_URL + `/api/get/${searchTerm}/${tracksNo}`)
+    await axios.get(process.env.REACT_APP_API_URL + `/api/get/songs?${params}`)
         .then(response => {
             // Handle success
             if (response.status === 200) {
@@ -34,18 +42,12 @@ const fetchTracks = async (
                     song["name"] = metadataCustomFilter.filterField("track", song["name"]);
                     songs_.push(song);
                 });
-
             } else {
-                console.error("Error retrieving the songs. Error code: " + response.status);
-                handleError();
-                return null;
+                throw Error("Error retrieving the songs: " + response.status);
             }
         })
-        .catch(response => {
-            // Handle error
-            console.error(response);
-            handleError();
-            return null;
+        .catch((reason: AxiosError) => {
+            throw Error(reason);
         });
     return songs_.length === 0 ? null : songs_;
 }

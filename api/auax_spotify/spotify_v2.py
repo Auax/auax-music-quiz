@@ -7,7 +7,6 @@ import requests
 from dotenv import load_dotenv
 
 from api.auax_spotify.exceptions import AuthenticationError
-from api.misc import verbose_print
 
 
 class SpotifyAPI:
@@ -19,8 +18,8 @@ class SpotifyAPI:
         load_dotenv()
         self.CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
         self.CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
-        self.REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
-        self.SCOPE = os.getenv("SPOTIFY_SCOPE")
+        # self.REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
+        # self.SCOPE = os.getenv("SPOTIFY_SCOPE")
 
         self.authenticated = False
 

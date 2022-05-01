@@ -28,6 +28,10 @@ export const useCountdown = (time: number = 10) => {
         setTimer(time);
     };
 
+    const zeroCountdown = () => {
+        setTimer(0);
+    }
+
     const printTime = () => {
         if (!isActive) return "0:00";
         const getSeconds = `0${countdown % 60}`.slice(-2);
@@ -37,6 +41,6 @@ export const useCountdown = (time: number = 10) => {
         return `${getMinutes}:${getSeconds}`;
     };
 
-    return {countdown, startCountdown, pauseCountdown, resetCountdown, printTime};
+    return {countdown, startCountdown, pauseCountdown, resetCountdown, zeroCountdown, printTime};
 };
 

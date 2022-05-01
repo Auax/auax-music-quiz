@@ -52,7 +52,6 @@ const NavBar = () => {
                         GitHub
                     </a>
                 </div>
-
                 <div className="m-3 sm:m-0">
                     <a href="https://paypal.me/zellius" className="btn link-btn-component w-full sm:w-auto">Donate </a>
                 </div>

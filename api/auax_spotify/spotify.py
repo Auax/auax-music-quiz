@@ -1,10 +1,28 @@
-import math
+import base64
 import os
 import random
+import string
+import urllib
 
-import spotipy
+import requests
 from dotenv import load_dotenv
-from spotipy.oauth2 import SpotifyClientCredentials
+
+
+class Data:
+    genres = {
+        "all": None,
+        "rock": "6TeyryiZ2UEf3CbLXyztFA",
+        "hiphop": "5z0HyrtGeJAlxlsAa0REoP",
+        "pop": "6mtYuOxzl58vSGnEDtZ9uB"
+    }
+
+    valid_scopes = ["ugc-image-upload", "user-modify-playback-state", "user-read-playback-state",
+                    "user-read-currently-playing", "user-follow-modify", "user-follow-read",
+                    "user-read-recently-played", "user-read-playback-position", "user-top-read",
+                    "playlist-read-collaborative", "playlist-modify-public", "playlist-read-private",
+                    "playlist-modify-private", "app-remote-control", "streaming", "user-read-email",
+                    "user-read-private",
+                    "user-library-modify", "user-library-read"]
 
 
 class SpotifyAPI:
@@ -13,55 +31,104 @@ class SpotifyAPI:
         load_dotenv()
         self.CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
         self.CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+        self.REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
-        self.spotify = spotipy.Spotify(
-            client_credentials_manager=SpotifyClientCredentials(
-                client_id=self.CLIENT_ID,
-                client_secret=self.CLIENT_SECRET
-            ))
+        self.BASE_URL = "https://accounts.spotify.com"
 
-        # Identifier : URI
-        self.genres = {
-            "all": None,
-            "rock": "spotify:playlist:6TeyryiZ2UEf3CbLXyztFA",
-            "hiphop": "spotify:playlist:5z0HyrtGeJAlxlsAa0REoP",
-            "pop": "spotify:playlist:6mtYuOxzl58vSGnEDtZ9uB"
+    @staticmethod
+    def generate_random_state():
+        """ Return a random string to use as the state"""
+        return "".join(random.choices(string.ascii_letters, k=16))
+
+    # region Auth
+    def get_auth_link(self, scopes: str) -> tuple[str, str] | bool:
+        """
+        Generate a Spotify API auth link
+        :param scopes: spotify API scopes
+        :return: URL, state [tuple[str, str]] | False [bool]
+        """
+        for scope in scopes.split():
+            if scope not in Data.valid_scopes:
+                return False
+
+        state = SpotifyAPI.generate_random_state()
+        queries = {
+            "response_type": 'code',
+            "client_id": self.CLIENT_ID,
+            "scope": scopes,
+            "redirect_uri": self.REDIRECT_URI,
+            "state": state}
+
+        url = f"{self.BASE_URL}/authorize?{urllib.parse.urlencode(queries)}"
+        return url, state
+
+    def get_access_token(self, code: str) -> dict | None:
+        """
+        Get an Access Token with the callback code
+        :param code: the code provided in /api/login/callback
+        :return: response.json [dict] | None
+        """
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Basic " + base64.b64encode(
+                bytes(f"{self.CLIENT_ID}:{self.CLIENT_SECRET}", "utf-8")).decode("utf-8")
+        }
+        data = {
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": self.REDIRECT_URI
+        }
+        response = requests.post(f"{self.BASE_URL}/api/token", headers=headers, data=data)
+        return response.json() if response.status_code == 200 else None
+
+    # endregion
+
+    @staticmethod
+    def get_songs_of_playlist(token: str, playlist_id: str, market: str = "US") -> list | None:
+        """
+        Get all tracks of a playlist
+        :param token: the access token [str]
+        :param playlist_id: Spotify Playlist ID [str]
+        :param market: market [str] (US usually has most tracks with preview_url)
+        :return: tracks [list] | None
+        """
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token,
         }
 
-    def get_songs_of_playlist(self, playlist_id: str, limit: int = 100) -> list:
-        """
-        Return the preview_url of a random track of a playlist
-        :param playlist_id: the id of the playlist
-        :return: track [list]
-        :param limit: ammount of tracks [int]
-        """
-        songs = []
-        iters = math.ceil(limit / 100)
-        limit = int(limit / iters)
+        offset = 0
+        response = requests.get(
+            f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?market={market}&limit=100&offset={offset}",
+            headers=headers).json()
 
-        for i in range(iters):
-            playlist = self.spotify.playlist_items(playlist_id, limit=limit, offset=limit * i)["items"]
-            # Only songs with preview_url
-            songs.extend(list(filter(lambda x: x["track"]["preview_url"] is not None, playlist)))
-        return songs
+        tracks = response.get("items")
+        if not tracks:
+            return None
 
-    def random_songs_by_genre(self, genre: str, limit: int) -> list | None:
+        while response["next"]:
+            offset += 100
+            response = requests.get(
+                f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?market={market}&limit=100&offset={offset}",
+                headers=headers).json()
+            tracks.extend(response["items"])
+
+        # Only songs with preview_url
+        tracks = list(filter(lambda x: x["track"]["preview_url"] is not None, tracks))
+        return tracks
+
+    def random_songs_by_genre(self, token: str, playlist_id: str, n_of_tracks: int, market: str = "US") -> list | None:
         """
         Get a list of random songs by a genre identifier.
-        :param genre: music genre identifier [str]
-        :param limit: number of songs [int]
-        :return: songs [list | None]
+        :param token: the access token [str]
+        :param playlist_id: Spotify Playlist ID
+        :param n_of_tracks: number of songs [int]
+        :param market: market [str] (US usually has most tracks with preview_url)
+        :return: songs [list] | None
         """
-        if genre not in self.genres.keys():
+        songs = self.get_songs_of_playlist(token, playlist_id, market=market)
+        if not songs:
             return None
-        return random.shuffle(self.get_songs_of_playlist(self.genres[genre], limit=limit))
-
-    def random_song_by_genre(self, genre: str) -> dict | None:
-        """
-        Get a random song by a genre identifier.
-        :param genre: music genre identifier [str]
-        :return: song [dict | None]
-        """
-        if genre not in self.genres.keys():
-            return None
-        return random.choice(self.get_songs_of_playlist(self.genres[genre]))
+        print(f"Total songs: {len(songs)}")
+        return random.choices(songs, k=n_of_tracks)
