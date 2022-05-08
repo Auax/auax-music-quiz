@@ -1,8 +1,7 @@
 export class MusicGenre {
-    constructor(identifier, name, description, image, playlist_id) {
+    constructor(identifier, name, image, playlist_id) {
         this.identifier = identifier;
         this.name = name;
-        this.description = description;
         this.image = image;
         this.playlist_id = playlist_id;
     }
@@ -16,9 +15,8 @@ export class MusicGenres {
         // All genres
         this.genres.push(new MusicGenre(
             "all",
-            "All Genres",
-            "A mix of the most popular genres. This includes pop music, rock, rap...",
-            require("assets/images/genres/rap-genre.jpg"),
+            "Mix",
+            require("assets/images/genres/mix.jpg"),
             "1YGOdujXjPUSizscRxCBv0"
         ));
 
@@ -26,26 +24,31 @@ export class MusicGenres {
         this.genres.push(new MusicGenre(
             "hiphop",
             "Hip Hop",
-            "Hip hop also known as rap is a genre of popular music developed in the United States",
-            require("assets/images/genres/rap-genre.jpg"),
-            "5z0HyrtGeJAlxlsAa0REoP"));
+            require("assets/images/genres/rap.jpg"),
+            "5z0HyrtGeJAlxlsAa0REoP"
+        ));
 
         // Rock
         this.genres.push(new MusicGenre(
             "rock",
             "Rock",
-            "Rock music is a broad genre that originated in the United States in the late 1940s and early 1950s",
-            require("assets/images/genres/rock-genre.jpg"),
-            "6TeyryiZ2UEf3CbLXyztFA"
+            require("assets/images/genres/rock.jpg"),
+            "37i9dQZF1DWXRqgorJj26U"
         ));
 
         // Pop
         this.genres.push(new MusicGenre(
             "pop",
-            "Pop Music",
-            "Pop is a genre originated during the mid-1950s. It describes all music that is popular and includes many disparate styles.",
-            require("assets/images/genres/pop-music-genre.jpg"),
-            "6mtYuOxzl58vSGnEDtZ9uB`"));
+            "Pop",
+            require("assets/images/genres/pop.jpg"),
+            "6mtYuOxzl58vSGnEDtZ9uB"));
+
+        // Jazz
+        this.genres.push(new MusicGenre(
+            "jazz",
+            "Jazz",
+            require("assets/images/genres/jazz.jpg"),
+            "37i9dQZF1DXbITWG1ZJKYt"));
     }
 
     getGenre(identifier) {

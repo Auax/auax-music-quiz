@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {withRouter, useLocation, useHistory} from "react-router-dom";
+import {withRouter, useHistory} from "react-router-dom";
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import stringSimilarity from "string-similarity";
@@ -7,8 +7,9 @@ import stringSimilarity from "string-similarity";
 import * as variables from "Variables";
 import {Modal, ProgressBar, useCountdown, useScore} from 'components';
 import Track from "./Track";
-import {AssertSpotifyLogin, fetchTracks} from "api";
-import {MusicGenres} from "Variables";
+import {AccessTokenExpired, InvalidPlaylistId,} from "api/exceptions";
+import {assertSpotifyLogin, refreshToken} from "api/auth";
+import fetchTracks from "api/api";
 
 // TODO: fix progress bar progression when window's not focused
 // TODO: ADD skip button and volume controller
@@ -25,7 +26,7 @@ const assertMusicGenre = (identifier: string, redirect_to: string = "/play", his
 }
 
 const Game = (props) => {
-    const location = useLocation();
+    const location = new URL(window.location.href);
     const history = useHistory();
 
     const similarityThreshold = 0.7; // How similar the guess must be to the answer to be correct
@@ -57,18 +58,32 @@ const Game = (props) => {
 
     // Fetch the tracks (already shuffled and filtered) from the server
     useEffect(() => {
-        AssertSpotifyLogin(window.location.href); // Must have valid tokens to get the songs
-        assertMusicGenre(location.state.mg, "/play", history);
+        let mg = location.searchParams.get("mg");
+        let tn = location.searchParams.get("tn");
+        assertSpotifyLogin(window.location.href); // Must have valid tokens to get the songs
+        assertMusicGenre(mg, "/choose", history);
 
-        const musicGenres = new MusicGenres();
+        const musicGenres = new variables.MusicGenres();
         const execute = async () => {
             const fetchedTracks = await fetchTracks(
-                musicGenres.getGenre(location.state.mg).playlist_id, // Music genre
-                location.state.tn, // Tracks number
+                musicGenres.getGenre(mg).playlist_id, // Music genre
+                tn, // Tracks number
             );
             setTracks(fetchedTracks);
         };
-        execute().catch(() => setThrowError("Error loading the songs!"));
+        execute().catch((error) => {
+            if (error instanceof AccessTokenExpired) {
+                try {
+                    refreshToken();
+                    execute().catch(() => null);
+                } catch (e) {
+                    setThrowError("Error getting a new token!")
+                }
+            } else if (error instanceof InvalidPlaylistId) {
+                setThrowError("Invalid playlist ID!");
+            }
+            setThrowError("Error loading the songs!");
+        });
     }, []);
 
     // Game states
@@ -124,8 +139,8 @@ const Game = (props) => {
         let inputAnswer = (event.target.value).toLowerCase(); // Get answer in lowercase
 
         // Compare strings (punctuation removed in the comparison)
-        let similarityWithSong = stringSimilarity.compareTwoStrings(inputAnswer, track.name.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
-        let similarityWithArtist = stringSimilarity.compareTwoStrings(inputAnswer, track.artist.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""));
+        let similarityWithSong = stringSimilarity.compareTwoStrings(inputAnswer, track.name.toLowerCase().replace(/[.,\/#!$%&;:{}=\-_`~()]/g, ""));
+        let similarityWithArtist = stringSimilarity.compareTwoStrings(inputAnswer, track.artist.toLowerCase().replace(/[.,\/#!$%&;:{}=\-_`~()]/g, ""));
 
         // Artist
         if (!roundAnswer.artist) {

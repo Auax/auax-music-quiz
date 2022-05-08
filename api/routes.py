@@ -1,16 +1,13 @@
 import os
-import time
-import urllib.parse
 
-import requests
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Cookie
-from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import RedirectResponse
 
-from api.auax_spotify.spotify import SpotifyAPI
+from api.auax_spotify.spotify import SpotifyAPI, AccessTokenExpired, SongsIsNone, InvalidPlaylistId
 
 load_dotenv()
 
@@ -48,7 +45,7 @@ async def login_auth(scope: str = "playlist-read-private") -> JSONResponse:
     """
     url, state = spotify_api.get_auth_link(scope)
     if not url:
-        raise HTTPException(status_code=400, detail="Invalid Spotify API scope!")
+        raise HTTPException(status_code=400, detail="Invalid Spotify API scope")
 
     response = JSONResponse(url)
     # Add the authState cookie to protect the user against cross-site request forgery
@@ -57,21 +54,34 @@ async def login_auth(scope: str = "playlist-read-private") -> JSONResponse:
     return response
 
 
+@app.get("/api/refresh_token")
+async def refresh_expired_token(refresh_token: str) -> str:
+    """
+    Returns a new token
+    :param refresh_token: the saved refresh_token
+    :return: str
+    """
+    token = spotify_api.refresh_expired_token(refresh_token)
+    if not token:
+        raise HTTPException(status_code=500, detail="Could not get a new token")
+    return token
+
+
 @app.get("/api/login/callback")
 async def login_callback(code, state, error=None, authState=Cookie(None)):
     # Check for conflicts
     if error:
         raise HTTPException(status_code=500, detail=error)
     if state != authState:
-        raise HTTPException(status_code=400, detail="State doesn't match or is expired!")
+        raise HTTPException(status_code=400, detail="State doesn't match or is expired")
 
     access_token = spotify_api.get_access_token(code)
 
     if not access_token:
-        raise HTTPException(status_code=500, detail="Spotify Access Token response is null!")
+        raise HTTPException(status_code=500, detail="Spotify Access Token response is null")
 
     # Craft response
-    response = RedirectResponse(os.getenv("CALLBACK_REDIRECT_TO"))
+    response = RedirectResponse(redirect_to)
     # Set all cookies
     expires_in = access_token["expires_in"]
     response.set_cookie(key="accessToken", value=access_token["access_token"], httponly=True, expires=expires_in)
@@ -92,11 +102,18 @@ async def random_song(token: str, playlist_id: str, amount: int = 10):
     songs = []
     try:
         raw_songs = spotify_api.random_songs_by_genre(token, playlist_id, amount)
-    except Exception as E:
-        raise HTTPException(status_code=500, detail=str(E))
 
-    if not raw_songs:
-        raise HTTPException(status_code=500, detail="Could not fetch songs!")
+    except AccessTokenExpired:
+        raise HTTPException(status_code=401, detail="The access token expired")
+
+    except InvalidPlaylistId:
+        raise HTTPException(status_code=404, detail="Invalid playlist ID")
+
+    except SongsIsNone:
+        raise HTTPException(status_code=500, detail="Could not fetch the songs")
+
+    except Exception as E:
+        raise HTTPException(status_code=500, detail=str(f"Unknown error: {E}"))
 
     for song in raw_songs:
         song = song["track"]

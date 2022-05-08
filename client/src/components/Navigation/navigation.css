@@ -4,7 +4,8 @@
 
 @layer components {
     .navbar {
-        @apply shadow-md
+        @apply
+        /*shadow-md*/
         relative
         px-0
         sm:px-3

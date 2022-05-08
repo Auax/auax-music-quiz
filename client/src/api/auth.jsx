@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import * as queryString from "query-string";
@@ -6,11 +6,13 @@ import {AxiosError} from "axios";
 import {Buffer} from "buffer/";
 
 import {Redirect, withRouter} from "react-router-dom";
+import {CouldNotGetToken} from "api/exceptions";
 
 
 const SPOTIFY_BASE_URL = "https://accounts.spotify.com";
 
-export const isLoggedIn = () => Cookies.get("accessToken") !== undefined;
+
+export const isLoggedIn = () => Cookies.get("accessToken") !== undefined && Cookies.get("refreshToken") !== undefined;
 
 export const spotifyLogin = (scopes: string = "playlist-read-private") => {
     /* Redirect to the AUTH URL */
@@ -26,11 +28,22 @@ export const spotifyLogin = (scopes: string = "playlist-read-private") => {
     );
 }
 
-export const AssertSpotifyLogin = (redirect_url: string, scopes: string = "playlist-read-private") => {
+export const assertSpotifyLogin = (redirect_url: string, scopes: string = "playlist-read-private") => {
     if (!isLoggedIn()) {
         window.localStorage.setItem("loginRedirectURL", redirect_url ?? "/play");
         spotifyLogin(scopes, redirect_url);
     }
+}
+
+export const refreshToken = () => {
+    const REQ_URL = process.env.REACT_APP_API_URL + "/api/refresh_token?" + queryString.stringify({refresh_token: Cookies.get("refreshToken")});
+    axios.get(REQ_URL).then(r => {
+        Cookies.set("accessToken", r.data);
+    }).catch((reason: AxiosError) => {
+        let detail = reason.response.data.detail;
+        if (detail === "Could not get a new token") throw new CouldNotGetToken(detail);
+        throw Error(reason);
+    });
 }
 
 const LoginCallback = () => {

@@ -25,6 +25,18 @@ class Data:
                     "user-library-modify", "user-library-read"]
 
 
+class AccessTokenExpired(Exception):
+    pass
+
+
+class InvalidPlaylistId(Exception):
+    pass
+
+
+class SongsIsNone(Exception):
+    pass
+
+
 class SpotifyAPI:
     def __init__(self):
         # Auth
@@ -83,6 +95,26 @@ class SpotifyAPI:
 
     # endregion
 
+    def refresh_expired_token(self, refresh_token: str) -> dict | None:
+        """
+        Get a new Access Token with a Refresh Token
+        :param refresh_token: the refresh_token
+        :return: Access Token [str] | None
+        """
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Basic " + base64.b64encode(
+                bytes(f"{self.CLIENT_ID}:{self.CLIENT_SECRET}", "utf-8")).decode("utf-8")
+        }
+
+        data = {
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token
+        }
+
+        response = requests.post(f"{self.BASE_URL}/api/token", headers=headers, data=data)
+        return response.json().get("access_token") if response.status_code == 200 else None
+
     @staticmethod
     def get_songs_of_playlist(token: str, playlist_id: str, market: str = "US") -> list | None:
         """
@@ -90,7 +122,7 @@ class SpotifyAPI:
         :param token: the access token [str]
         :param playlist_id: Spotify Playlist ID [str]
         :param market: market [str] (US usually has most tracks with preview_url)
-        :return: tracks [list] | None
+        :return: tracks [list] | Exception
         """
         headers = {
             "Accept": "application/json",
@@ -103,9 +135,17 @@ class SpotifyAPI:
             f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?market={market}&limit=100&offset={offset}",
             headers=headers).json()
 
+        # Handle errors
+        error = response.get("error")
+        if error.get("status") == "404":
+            raise InvalidPlaylistId
+        elif error.get("status") == "401":
+            raise AccessTokenExpired
+
         tracks = response.get("items")
+
         if not tracks:
-            return None
+            raise SongsIsNone
 
         while response["next"]:
             offset += 100
@@ -125,10 +165,8 @@ class SpotifyAPI:
         :param playlist_id: Spotify Playlist ID
         :param n_of_tracks: number of songs [int]
         :param market: market [str] (US usually has most tracks with preview_url)
-        :return: songs [list] | None
+        :return: songs [list] | Exception
         """
         songs = self.get_songs_of_playlist(token, playlist_id, market=market)
-        if not songs:
-            return None
         print(f"Total songs: {len(songs)}")
         return random.choices(songs, k=n_of_tracks)

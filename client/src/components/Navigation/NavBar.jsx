@@ -12,7 +12,7 @@ const NavBar = () => {
 
     return (
         <nav className="navbar">
-            <div className="flex items-center flex-shrink-0 mr-6">
+            <div className="flex items-center flex-shrink-0 mr-6 ml-3 sm:ml-0">
                 <Link to="/">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1028 1028"
                          width="40" height="40" stroke="currentColor"
@@ -80,7 +80,7 @@ const NavBar = () => {
                                      className="bg-base-100 text-base-content w-full cursor-pointer font-sans">
                                     <div className="grid grid-cols-5 grid-rows-3">
                                         <div className="col-span-5 row-span-3 row-start-1 flex gap-1 py-3 px-4">
-                                            <div className="flex-grow text-sm font-bold">Default</div>
+                                            <div className="flex-grow text-sm font-bold">Dark</div>
                                             <div className="flex flex-shrink-0 flex-wrap gap-1">
                                                 <div className="bg-primary w-2 rounded"/>
                                                 <div className="bg-secondary w-2 rounded"/>

@@ -2,3 +2,5 @@ spotipy~=2.19.0
 python-dotenv~=0.19.2
 fastapi~=0.75.1
 uvicorn~=0.17.6
+starlette~=0.17.1
+requests~=2.26.0
