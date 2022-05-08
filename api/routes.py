@@ -12,7 +12,6 @@ load_dotenv()
 
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS")
 DEVELOPMENT = os.getenv("DEVELOPMENT") == "True"
-# SPOTIFY_API_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
 # region APP config
 # Create APP
@@ -27,8 +26,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[ALLOWED_ORIGINS],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Set-Cookie"]
 )
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("APP_SECRET_KEY"))
 # endregion
