@@ -7,11 +7,6 @@ import {Buffer} from "buffer/";
 
 import {Redirect, withRouter} from "react-router-dom";
 import {CouldNotGetToken} from "api/exceptions";
-
-
-const SPOTIFY_BASE_URL = "https://accounts.spotify.com";
-
-
 export const isLoggedIn = () => Cookies.get("accessToken") !== undefined && Cookies.get("refreshToken") !== undefined;
 
 export const spotifyLogin = (scopes: string = "playlist-read-private") => {
@@ -59,24 +54,14 @@ const LoginCallback = () => {
     if (ERROR) throw Error(ERROR);
     if (STATE !== COOKIE_STATE) throw Error("State doesn't match or is expired!");
 
-    const headers = {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": "Basic " + (Buffer.from(process.env.REACT_APP_SPOTIFY_CLIENT_ID + ':' + process.env.REACT_APP_SPOTIFY_CLIENT_SECRET).toString("base64"))
-    }
-
     const sendParams = new URLSearchParams();
-    sendParams.append("grant_type", "authorization_code");
     sendParams.append("code", CODE);
-    sendParams.append("redirect_uri", process.env.REACT_APP_SPOTIFY_REDIRECT_URI);
 
-    // const ACCESS_TOKEN =
-    axios.post(`${SPOTIFY_BASE_URL}/api/token`, sendParams, {headers: headers})
-        .then(r => {
-            let data = r.data;
-            let expiresIn = data["expires_in"]
-            Cookies.set("accessToken", data["access_token"], {expires: expiresIn, secure: true});
-            Cookies.set("refreshToken", data["refresh_token"], {expires: expiresIn, secure: true});
-        })
+    axios.post(`${process.env.REACT_APP_API_URL}/api/login/callback`, null, {
+        params: {code: CODE},
+        withCredentials: true
+    })
+        .then()
         .catch((reason => {
             throw Error(reason);
         }));

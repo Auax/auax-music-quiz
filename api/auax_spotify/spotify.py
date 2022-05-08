@@ -137,10 +137,11 @@ class SpotifyAPI:
 
         # Handle errors
         error = response.get("error")
-        if error.get("status") == "404":
-            raise InvalidPlaylistId
-        elif error.get("status") == "401":
-            raise AccessTokenExpired
+        if error:
+            if error.get("status") == "404":
+                raise InvalidPlaylistId
+            elif error.get("status") == "401":
+                raise AccessTokenExpired
 
         tracks = response.get("items")
 
@@ -155,8 +156,17 @@ class SpotifyAPI:
             tracks.extend(response["items"])
 
         # Only songs with preview_url
-        tracks = list(filter(lambda x: x["track"]["preview_url"] is not None, tracks))
-        return tracks
+        names = []
+        out = []
+        for track in tracks:
+            href = track["track"]["name"]
+            preview_url = track["track"]["preview_url"]
+            if href not in names and preview_url is not None:
+                names.append(href)
+                out.append(track)
+
+        # tracks = list(filter(lambda x: x["track"]["preview_url"] is not None, tracks))
+        return out
 
     def random_songs_by_genre(self, token: str, playlist_id: str, n_of_tracks: int, market: str = "US") -> list | None:
         """

@@ -40,7 +40,7 @@ const fetchTracks = async (
             if (response.status === 200) {
                 // Remove "remastered" and other useless string tags from the song's name
                 response.data.forEach(song => {
-                    song["name"] = metadataCustomFilter.filterField("track", song["name"]);
+                    song["name"] = metadataCustomFilter.filterField("track", song["name"]).replace(/ *\([^)]*\) */g, "");
                     songs_.push(song);
                 });
             } else {

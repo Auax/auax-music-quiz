@@ -5,8 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import stringSimilarity from "string-similarity";
 
 import * as variables from "Variables";
-import {Modal, ProgressBar, useCountdown, useScore} from 'components';
-import Track from "./Track";
+import {useCountdown, useScore} from 'components';
+import {AnswerModal, InputAnswer, ProgressBar, ScoreModal, Track, VolumeSlider} from "./GameComponents";
 import {AccessTokenExpired, InvalidPlaylistId,} from "api/exceptions";
 import {assertSpotifyLogin, refreshToken} from "api/auth";
 import fetchTracks from "api/api";
@@ -26,15 +26,17 @@ const assertMusicGenre = (identifier: string, redirect_to: string = "/play", his
 }
 
 const Game = (props) => {
-    const location = new URL(window.location.href);
     const history = useHistory();
-
+    const location = new URL(window.location.href);
+    const mg = location.searchParams.get("mg");
+    const tn = location.searchParams.get("tn");
     const similarityThreshold = 0.7; // How similar the guess must be to the answer to be correct
 
     // UseState variables
     const [tracks, setTracks] = useState(null);
     const [currentTrackNo, setCurrentTrackNo] = useState(0);
     const [gameState, setGameState] = useState("init");
+    const [volume, setVolume] = useState(100);
 
     const [roundAnswer, setRoundAnswer] = useState({
         "show": false,
@@ -56,10 +58,9 @@ const Game = (props) => {
     } = useCountdown(props.timePerRound);
     const {score, scoreAddPoint, resetScore} = useScore();
 
+
     // Fetch the tracks (already shuffled and filtered) from the server
     useEffect(() => {
-        let mg = location.searchParams.get("mg");
-        let tn = location.searchParams.get("tn");
         assertSpotifyLogin(window.location.href); // Must have valid tokens to get the songs
         assertMusicGenre(mg, "/choose", history);
 
@@ -124,19 +125,22 @@ const Game = (props) => {
         setTimeout((() => {
             resetCountdown();
             setShowRoundAnswer(false);
-            setGameState("started");
-            setCurrentTrackNo(currentTrackNo + 1);
+            if (currentTrackNo + 1 >= tn) setGameState("finished"); // Finish game
+            else {
+                setGameState("started");
+                setCurrentTrackNo(currentTrackNo + 1);
+            }
         }), 5000);
     }, [countdown]);
 
-    const checkAnswer = (event) => {
-        if (event.key !== 'Enter') return;
+    const checkAnswer = (event, inputRef) => {
+        if (event.key !== "Enter" && event.type !== "click") return;
         if (gameState !== "started") {
-            event.target.value = "";
+            inputRef.current.value = "";
             return;
         }
         let track = tracks[currentTrackNo];
-        let inputAnswer = (event.target.value).toLowerCase(); // Get answer in lowercase
+        let inputAnswer = (inputRef.current.value).toLowerCase(); // Get answer in lowercase
 
         // Compare strings (punctuation removed in the comparison)
         let similarityWithSong = stringSimilarity.compareTwoStrings(inputAnswer, track.name.toLowerCase().replace(/[.,\/#!$%&;:{}=\-_`~()]/g, ""));
@@ -163,7 +167,7 @@ const Game = (props) => {
             }
         }
 
-        event.target.value = ""; // Clear value
+        inputRef.current.value = ""; // Clear value
     }
 
     // While fetching songs
@@ -209,14 +213,10 @@ const Game = (props) => {
                 draggable
                 pauseOnHover
             />
-            <Modal
-                track={tracks[currentTrackNo]}
-                show={roundAnswer.show}
-            />
+            <AnswerModal track={tracks[currentTrackNo]} show={roundAnswer.show}/>
+            <ScoreModal score={score.correct} show={gameState === "finished"} tracks={tracks}/>
             <div className="container mx-auto text-center px-4">
-                <h1 className="text-7xl font-bold sm:px-0 tracking-tight pt-12 capitalize">Round {currentTrackNo + 1}</h1>
-
-
+                <h1 className="text-7xl font-bold sm:px-0 tracking-tight pt-12 capitalize mb-2">Round {currentTrackNo + 1}</h1>
                 {gameState === "init"
                     ? // Init
                     <div>
@@ -230,10 +230,16 @@ const Game = (props) => {
                     </div>
                     : // Started
                     <div>
-                        <span>Score: {score.correct} / {props.totalRounds * 2}</span>
+                        <span>Score: {score.correct} / {tn * 2}</span>
+                        <br/>
+                        <button id="startRoundBtn"
+                                className="btn font-bold btn-primary mt-4"
+                                onClick={() => {
+                                    setGameState("finished")
+                                }}>End game
+                        </button>
                     </div>
                 }
-
                 <div className="my-5 text-left">
                     <span>{printTime()}</span>
                     <ProgressBar
@@ -241,21 +247,21 @@ const Game = (props) => {
                         run={gameState === 'started'}
                         time={props.timePerRound}/>
                 </div>
-                <Track track={tracks[currentTrackNo]} running={gameState === 'started'}/>
-                <input type="text" placeholder="Song or artist's name" className="input w-full"
-                       autoComplete="off" onKeyDown={checkAnswer} id="userInput"/>
-                <div className="text-left">
+                <Track track={tracks[currentTrackNo]} running={gameState === 'started'} volume={volume}/>
+                <InputAnswer submitAnswer={checkAnswer}/>
+                <div className="text-left flex justify-start items-center mt-2">
                     <button id="skipRoundBtn"
-                            className="btn font-bold btn-ghost bg-base-100 mt-2"
+                            className="btn btn-ghost font-bold bg-base-100"
                             onClick={() => {
                                 if (gameState === "started") zeroCountdown();
                             }}>
-                        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg className="text-base-content h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polygon points="5 4 15 12 5 20 5 4"/>
                             <line x1="19" y1="5" x2="19" y2="19"/>
                         </svg>
                     </button>
+                    <VolumeSlider volumeSetter={setVolume}/>
                 </div>
             </div>
         </div>
@@ -264,7 +270,6 @@ const Game = (props) => {
 
 Game.defaultProps = {
     timePerRound: 20,
-    totalRounds: 10,
 };
 
 export default withRouter(Game);

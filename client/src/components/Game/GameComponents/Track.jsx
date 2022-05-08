@@ -1,6 +1,6 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from "react";
 
-const Track = (props) => {
+export const Track = (props) => {
     const myAudio = useRef();
 
     useEffect(() => {
@@ -13,6 +13,10 @@ const Track = (props) => {
         else myAudio.current.pause();
     }, [props.running]);
 
+    useEffect(() => {
+        myAudio.current.volume = props.volume / 100;
+    }, [props.volume])
+
     return (
         <audio
             src={props.track.preview_url}
@@ -23,6 +27,3 @@ const Track = (props) => {
         />
     )
 }
-
-
-export default Track;

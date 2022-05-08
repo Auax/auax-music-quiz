@@ -67,13 +67,9 @@ async def refresh_expired_token(refresh_token: str) -> str:
     return token
 
 
-@app.get("/api/login/callback")
-async def login_callback(code, state, error=None, authState=Cookie(None)):
+@app.post("/api/login/callback")
+async def login_callback(code):
     # Check for conflicts
-    if error:
-        raise HTTPException(status_code=500, detail=error)
-    if state != authState:
-        raise HTTPException(status_code=400, detail="State doesn't match or is expired")
 
     access_token = spotify_api.get_access_token(code)
 
@@ -81,13 +77,13 @@ async def login_callback(code, state, error=None, authState=Cookie(None)):
         raise HTTPException(status_code=500, detail="Spotify Access Token response is null")
 
     # Craft response
-    response = RedirectResponse(redirect_to)
+    response = JSONResponse(access_token)
     # Set all cookies
     expires_in = access_token["expires_in"]
-    response.set_cookie(key="accessToken", value=access_token["access_token"], httponly=True, expires=expires_in)
-    response.set_cookie(key="refreshToken", value=access_token["refresh_token"], httponly=True, expires=expires_in)
-    response.set_cookie(key="tokenScope", value=access_token["scope"], httponly=True, expires=expires_in)
-    response.set_cookie(key="expiresIn", value=access_token["expires_in"], httponly=True, expires=expires_in)
+    response.set_cookie(key="accessToken", value=access_token["access_token"], httponly=False, expires=expires_in, secure=True)
+    response.set_cookie(key="refreshToken", value=access_token["refresh_token"], httponly=False, expires=expires_in, secure=True)
+    response.set_cookie(key="tokenScope", value=access_token["scope"], httponly=False, expires=expires_in, secure=True)
+    response.set_cookie(key="expiresIn", value=access_token["expires_in"], httponly=False, expires=expires_in, secure=True)
     return response
 
 

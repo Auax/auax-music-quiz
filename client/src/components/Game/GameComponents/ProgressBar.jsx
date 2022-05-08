@@ -18,7 +18,7 @@ const AnimateFiller = styled.div`
   ${({active, time}) => active && css`animation: ${fillerKeyframes} ${time}s linear;`}
 `;
 
-const ProgressBar = (props) => {
+export const ProgressBar = (props) => {
     const [width, setWidth] = useState(0);
 
     useEffect(() => {
@@ -41,5 +41,3 @@ ProgressBar.defaultProps = {
     run: false,
     time: 10, // In seconds
 };
-
-export default ProgressBar;

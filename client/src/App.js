@@ -15,7 +15,7 @@ function App() {
                 <Switch>
                     <Route path="/" exact component={() => <Home/>}/>
                     <Route path="/choose" exact component={() => <SelectMusicGenre/>}/>
-                    <Route path="/play" exact component={() => <Game timePerRound={30}/>}/>
+                    <Route path="/play" exact component={() => <Game timePerRound={30} totalRounds={2}/>}/>
                     <Route path="/login/callback" exact component={() => <LoginCallback/>}/>
                 </Switch>
                 <Footer/>

@@ -11,7 +11,7 @@ const NavBar = () => {
     }, [])
 
     return (
-        <nav className="navbar">
+        <nav className="navbar z-50">
             <div className="flex items-center flex-shrink-0 mr-6 ml-3 sm:ml-0">
                 <Link to="/">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1028 1028"
@@ -42,7 +42,7 @@ const NavBar = () => {
             </div>
             <div className={`menu-content ${isOpen ? "block" : "hidden"}`}>
                 <div className="ml-3 sm:ml-0 text-sm sm:flex-grow">
-                    <Link to="/play" className="link-component">
+                    <Link to="/choose" className="link-component">
                         Play
                     </Link>
                     <Link to="/about" className="link-component">

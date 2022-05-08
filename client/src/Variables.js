@@ -24,8 +24,16 @@ export class MusicGenres {
         this.genres.push(new MusicGenre(
             "hiphop",
             "Hip Hop",
-            require("assets/images/genres/rap.jpg"),
+            require("assets/images/genres/hiphop.jpg"),
             "5z0HyrtGeJAlxlsAa0REoP"
+        ));
+
+        // 90's Rap
+        this.genres.push(new MusicGenre(
+            "hiphop-90",
+            "90's Rap",
+            require("assets/images/genres/90s-rap.jpg"),
+            "37i9dQZF1DX186v583rmzp"
         ));
 
         // Rock
