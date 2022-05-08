@@ -1,11 +1,10 @@
 import os
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Cookie
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.sessions import SessionMiddleware
-from starlette.responses import RedirectResponse
 
 from api.auax_spotify.spotify import SpotifyAPI, AccessTokenExpired, SongsIsNone, InvalidPlaylistId
 
@@ -50,7 +49,10 @@ async def login_auth(scope: str = "playlist-read-private") -> JSONResponse:
     response = JSONResponse(url)
     # Add the authState cookie to protect the user against cross-site request forgery
     # Expires in 60 seconds
-    response.set_cookie(key="authState", value=state, httponly=False, expires=3600, secure=True)
+    if os.getenv("DEVELOPMENT"):
+        response.set_cookie(key="authState", value=state, httponly=False, expires=3600, samesite="false")
+    else:
+        response.set_cookie(key="authState", value=state, httponly=False, expires=3600, secure=True, samesite="None")
     return response
 
 
@@ -78,12 +80,27 @@ async def login_callback(code):
 
     # Craft response
     response = JSONResponse(access_token)
-    # Set all cookies
+
     expires_in = access_token["expires_in"]
-    response.set_cookie(key="accessToken", value=access_token["access_token"], httponly=False, expires=expires_in, secure=True)
-    response.set_cookie(key="refreshToken", value=access_token["refresh_token"], httponly=False, expires=expires_in, secure=True)
-    response.set_cookie(key="tokenScope", value=access_token["scope"], httponly=False, expires=expires_in, secure=True)
-    response.set_cookie(key="expiresIn", value=access_token["expires_in"], httponly=False, expires=expires_in, secure=True)
+    # Set all cookies
+    if os.getenv("DEVELOPMENT"):
+        response.set_cookie(key="accessToken", value=access_token["access_token"], httponly=False, expires=expires_in,
+                            samesite="false")
+        response.set_cookie(key="refreshToken", value=access_token["refresh_token"], httponly=False, expires=expires_in,
+                            samesite="false")
+        response.set_cookie(key="tokenScope", value=access_token["scope"], httponly=False, expires=expires_in,
+                            samesite="false")
+        response.set_cookie(key="expiresIn", value=access_token["expires_in"], httponly=False, expires=expires_in,
+                            samesite="false")
+    else:
+        response.set_cookie(key="accessToken", value=access_token["access_token"], httponly=False, expires=expires_in,
+                            secure=True, samesite="None")
+        response.set_cookie(key="refreshToken", value=access_token["refresh_token"], httponly=False, expires=expires_in,
+                            secure=True, samesite="None")
+        response.set_cookie(key="tokenScope", value=access_token["scope"], httponly=False, expires=expires_in,
+                            secure=True, samesite="None")
+        response.set_cookie(key="expiresIn", value=access_token["expires_in"], httponly=False, expires=expires_in,
+                            secure=True, samesite="None")
     return response
 
 
