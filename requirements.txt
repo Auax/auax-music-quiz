@@ -4,4 +4,5 @@ fastapi~=0.75.1
 uvicorn~=0.17.6
 starlette~=0.17.1
 requests~=2.26.0
+itsdangerous==2.1.2
 gunicorn
