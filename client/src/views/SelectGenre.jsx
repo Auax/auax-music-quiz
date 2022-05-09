@@ -24,7 +24,7 @@ const SelectMusicGenre = () => {
         <div className="bg-base-300 overflow-auto hero-height">
             <div className="lg:px-20 md:px-10 px-2 mx-auto text-center overflow-auto">
                 <h1 className="text-7xl font-bold sm:px-0 tracking-tight mt-12">Play</h1>
-                <p className="text-base-300-content/50 mt-2">Choose a music genre.</p>
+                <p className="text-base-300-content/50 mt-2">Choose a music genre</p>
                 <div className="container my-10 rounded-lg mx-auto w-auto">
                     <div className="card-container flex flex-wrap justify-center">
                         {cards}

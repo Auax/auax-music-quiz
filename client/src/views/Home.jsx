@@ -6,7 +6,7 @@ const Home = () => {
     return (
         <div className="hero-main-page hero-height bg-neutral-80 overflow-auto">
             <div className="text-center px-4">
-                <h1 className="text-7xl md:text-8xl sm:text-9xl font-bold text-white tracking-tight">Auax Music
+                <h1 className="text-7xl md:text-9xl sm:text-8xl font-bold text-white tracking-tight">Auax Music
                     Quiz</h1>
                 <p className="text-white/70">Spotify Powered.</p>
                 <Link to="/choose">

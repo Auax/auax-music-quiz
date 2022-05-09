@@ -1,4 +1,5 @@
 import Home from "./Home";
+import CreateMode from "./CreateMode";
 import SelectMusicGenre from "./SelectGenre";
 
-export {Home, SelectMusicGenre};
+export {Home, CreateMode, SelectMusicGenre};

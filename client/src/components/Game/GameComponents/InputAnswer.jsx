@@ -9,9 +9,9 @@ const LeftInput = styled.input`
 export const InputAnswer = (props) => {
     const InputRef = useRef();
     return (
-        <div className="flex">
+        <div className="input-group flex">
             <LeftInput ref={InputRef} type="text" placeholder="Song or artist's name"
-                       className="input rounded-br-none rounded-tr-none focus:outline-none"
+                       className="input focus:outline-none"
                        autoComplete="off"
                        onKeyDown={(e) => props.submitAnswer(e, InputRef)} id="userInput"/>
             <button onClick={(e) => props.submitAnswer(e, InputRef)}
