@@ -46,13 +46,15 @@ async def login_auth(scope: str = "playlist-read-private") -> JSONResponse:
     if not url:
         raise HTTPException(status_code=400, detail="Invalid Spotify API scope")
 
-    response = JSONResponse(url)
+    res = {"url": url, "auth_state": state}
+    response = JSONResponse(res)
     # Add the authState cookie to protect the user against cross-site request forgery
     # Expires in 60 seconds
-    if DEVELOPMENT:
-        response.set_cookie(key="authState", value=state, httponly=False, expires=3600, samesite="false")
-    else:
-        response.set_cookie(key="authState", value=state, httponly=False, expires=3600, secure=True, samesite="none")
+    # if DEVELOPMENT:
+    #     response.set_cookie(key="authState", value=state, httponly=False, expires=3600, secure=True, samesite="none")
+    # else:
+    #     response.set_cookie(key="authState", value=state, httponly=False, expires=3600, secure=True, samesite="none")
+
     return response
 
 
@@ -79,28 +81,34 @@ async def login_callback(code):
         raise HTTPException(status_code=500, detail="Spotify Access Token response is null")
 
     # Craft response
-    response = JSONResponse(access_token)
+    res = {
+        "access_token": access_token["access_token"],
+        "refresh_token": access_token["refresh_token"],
+        "token_scope": access_token["scope"],
+        "expires_in": access_token["expires_in"]
+    }
+    response = JSONResponse(res)
 
-    expires_in = access_token["expires_in"]
-    # Set all cookies
-    if DEVELOPMENT:
-        response.set_cookie(key="accessToken", value=access_token["access_token"], httponly=False, expires=expires_in,
-                            samesite="false")
-        response.set_cookie(key="refreshToken", value=access_token["refresh_token"], httponly=False, expires=expires_in,
-                            samesite="false")
-        response.set_cookie(key="tokenScope", value=access_token["scope"], httponly=False, expires=expires_in,
-                            samesite="false")
-        response.set_cookie(key="expiresIn", value=access_token["expires_in"], httponly=False, expires=expires_in,
-                            samesite="false")
-    else:
-        response.set_cookie(key="accessToken", value=access_token["access_token"], httponly=False, expires=expires_in,
-                            secure=True, samesite="none")
-        response.set_cookie(key="refreshToken", value=access_token["refresh_token"], httponly=False, expires=expires_in,
-                            secure=True, samesite="none")
-        response.set_cookie(key="tokenScope", value=access_token["scope"], httponly=False, expires=expires_in,
-                            secure=True, samesite="none")
-        response.set_cookie(key="expiresIn", value=access_token["expires_in"], httponly=False, expires=expires_in,
-                            secure=True, samesite="none")
+    # expires_in = access_token["expires_in"]
+    # # Set all cookies
+    # if DEVELOPMENT:
+    #     response.set_cookie(key="accessToken", value=access_token["access_token"], httponly=False, expires=expires_in,
+    #                         samesite="lax")
+    #     response.set_cookie(key="refreshToken", value=access_token["refresh_token"], httponly=False, expires=expires_in,
+    #                         samesite="lax")
+    #     response.set_cookie(key="tokenScope", value=access_token["scope"], httponly=False, expires=expires_in,
+    #                         samesite="lax")
+    #     response.set_cookie(key="expiresIn", value=access_token["expires_in"], httponly=False, expires=expires_in,
+    #                         samesite="lax")
+    # else:
+    #     response.set_cookie(key="accessToken", value=access_token["access_token"], httponly=False, expires=expires_in,
+    #                         secure=True, samesite="none")
+    #     response.set_cookie(key="refreshToken", value=access_token["refresh_token"], httponly=False, expires=expires_in,
+    #                         secure=True, samesite="none")
+    #     response.set_cookie(key="tokenScope", value=access_token["scope"], httponly=False, expires=expires_in,
+    #                         secure=True, samesite="none")
+    #     response.set_cookie(key="expiresIn", value=access_token["expires_in"], httponly=False, expires=expires_in,
+    #                         secure=True, samesite="none")
     return response
 
 

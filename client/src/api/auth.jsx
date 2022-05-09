@@ -7,14 +7,16 @@ import {Buffer} from "buffer/";
 
 import {Redirect, withRouter} from "react-router-dom";
 import {CouldNotGetToken} from "api/exceptions";
+
 export const isLoggedIn = () => Cookies.get("accessToken") !== undefined && Cookies.get("refreshToken") !== undefined;
 
 export const spotifyLogin = (scopes: string = "playlist-read-private") => {
     /* Redirect to the AUTH URL */
     const REQ_URL = process.env.REACT_APP_API_URL + "/api/login?" + queryString.stringify({scopes: scopes});
-    axios.get(REQ_URL, {withCredentials: true})
+    axios.get(REQ_URL)
         .then((r) => {
-            window.location.replace(r.data);
+            Cookies.set("authState", r.data["auth_state"], {secure: true, sameSite: "none"});
+            window.location.replace(r.data["url"]);
         }).catch((reason: AxiosError) => {
             if (reason.response.status === 400) {
                 throw Error(reason);
@@ -58,10 +60,16 @@ const LoginCallback = () => {
     sendParams.append("code", CODE);
 
     axios.post(`${process.env.REACT_APP_API_URL}/api/login/callback`, null, {
-        params: {code: CODE},
-        withCredentials: true
+        params: {code: CODE}
     })
-        .then()
+        .then((r) => {
+            // Set cookies
+            let data = r.data;
+            let expiresIn = data["expires_in"];
+            Cookies.set("accessToken", data["access_token"], {secure: true, sameSite: "none", expires: expiresIn});
+            Cookies.set("refreshToken", data["refresh_token"], {secure: true, sameSite: "none", expires: expiresIn});
+            Cookies.set("tokenScope", data["token_scope"], {secure: true, sameSite: "none", expires: expiresIn});
+        })
         .catch((reason => {
             throw Error(reason);
         }));

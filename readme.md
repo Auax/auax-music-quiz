@@ -2,6 +2,12 @@
 
 Development started around the following date: **2nd of April 2022**
 
+## TODO:
+* Create the cookies using the set-cookie header (fix)
+* Add more modes / custom playlist mode
+* Fix styling / UI
+* Organize project
+
 ## Enviroment variables
 
 **Under the root dir (" / ")**
