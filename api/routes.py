@@ -10,7 +10,7 @@ from api.auax_spotify.spotify import SpotifyAPI, AccessTokenExpired, SongsIsNone
 
 load_dotenv()
 
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS")
+ALLOWED_ORIGIN = os.getenv("ALLOWED_ORIGIN")
 DEVELOPMENT = os.getenv("DEVELOPMENT") == "True"
 
 # region APP config
@@ -24,7 +24,7 @@ app = FastAPI(
 # CROSS-ORIGIN config
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS.split(),
+    allow_origins=[ALLOWED_ORIGIN],
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type", "Set-Cookie"]

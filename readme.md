@@ -12,7 +12,7 @@ Development started around the following date: **2nd of April 2022**
 
 **Under the root dir (" / ")**
 
-- `ALLOWED_ORIGINS`= *
+- `ALLOWED_ORIGIN`= *
 - `APP_SECRET_KEY`= _<randomly_generated_key>_
 - `SPOTIFY_CLIENT_ID`= _<spotify_client_id>_
 - `SPOTIFY_CLIENT_SECRET`= _<spotify_client_secret>_
