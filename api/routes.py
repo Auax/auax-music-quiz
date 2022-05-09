@@ -24,7 +24,7 @@ app = FastAPI(
 # CROSS-ORIGIN config
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[ALLOWED_ORIGINS],
+    allow_origins=ALLOWED_ORIGINS.split(),
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type", "Set-Cookie"]
