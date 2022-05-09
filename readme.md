@@ -3,10 +3,15 @@
 Development started around the following date: **2nd of April 2022**
 
 ## TODO:
+
 * Create the cookies using the set-cookie header (fix)
 * Add more modes / custom playlist mode
 * Fix styling / UI
 * Organize project
+
+## Important
+
+Add a file called `_redirects` with `/* /index.html 200` inside the build directory if you're using Netlify.
 
 ## Enviroment variables
 
