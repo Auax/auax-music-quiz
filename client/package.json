@@ -20,6 +20,7 @@
     "react-cookie": "^4.1.1",
     "react-countdown": "^2.3.2",
     "react-dom": "^18.0.0",
+    "react-hot-toast": "^2.2.0",
     "react-router-dom": "^5.3.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^8.2.0",

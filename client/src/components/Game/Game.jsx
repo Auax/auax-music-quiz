@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {withRouter, useHistory} from "react-router-dom";
-import {ToastContainer, toast} from 'react-toastify';
+import {Toaster, toast} from "react-hot-toast";
 import 'react-toastify/dist/ReactToastify.css';
 import stringSimilarity from "string-similarity";
 
@@ -15,9 +15,9 @@ import fetchTracks from "api/api";
 // TODO: ADD skip button and volume controller
 
 const assertMusicGenre = (identifier: string, redirect_to: string = "/play", history: any) => {
+    if (identifier === "custom") return; // Custom mode
     // Genres className instance
     const genresClass = new variables.MusicGenres();
-
     // Assert the genre exists, if not, redirect to "/play"
     const genre = genresClass.getGenre(identifier);
     if (genre === null) {
@@ -28,9 +28,15 @@ const assertMusicGenre = (identifier: string, redirect_to: string = "/play", his
 const Game = (props) => {
     const history = useHistory();
     const location = new URL(window.location.href);
+    // Game mode
     const mg = location.searchParams.get("mg");
-    const tn = location.searchParams.get("tn");
-    const similarityThreshold = 0.7; // How similar the guess must be to the answer to be correct
+    // Tracks number
+    let toSetTn = location.searchParams.get("tn");
+    const [tn, setTn] = useState(toSetTn <= 50 ? toSetTn : 50);
+    // Custom playlist ID (only in 'custom' mode)
+    const cID = location.searchParams.get("id");
+    // How similar the guess must be to the answer to be correct
+    const similarityThreshold = 0.7;
 
     // UseState variables
     const [tracks, setTracks] = useState(null);
@@ -65,16 +71,25 @@ const Game = (props) => {
         assertMusicGenre(mg, "/choose", history);
 
         const musicGenres = new variables.MusicGenres();
+        // Should we use a preset playlist id or a custom one
+        let playlist_id = mg === "custom" ? cID : musicGenres.getGenre(mg).playlist_id;
+
         const execute = async () => {
             const fetchedTracks = await fetchTracks(
-                musicGenres.getGenre(mg).playlist_id, // Music genre
+                playlist_id, // Music genre
                 tn, // Tracks number
             );
             setTracks(fetchedTracks);
+            if (fetchedTracks.length < tn) {
+                setTn(fetchedTracks.length);
+                toast(<p>Could only get {fetchedTracks.length} songs! This might be because the playlist has less songs
+                    than the rounds set.</p>, {icon: "ℹ️", duration: 4000})
+            }
         };
         execute().catch((error) => {
             if (error instanceof AccessTokenExpired) {
                 try {
+                    console.log("error");
                     refreshToken();
                     execute().catch(() => null);
                 } catch (e) {
@@ -202,17 +217,7 @@ const Game = (props) => {
     // Once the songs are loaded
     return (
         <div className="hero-height bg-base-300">
-            <ToastContainer
-                position="top-center"
-                autoClose={2000}
-                hideProgressBar={false}
-                newestOnTop={true}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
+            <Toaster position="top-center" reverseOrder={false}/>
             <AnswerModal track={tracks[currentTrackNo]} show={roundAnswer.show}/>
             <ScoreModal score={score.correct} show={gameState === "finished"} tracks={tracks}/>
             <div className="container mx-auto text-center px-4">

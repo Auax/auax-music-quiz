@@ -91,8 +91,8 @@ export const AnswerModal = (props) => {
                 <div className="w-full">
                     <img className="w-2/5 mt-2 mx-auto shadow-lg rounded-lg" src={props.track.image}
                          draggable="false" alt="album"/>
-                    <h1 className="text-5xl text-center mt-5">{props.track.name}</h1>
-                    <p className="text-2xl text-center break-words text-base-content/80">{props.track.artist}</p>
+                    <h1 className="text-5xl text-center mt-5 text-white">{props.track.name}</h1>
+                    <p className="text-2xl text-center break-words text-white/70">{props.track.artist}</p>
                 </div>
             </ModalObj>
             <BgObj isVisible={showModal}/>
@@ -121,7 +121,8 @@ export const ScoreModal = (props) => {
                 <div className="w-full md:w-2/3 bg-base-200 rounded text-left p-16">
                     <h1 className="text-4xl md:text-5xl">Summary</h1>
                     <div className="divider"/>
-                    <h2 className="text-3xl md:text-4xl">Score: <span className="text-base-content/70">{props.score}</span></h2>
+                    <h2 className="text-3xl md:text-4xl">Score: <span
+                        className="text-base-content/70">{props.score}</span></h2>
                     <h2 className="text-3xl md:text-4xl mt-5">Tracks:</h2>
                     <div className="overflow-y-scroll max-h-36">
                         <ul className="list-disc text-base ml-7 text-base-content/70">

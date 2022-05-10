@@ -58,3 +58,12 @@ const fetchTracks = async (
 }
 
 export default fetchTracks;
+
+export const extractPlaylistId = (text: string) => {
+    // Regex
+    const validID = new RegExp("(?:(album|track|playlist)\\/|\\?uri=spotify:track:)([\\w|-]{22})|[\\w|-]{22}");
+    let id_match = validID.exec(text);
+    if (!id_match) return null;
+    let from_url = (id_match[2] && id_match[2].length === 22) ? id_match[2] : null;
+    return id_match[0].length === 22 ? id_match[0] : from_url
+}

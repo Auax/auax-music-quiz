@@ -4,11 +4,11 @@ Development started around the following date: **2nd of April 2022**
 
 ## TODO:
 
-* Fix REFRESH_TOKEN ERROR!
+* ~~Fix REFRESH_TOKEN ERROR!~~
 * Create the cookies using the set-cookie header (fix)
-* Add more modes / custom playlist mode
-* Finish the create mode page
-* Fix answer title color in `lofi` theme
+* Add more modes / ~~custom playlist mode~~
+* ~~Finish the create mode page~~
+* ~~Fix answer title color in `lofi` theme~~
 * Fix styling / UI (Change bg maybe?)
 * Organize project
 

@@ -138,9 +138,9 @@ class SpotifyAPI:
         # Handle errors
         error = response.get("error")
         if error:
-            if error.get("status") == "404":
+            if error.get("status") == 404:
                 raise InvalidPlaylistId
-            elif error.get("status") == "401":
+            elif error.get("status") == 401:
                 raise AccessTokenExpired
 
         tracks = response.get("items")
@@ -155,18 +155,17 @@ class SpotifyAPI:
                 headers=headers).json()
             tracks.extend(response["items"])
 
-        # Only songs with preview_url
+        # Remove duplicate songs from playlist and assert they're not none
         names = []
-        out = []
+        remove_duplicates = []
         for track in tracks:
-            href = track["track"]["name"]
+            name = track["track"]["name"]
             preview_url = track["track"]["preview_url"]
-            if href not in names and preview_url is not None:
-                names.append(href)
-                out.append(track)
+            if name not in names and preview_url is not None:
+                names.append(name)
+                remove_duplicates.append(track)
 
-        # tracks = list(filter(lambda x: x["track"]["preview_url"] is not None, tracks))
-        return out
+        return remove_duplicates
 
     def random_songs_by_genre(self, token: str, playlist_id: str, n_of_tracks: int, market: str = "US") -> list | None:
         """
@@ -178,5 +177,6 @@ class SpotifyAPI:
         :return: songs [list] | Exception
         """
         songs = self.get_songs_of_playlist(token, playlist_id, market=market)
-        print(f"Total songs: {len(songs)}")
-        return random.choices(songs, k=n_of_tracks)
+        n_of_tracks = n_of_tracks if len(songs) >= n_of_tracks else len(songs)
+        print(f"Total songs: {n_of_tracks}")
+        return random.sample(songs, k=n_of_tracks)
