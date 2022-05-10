@@ -4,12 +4,12 @@ import {Toaster, toast} from "react-hot-toast";
 import 'react-toastify/dist/ReactToastify.css';
 import stringSimilarity from "string-similarity";
 
-import * as variables from "Variables";
+import * as variables from "data/Variables";
 import {useCountdown, useScore} from 'components';
 import {AnswerModal, InputAnswer, ProgressBar, ScoreModal, Track, VolumeSlider} from "./GameComponents";
 import {AccessTokenExpired, InvalidPlaylistId,} from "api/exceptions";
-import {assertSpotifyLogin, refreshToken} from "api/auth";
-import fetchTracks from "api/api";
+import {assertSpotifyLogin, refreshToken} from "api/Auth";
+import fetchTracks from "api/Api";
 
 // TODO: fix progress bar progression when window's not focused
 // TODO: ADD skip button and volume controller
@@ -19,7 +19,7 @@ const assertMusicGenre = (identifier: string, redirect_to: string = "/play", his
     // Genres className instance
     const genresClass = new variables.MusicGenres();
     // Assert the genre exists, if not, redirect to "/play"
-    const genre = genresClass.getGenre(identifier);
+    const genre = genresClass.getGenreByIdentifier(identifier);
     if (genre === null) {
         history.push(redirect_to);
     }
@@ -72,7 +72,7 @@ const Game = (props) => {
 
         const musicGenres = new variables.MusicGenres();
         // Should we use a preset playlist id or a custom one
-        let playlist_id = mg === "custom" ? cID : musicGenres.getGenre(mg).playlist_id;
+        let playlist_id = mg === "custom" ? cID : musicGenres.getGenreByIdentifier(mg).genre.id;
 
         const execute = async (refresh: boolean = false) => {
             if (refresh) await refreshToken();

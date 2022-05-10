@@ -1,0 +1,42 @@
+{
+  "mix": {
+    "mix": {
+      "name": "Mix",
+      "img": "assets/images/genres/mix.jpg",
+      "id": "1YGOdujXjPUSizscRxCBv0"
+    }
+  },
+  "hiphop": {
+    "hiphop": {
+      "name": "Rap",
+      "img": "assets/images/genres/hiphop.jpg",
+      "id": "5z0HyrtGeJAlxlsAa0REoP"
+    },
+    "hiphop-90": {
+      "name": "90's Rap",
+      "img": "assets/images/genres/90s-rap.jpg",
+      "id": "37i9dQZF1DX186v583rmzp"
+    }
+  },
+  "rock": {
+    "rock": {
+      "name": "Rock",
+      "img": "assets/images/genres/rock.jpg",
+      "id": "37i9dQZF1DWXRqgorJj26U"
+    }
+  },
+  "pop": {
+    "pop": {
+      "name": "Pop",
+      "img": "assets/images/genres/pop.jpg",
+      "id": "6mtYuOxzl58vSGnEDtZ9uB"
+    }
+  },
+  "jazz": {
+    "jazz": {
+      "name": "Jazz",
+      "img": "assets/images/genres/jazz.jpg",
+      "id": "37i9dQZF1DXbITWG1ZJKYt"
+    }
+  }
+}

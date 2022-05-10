@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Link, withRouter} from "react-router-dom";
 import * as queryString from "query-string";
-import {extractPlaylistId} from "../api/api";
+import {extractPlaylistId} from "../api/Api";
 import {Toaster, toast, useToasterStore} from "react-hot-toast";
 
 

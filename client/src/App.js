@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Home, CreateMode, SelectMusicGenre} from "views";
 import {Game} from "components";
 import {Footer, NavBar} from "components";
-import LoginCallback from "./api/auth";
+import LoginCallback from "./api/Auth";
 
 function App() {
     return (
