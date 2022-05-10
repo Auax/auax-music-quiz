@@ -33,6 +33,7 @@ const fetchTracks = async (
         amount: tracksNo
     })
 
+
     // Send POST req to server to get a new auth link
     await axios.get(process.env.REACT_APP_API_URL + `/api/get/songs?${params}`)
         .then(response => {
@@ -49,7 +50,6 @@ const fetchTracks = async (
         })
         .catch((reason: AxiosError) => {
             let detail = reason.response.data.detail;
-            console.log(detail);
             if (detail === "The access token expired") throw new AccessTokenExpired(detail);
             else if (detail === "Invalid playlist ID") throw new InvalidPlaylistId(detail);
             throw Error(reason);

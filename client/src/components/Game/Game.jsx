@@ -74,7 +74,8 @@ const Game = (props) => {
         // Should we use a preset playlist id or a custom one
         let playlist_id = mg === "custom" ? cID : musicGenres.getGenre(mg).playlist_id;
 
-        const execute = async () => {
+        const execute = async (refresh: boolean = false) => {
+            if (refresh) await refreshToken();
             const fetchedTracks = await fetchTracks(
                 playlist_id, // Music genre
                 tn, // Tracks number
@@ -89,9 +90,7 @@ const Game = (props) => {
         execute().catch((error) => {
             if (error instanceof AccessTokenExpired) {
                 try {
-                    console.log("error");
-                    refreshToken();
-                    execute().catch(() => null);
+                    execute(true).catch(() => null);
                 } catch (e) {
                     setThrowError("Error getting a new token!")
                 }

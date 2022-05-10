@@ -24,7 +24,6 @@ export const spotifyLogin = (scopes: string = "playlist-read-private") => {
         }
     );
 }
-
 export const assertSpotifyLogin = (redirect_url: string, scopes: string = "playlist-read-private") => {
     if (!isLoggedIn()) {
         window.localStorage.setItem("loginRedirectURL", redirect_url ?? "/play");
@@ -32,10 +31,10 @@ export const assertSpotifyLogin = (redirect_url: string, scopes: string = "playl
     }
 }
 
-export const refreshToken = () => {
+export const refreshToken = async () => {
     const REQ_URL = process.env.REACT_APP_API_URL + "/api/refresh_token?" + queryString.stringify({refresh_token: Cookies.get("refreshToken")});
-    axios.get(REQ_URL).then(r => {
-        Cookies.set("accessToken", r.data);
+    await axios.get(REQ_URL).then(r => {
+        Cookies.set("accessToken", r.data, {secure: true, sameSite: "none"});
     }).catch((reason: AxiosError) => {
         let detail = reason.response.data.detail;
         if (detail === "Could not get a new token") throw new CouldNotGetToken(detail);
