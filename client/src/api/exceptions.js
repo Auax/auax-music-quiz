@@ -11,3 +11,10 @@ export class InvalidPlaylistId extends Error {
         this.name = "InvalidPlaylistId";
     }
 }
+
+export class TooManyRequests extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "TooManyRequests";
+    }
+}

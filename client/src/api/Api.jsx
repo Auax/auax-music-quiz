@@ -2,7 +2,7 @@ import axios, {AxiosError} from 'axios';
 import Cookies from 'js-cookie';
 import * as MetadataFilter from 'metadata-filter';
 import * as queryString from "query-string";
-import {InvalidPlaylistId} from "api/exceptions";
+import {InvalidPlaylistId, TooManyRequests} from "api/exceptions";
 
 // TODO CREATE TRACK OBJECT
 const filterSet = {
@@ -51,6 +51,7 @@ const fetchTracks = async (
         .catch((reason: AxiosError) => {
             let detail = reason.response.data.detail;
             if (detail === "Invalid playlist ID") throw new InvalidPlaylistId(detail);
+            else if (detail === "Too many requests") throw new TooManyRequests(detail);
             throw Error(reason);
         });
     return songs_.length === 0 ? null : songs_;

@@ -1,5 +1,10 @@
 # Auax Music Quiz
 
+### No OAUTH method!
+
+(I'm using my account to fetch the songs, it's the only way to do this currently since other users can't log in because
+of Spotify's API).
+
 Development started around the following date: **2nd of April 2022**
 
 ## TODO:
@@ -20,11 +25,12 @@ Add a file called `_redirects` with `/* /index.html 200` inside the build direct
 
 **Under the root dir (" / ")**
 
-- `ALLOWED_ORIGIN`= *
+- `ALLOWED_ORIGIN`= * (dev only, use actual client url for this)
 - `APP_SECRET_KEY`= _<randomly_generated_key>_
 - `SPOTIFY_CLIENT_ID`= _<spotify_client_id>_
 - `SPOTIFY_CLIENT_SECRET`= _<spotify_client_secret>_
-- `SPOTIFY_REDIRECT_URI` = http://localhost:3000/login/callback (dev only, use actual URL in deployment)
+- `SPOTIFY_REDIRECT_URI` = https://_your_domain_/callback
+- `AUTH_CACHE` = _<`.cache` content>_
 
 **Under the client dir (" /client ")**
 

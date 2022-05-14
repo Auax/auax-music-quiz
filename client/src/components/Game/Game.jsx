@@ -7,7 +7,7 @@ import stringSimilarity from "string-similarity";
 import * as variables from "data/Variables";
 import {useCountdown, useScore} from 'components';
 import {AnswerModal, InputAnswer, ProgressBar, ScoreModal, Track, VolumeSlider} from "./GameComponents";
-import {InvalidPlaylistId,} from "api/exceptions";
+import {InvalidPlaylistId, TooManyRequests,} from "api/exceptions";
 import fetchTracks from "api/Api";
 
 // TODO: fix progress bar progression when window's not focused
@@ -85,10 +85,16 @@ const Game = (props) => {
             }
         };
         execute().catch((error) => {
-            if (error instanceof InvalidPlaylistId) {
-                setThrowError("Invalid playlist ID!");
+            switch (error) {
+                case error instanceof InvalidPlaylistId:
+                    setThrowError("Invalid playlist ID!");
+                    break;
+                case error instanceof TooManyRequests:
+                    setThrowError("Too many requests (429) please wait some time!");
+                    break;
+                default:
+                    setThrowError("Error loading the songs!");
             }
-            setThrowError("Error loading the songs!");
         });
     }, []);
 

@@ -36,6 +36,10 @@ class SongsIsNone(Exception):
     pass
 
 
+class TooManyRequests(Exception):
+    pass
+
+
 class SpotifyAPI:
     def __init__(self):
         # Auth
@@ -64,10 +68,13 @@ class SpotifyAPI:
         # Handle errors
         error = response.get("error")
         if error:
-            if error.get("status") == 404:
+            status = error.get("status")
+            if status == 404:
                 raise InvalidPlaylistId
-            elif error.get("status") == 401:
+            elif status == 401:
                 raise AccessTokenExpired
+            elif status == 429:
+                raise TooManyRequests
 
         tracks = response.get("items")
 
@@ -83,9 +90,9 @@ class SpotifyAPI:
         names = []
         remove_duplicates = []
         for track in tracks:
-            name = track["track"]["name"]
-            preview_url = track["track"]["preview_url"]
-            if name not in names and preview_url is not None:
+            name = track["track"].get("name")
+            preview_url = track["track"].get("preview_url")
+            if name not in names and preview_url is not None and name is not None:
                 names.append(name)
                 remove_duplicates.append(track)
 

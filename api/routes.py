@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from api.auax_spotify.spotify import SpotifyAPI, AccessTokenExpired, SongsIsNone, InvalidPlaylistId
+from api.auax_spotify.spotify import SpotifyAPI, AccessTokenExpired, SongsIsNone, InvalidPlaylistId, TooManyRequests
 
 load_dotenv()
 
@@ -52,6 +52,9 @@ async def random_song(playlist_id: str, amount: int = 10):
 
     except SongsIsNone:
         raise HTTPException(status_code=500, detail="Could not fetch the songs")
+
+    except TooManyRequests:
+        raise HTTPException(status_code=429, detail="Too many requests")
 
     except Exception as E:
         raise HTTPException(status_code=500, detail=str(f"Unknown error: {E}"))
