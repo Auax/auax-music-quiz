@@ -24,7 +24,7 @@ export const spotifyLogin = (scopes: string = "playlist-read-private") => {
         }
     );
 }
-export const assertSpotifyLogin = (redirect_url: string, scopes: string = "playlist-read-private") => {
+export const assertSpotifyLogin = (redirect_url: string, scopes: string = "user-top-read playlist-read-collaborative playlist-read-private user-read-private user-read-email") => {
     if (!isLoggedIn()) {
         window.localStorage.setItem("loginRedirectURL", redirect_url ?? "/play");
         spotifyLogin(scopes, redirect_url);
