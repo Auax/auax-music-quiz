@@ -2,7 +2,7 @@ import axios, {AxiosError} from 'axios';
 import Cookies from 'js-cookie';
 import * as MetadataFilter from 'metadata-filter';
 import * as queryString from "query-string";
-import {AccessTokenExpired, InvalidPlaylistId} from "api/exceptions";
+import {InvalidPlaylistId} from "api/exceptions";
 
 // TODO CREATE TRACK OBJECT
 const filterSet = {
@@ -50,8 +50,7 @@ const fetchTracks = async (
         })
         .catch((reason: AxiosError) => {
             let detail = reason.response.data.detail;
-            if (detail === "The access token expired") throw new AccessTokenExpired(detail);
-            else if (detail === "Invalid playlist ID") throw new InvalidPlaylistId(detail);
+            if (detail === "Invalid playlist ID") throw new InvalidPlaylistId(detail);
             throw Error(reason);
         });
     return songs_.length === 0 ? null : songs_;

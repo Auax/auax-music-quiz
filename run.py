@@ -2,6 +2,15 @@ import uvicorn
 
 from api.routes import app
 
+
+def setup():
+    import dotenv
+    import os
+    dotenv.load_dotenv()
+    with open(".cache", "w") as file:
+        file.write(os.getenv("AUTH_CACHE"))
+
+
 if __name__ == "__main__":
+    setup()
     uvicorn.run(app, port=8000)
-    # uvicorn.run(app, host="0.0.0.0", port=8000)

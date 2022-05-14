@@ -1,11 +1,9 @@
-import base64
 import os
 import random
-import string
-import urllib
 
-import requests
+import spotipy
 from dotenv import load_dotenv
+from spotipy.oauth2 import SpotifyOAuth
 
 
 class Data:
@@ -45,95 +43,21 @@ class SpotifyAPI:
         self.CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
         self.REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
-        self.BASE_URL = "https://accounts.spotify.com"
+        self.spotipy = spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id=self.CLIENT_ID,
+            client_secret=self.CLIENT_SECRET,
+            redirect_uri=self.REDIRECT_URI))
 
-    @staticmethod
-    def generate_random_state():
-        """ Return a random string to use as the state"""
-        return "".join(random.choices(string.ascii_letters, k=16))
-
-    # region Auth
-    def get_auth_link(self, scopes: str) -> tuple[str, str] | bool:
-        """
-        Generate a Spotify API auth link
-        :param scopes: spotify API scopes
-        :return: URL, state [tuple[str, str]] | False [bool]
-        """
-        for scope in scopes.split():
-            if scope not in Data.valid_scopes:
-                return False
-
-        state = SpotifyAPI.generate_random_state()
-        queries = {
-            "response_type": 'code',
-            "client_id": self.CLIENT_ID,
-            "scope": scopes,
-            "redirect_uri": self.REDIRECT_URI,
-            "state": state}
-
-        url = f"{self.BASE_URL}/authorize?{urllib.parse.urlencode(queries)}"
-        return url, state
-
-    def get_access_token(self, code: str) -> dict | None:
-        """
-        Get an Access Token with the callback code
-        :param code: the code provided in /api/login/callback
-        :return: response.json [dict] | None
-        """
-        headers = {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": "Basic " + base64.b64encode(
-                bytes(f"{self.CLIENT_ID}:{self.CLIENT_SECRET}", "utf-8")).decode("utf-8")
-        }
-        data = {
-            "grant_type": "authorization_code",
-            "code": code,
-            "redirect_uri": self.REDIRECT_URI
-        }
-        response = requests.post(f"{self.BASE_URL}/api/token", headers=headers, data=data)
-        return response.json() if response.status_code == 200 else None
-
-    # endregion
-
-    def refresh_expired_token(self, refresh_token: str) -> dict | None:
-        """
-        Get a new Access Token with a Refresh Token
-        :param refresh_token: the refresh_token
-        :return: Access Token [str] | None
-        """
-        headers = {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": "Basic " + base64.b64encode(
-                bytes(f"{self.CLIENT_ID}:{self.CLIENT_SECRET}", "utf-8")).decode("utf-8")
-        }
-
-        data = {
-            "grant_type": "refresh_token",
-            "refresh_token": refresh_token
-        }
-
-        response = requests.post(f"{self.BASE_URL}/api/token", headers=headers, data=data)
-        return response.json().get("access_token") if response.status_code == 200 else None
-
-    @staticmethod
-    def get_songs_of_playlist(token: str, playlist_id: str, market: str = "US") -> list | None:
+    def get_songs_of_playlist(self, playlist_id: str, market: str = "US") -> list | None:
         """
         Get all tracks of a playlist
-        :param token: the access token [str]
         :param playlist_id: Spotify Playlist ID [str]
         :param market: market [str] (US usually has most tracks with preview_url)
         :return: tracks [list] | Exception
         """
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token,
-        }
 
         offset = 0
-        response = requests.get(
-            f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?market={market}&limit=100&offset={offset}",
-            headers=headers).json()
+        response = self.spotipy.playlist_items(playlist_id, market=market, limit=100)
 
         # Handle errors
         error = response.get("error")
@@ -150,9 +74,7 @@ class SpotifyAPI:
 
         while response["next"]:
             offset += 100
-            response = requests.get(
-                f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?market={market}&limit=100&offset={offset}",
-                headers=headers).json()
+            response = self.spotipy.playlist_items(playlist_id, market=market, limit=100, offset=offset)
             tracks.extend(response["items"])
 
         # Remove duplicate songs from playlist and assert they're not none
@@ -167,16 +89,15 @@ class SpotifyAPI:
 
         return remove_duplicates
 
-    def random_songs_by_genre(self, token: str, playlist_id: str, n_of_tracks: int, market: str = "US") -> list | None:
+    def random_songs_by_genre(self, playlist_id: str, n_of_tracks: int, market: str = "US") -> list | None:
         """
         Get a list of random songs by a genre identifier.
-        :param token: the access token [str]
         :param playlist_id: Spotify Playlist ID
         :param n_of_tracks: number of songs [int]
         :param market: market [str] (US usually has most tracks with preview_url)
         :return: songs [list] | Exception
         """
-        songs = self.get_songs_of_playlist(token, playlist_id, market=market)
+        songs = self.get_songs_of_playlist(playlist_id, market=market)
+        print(f"Total songs: {len(songs)}")
         n_of_tracks = n_of_tracks if len(songs) >= n_of_tracks else len(songs)
-        print(f"Total songs: {n_of_tracks}")
         return random.sample(songs, k=n_of_tracks)

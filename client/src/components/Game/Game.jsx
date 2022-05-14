@@ -7,8 +7,7 @@ import stringSimilarity from "string-similarity";
 import * as variables from "data/Variables";
 import {useCountdown, useScore} from 'components';
 import {AnswerModal, InputAnswer, ProgressBar, ScoreModal, Track, VolumeSlider} from "./GameComponents";
-import {AccessTokenExpired, InvalidPlaylistId,} from "api/exceptions";
-import {assertSpotifyLogin, refreshToken} from "api/Auth";
+import {InvalidPlaylistId,} from "api/exceptions";
 import fetchTracks from "api/Api";
 
 // TODO: fix progress bar progression when window's not focused
@@ -67,15 +66,13 @@ const Game = (props) => {
 
     // Fetch the tracks (already shuffled and filtered) from the server
     useEffect(() => {
-        assertSpotifyLogin(window.location.href); // Must have valid tokens to get the songs
         assertMusicGenre(mg, "/choose", history);
 
         const musicGenres = new variables.MusicGenres();
         // Should we use a preset playlist id or a custom one
         let playlist_id = mg === "custom" ? cID : musicGenres.getGenreByIdentifier(mg).genre.id;
 
-        const execute = async (refresh: boolean = false) => {
-            if (refresh) await refreshToken();
+        const execute = async () => {
             const fetchedTracks = await fetchTracks(
                 playlist_id, // Music genre
                 tn, // Tracks number
@@ -88,13 +85,7 @@ const Game = (props) => {
             }
         };
         execute().catch((error) => {
-            if (error instanceof AccessTokenExpired) {
-                try {
-                    execute(true).catch(() => null);
-                } catch (e) {
-                    setThrowError("Error getting a new token!")
-                }
-            } else if (error instanceof InvalidPlaylistId) {
+            if (error instanceof InvalidPlaylistId) {
                 setThrowError("Invalid playlist ID!");
             }
             setThrowError("Error loading the songs!");

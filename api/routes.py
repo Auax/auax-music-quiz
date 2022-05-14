@@ -3,8 +3,8 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.responses import JSONResponse
 
 from api.auax_spotify.spotify import SpotifyAPI, AccessTokenExpired, SongsIsNone, InvalidPlaylistId
 
@@ -36,65 +36,14 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv("APP_SECRET_KEY"))
 spotify_api = SpotifyAPI()
 
 
-@app.get("/api/login")
-async def login_auth(scope: str = "playlist-read-private") -> JSONResponse:
-    """
-    Returns the login URL and the state cookie
-    :return: JSONRespnonse(url)
-    """
-    url, state = spotify_api.get_auth_link(scope)
-    if not url:
-        raise HTTPException(status_code=400, detail="Invalid Spotify API scope")
-
-    res = {"url": url, "auth_state": state}
-    response = JSONResponse(res)
-
-    return response
-
-
-@app.get("/api/refresh_token")
-async def refresh_expired_token(refresh_token: str) -> str:
-    """
-    Returns a new token
-    :param refresh_token: the saved refresh_token
-    :return: str
-    """
-    token = spotify_api.refresh_expired_token(refresh_token)
-    if not token:
-        raise HTTPException(status_code=500, detail="Could not get a new token")
-    return token
-
-
-@app.post("/api/login/callback")
-async def login_callback(code):
-    # Check for conflicts
-    access_token = spotify_api.get_access_token(code)
-
-    if not access_token:
-        raise HTTPException(status_code=500, detail="Spotify Access Token response is null")
-
-    # Craft response
-    res = {
-        "access_token": access_token["access_token"],
-        "refresh_token": access_token["refresh_token"],
-        "token_scope": access_token["scope"],
-        "expires_in": access_token["expires_in"]
-    }
-    response = JSONResponse(res)
-    return response
-
-
 @app.get("/api/get/songs")
-async def random_song(token: str, playlist_id: str, amount: int = 10):
-    if not token:
-        raise HTTPException(status_code=400, detail="Please specify a token")
-
+async def random_song(playlist_id: str, amount: int = 10):
     if not playlist_id:
         raise HTTPException(status_code=400, detail="Please specify a playlist ID")
 
     songs = []
     try:
-        raw_songs = spotify_api.random_songs_by_genre(token, playlist_id, amount)
+        raw_songs = spotify_api.random_songs_by_genre(playlist_id, amount)
 
     except AccessTokenExpired:
         raise HTTPException(status_code=401, detail="The access token expired")
@@ -118,3 +67,8 @@ async def random_song(token: str, playlist_id: str, amount: int = 10):
         })
 
     return songs
+
+
+@app.post("/api/login/callback")
+async def login_callback(code):
+    print(code)

@@ -1,15 +1,11 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {withRouter} from "react-router-dom";
 import VerticalCard from "components/Card/ImageCard";
 import * as variables from "data/Variables"
 import * as queryString from "query-string";
-import {assertSpotifyLogin} from "../api/Auth";
 
 const SelectMusicGenre = () => {
 
-    useEffect(() => {
-        assertSpotifyLogin(window.location.href);
-    }, [])
 
     let genresToRender = []
     const genresClass = new variables.MusicGenres();
