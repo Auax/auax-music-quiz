@@ -3,7 +3,7 @@ import random
 
 import spotipy
 from dotenv import load_dotenv
-from spotipy.oauth2 import SpotifyOAuth
+from spotipy.oauth2 import SpotifyOAuth, SpotifyClientCredentials
 
 
 class Data:
@@ -43,10 +43,9 @@ class SpotifyAPI:
         self.CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
         self.REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
-        self.spotipy = spotipy.Spotify(auth_manager=SpotifyOAuth(
+        self.spotipy = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
             client_id=self.CLIENT_ID,
-            client_secret=self.CLIENT_SECRET,
-            redirect_uri=self.REDIRECT_URI))
+            client_secret=self.CLIENT_SECRET))
 
     def get_songs_of_playlist(self, playlist_id: str, market: str = "US") -> list | None:
         """

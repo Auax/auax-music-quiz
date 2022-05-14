@@ -12,5 +12,5 @@ def setup():
 
 
 if __name__ == "__main__":
-    setup()
+    # setup()
     uvicorn.run(app, port=8000)
