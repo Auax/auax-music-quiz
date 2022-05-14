@@ -3,6 +3,7 @@ import random
 
 import spotipy
 from dotenv import load_dotenv
+from spotipy import CacheFileHandler
 from spotipy.oauth2 import SpotifyOAuth, SpotifyClientCredentials
 
 
@@ -43,9 +44,11 @@ class SpotifyAPI:
         self.CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
         self.REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
-        self.spotipy = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
+        self.spotipy = spotipy.Spotify(auth_manager=SpotifyOAuth(
             client_id=self.CLIENT_ID,
-            client_secret=self.CLIENT_SECRET))
+            client_secret=self.CLIENT_SECRET,
+            redirect_uri=self.REDIRECT_URI,
+            cache_handler=CacheFileHandler("token_cache")))
 
     def get_songs_of_playlist(self, playlist_id: str, market: str = "US") -> list | None:
         """
