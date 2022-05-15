@@ -19,7 +19,7 @@ export const Track = (props) => {
 
     return (
         <audio
-            src={props.track.preview_url}
+            src={props.track.preview}
             ref={myAudio}
             type="audio"
             style={{display: 'none'}}

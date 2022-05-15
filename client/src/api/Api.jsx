@@ -33,7 +33,6 @@ const fetchTracks = async (
         amount: tracksNo
     })
 
-
     // Send POST req to server to get a new auth link
     await axios.get(process.env.REACT_APP_API_URL + `/api/get/songs?${params}`)
         .then(response => {
@@ -41,7 +40,7 @@ const fetchTracks = async (
             if (response.status === 200) {
                 // Remove "remastered" and other useless string tags from the song's name
                 response.data.forEach(song => {
-                    song["name"] = metadataCustomFilter.filterField("track", song["name"]).replace(/ *\([^)]*\) */g, "");
+                    song["title"] = metadataCustomFilter.filterField("track", song["title"]).replace(/ *\([^)]*\) */g, "");
                     songs_.push(song);
                 });
             } else {
@@ -59,11 +58,11 @@ const fetchTracks = async (
 
 export default fetchTracks;
 
-export const extractPlaylistId = (text: string) => {
-    // Regex
-    const validID = new RegExp("(?:(album|track|playlist)\\/|\\?uri=spotify:track:)([\\w|-]{22})|[\\w|-]{22}");
-    let id_match = validID.exec(text);
-    if (!id_match) return null;
-    let from_url = (id_match[2] && id_match[2].length === 22) ? id_match[2] : null;
-    return id_match[0].length === 22 ? id_match[0] : from_url
-}
+// export const extractPlaylistId = (text: string) => {
+//     // Regex
+//     const validID = new RegExp("(?:(album|track|playlist)\\/|\\?uri=spotify:track:)([\\w|-]{22})|[\\w|-]{22}");
+//     let id_match = validID.exec(text);
+//     if (!id_match) return null;
+//     let from_url = (id_match[2] && id_match[2].length === 22) ? id_match[2] : null;
+//     return id_match[0].length === 22 ? id_match[0] : from_url
+// }

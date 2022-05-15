@@ -9,30 +9,7 @@ export class MusicGenre {
 }
 
 export const categories = {
-    mix: {
-        mix: {
-            name: "Mix",
-            img: require("assets/images/genres/mix.jpg"),
-            id: "1YGOdujXjPUSizscRxCBv0"
-        },
-        global50: {
-            name: "Top 50",
-            img: require("assets/images/genres/global50.jpg"),
-            id: "37i9dQZEVXbMDoHDwVN2tF"
-        }
-    },
-    hiphop: {
-        hiphop: {
-            name: "Rap",
-            img: require("assets/images/genres/hiphop.jpg"),
-            id: "5z0HyrtGeJAlxlsAa0REoP"
-        },
-        "hiphop-90": {
-            name: "90's Rap",
-            img: require("assets/images/genres/90s-rap.jpg"),
-            id: "37i9dQZF1DX186v583rmzp"
-        }
-    },
+
     rock: {
         rock: {
             name: "Rock",
@@ -69,9 +46,6 @@ export class MusicGenres {
         this.categories = categories
     }
 
-    // * iterate_categories() {
-    //     for (let category in this.categories) yield category;
-    // }
 
     getGenreByIdentifier(identifier) {
         for (let category in this.categories)

@@ -11,7 +11,7 @@ const VerticalCard = (props) => {
                 {props.img != null &&
                     <figure><img src={props.img} className="duration-75 ease-in-out" alt="Music genre"/></figure>}
                 <div className="card-body items-center text-center flex justify-center">
-                    <h1 className="card-title text-5xl md:text-6xl duration-75 ease-in-out">{props.title}</h1>
+                    <h1 className="card-title text-5xl md:text-5xl duration-75 ease-in-out">{props.title}</h1>
                     {/*<p className="text-left font-roboto">{props.description}</p>*/}
                     <div className="card-actions justify-end"/>
                 </div>

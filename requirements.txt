@@ -6,3 +6,5 @@ starlette~=0.17.1
 requests~=2.26.0
 itsdangerous==2.1.2
 gunicorn
+SQLAlchemy~=1.4.36
+pydantic~=1.9.0

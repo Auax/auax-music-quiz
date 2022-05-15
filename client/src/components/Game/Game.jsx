@@ -25,15 +25,12 @@ const assertMusicGenre = (identifier: string, redirect_to: string = "/play", his
 }
 
 const Game = (props) => {
-    const history = useHistory();
     const location = new URL(window.location.href);
-    // Game mode
-    const mg = location.searchParams.get("mg");
     // Tracks number
     let toSetTn = location.searchParams.get("tn");
     const [tn, setTn] = useState(toSetTn <= 50 ? toSetTn : 50);
     // Custom playlist ID (only in 'custom' mode)
-    const cID = location.searchParams.get("id");
+    const playlist_id = location.searchParams.get("id");
     // How similar the guess must be to the answer to be correct
     const similarityThreshold = 0.7;
 
@@ -66,12 +63,6 @@ const Game = (props) => {
 
     // Fetch the tracks (already shuffled and filtered) from the server
     useEffect(() => {
-        assertMusicGenre(mg, "/choose", history);
-
-        const musicGenres = new variables.MusicGenres();
-        // Should we use a preset playlist id or a custom one
-        let playlist_id = mg === "custom" ? cID : musicGenres.getGenreByIdentifier(mg).genre.id;
-
         const execute = async () => {
             const fetchedTracks = await fetchTracks(
                 playlist_id, // Music genre
@@ -85,11 +76,11 @@ const Game = (props) => {
             }
         };
         execute().catch((error) => {
-            switch (error) {
-                case error instanceof InvalidPlaylistId:
+            switch (error.constructor) {
+                case InvalidPlaylistId:
                     setThrowError("Invalid playlist ID!");
                     break;
-                case error instanceof TooManyRequests:
+                case TooManyRequests:
                     setThrowError("Too many requests (429) please wait some time!");
                     break;
                 default:
@@ -154,7 +145,7 @@ const Game = (props) => {
         let inputAnswer = (inputRef.current.value).toLowerCase(); // Get answer in lowercase
 
         // Compare strings (punctuation removed in the comparison)
-        let similarityWithSong = stringSimilarity.compareTwoStrings(inputAnswer, track.name.toLowerCase().replace(/[.,\/#!$%&;:{}=\-_`~()]/g, ""));
+        let similarityWithSong = stringSimilarity.compareTwoStrings(inputAnswer, track.title.toLowerCase().replace(/[.,\/#!$%&;:{}=\-_`~()]/g, ""));
         let similarityWithArtist = stringSimilarity.compareTwoStrings(inputAnswer, track.artist.toLowerCase().replace(/[.,\/#!$%&;:{}=\-_`~()]/g, ""));
 
         // Artist
@@ -173,8 +164,8 @@ const Game = (props) => {
             if (similarityWithSong > similarityWithArtist && similarityWithSong > similarityThreshold) {
                 scoreAddPoint();
                 setSongRoundAnswer(true);
-                toast.success(<span><b>{track.name}</b> is the song!</span>);
-                console.log(`Correct! ${track.name} is the song!`);
+                toast.success(<span><b>{track.title}</b> is the song!</span>);
+                console.log(`Correct! ${track.title} is the song!`);
             }
         }
 

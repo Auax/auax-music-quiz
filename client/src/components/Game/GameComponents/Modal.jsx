@@ -91,7 +91,7 @@ export const AnswerModal = (props) => {
                 <div className="w-full">
                     <img className="w-2/5 mt-2 mx-auto shadow-lg rounded-lg" src={props.track.image}
                          draggable="false" alt="album"/>
-                    <h1 className="text-5xl text-center mt-5 text-white">{props.track.name}</h1>
+                    <h1 className="text-5xl text-center mt-5 text-white">{props.track.title}</h1>
                     <p className="text-2xl text-center break-words text-white/70">{props.track.artist}</p>
                 </div>
             </ModalObj>
@@ -105,7 +105,7 @@ export const ScoreModal = (props) => {
 
     let tracks = [];
     props.tracks.forEach(track => {
-        tracks.push(<li key={track.name}>{track.name} - {track.artist}</li>);
+        tracks.push(<li key={track.title}>{track.title} - {track.artist}</li>);
     });
     // const tracks = []
 
@@ -133,7 +133,6 @@ export const ScoreModal = (props) => {
                     <Link to="/choose">
                         <button className="btn btn-primary">Leave</button>
                     </Link>
-
                 </div>
             </ModalObj>
             <BgObj isVisible={showModal}/>
