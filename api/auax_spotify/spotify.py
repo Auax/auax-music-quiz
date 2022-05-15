@@ -52,6 +52,7 @@ class SpotifyAPI:
             client_id=self.CLIENT_ID,
             client_secret=self.CLIENT_SECRET,
             redirect_uri=self.REDIRECT_URI,
+            show_dialog=False,
             cache_handler=MemoryCacheHandler(os.getenv("AUTH_CACHE")))
         self.spotipy = spotipy.Spotify(auth_manager=auth)
 
