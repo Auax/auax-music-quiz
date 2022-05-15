@@ -22,7 +22,7 @@ class Settings:
     app_secret_key: str = os.getenv("APP_SECRET_KEY")
 
     # Database Middleware
-    database_uri = os.getenv("DATABASE_URL")
+    database_uri = os.getenv("DATABASE_URI")
 
 
 settings = Settings()
