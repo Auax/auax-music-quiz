@@ -71,6 +71,6 @@ async def random_song(playlist_id: str, amount: int = 10):
     return songs
 
 
-@app.post("/api/login/callback")
+@app.post("/callback")
 async def login_callback(code):
     print(code)
