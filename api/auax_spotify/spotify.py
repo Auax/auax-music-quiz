@@ -47,15 +47,13 @@ class SpotifyAPI:
         self.CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
         self.CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
         self.REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
-        self.AUTH_CACHE = os.getenv("AUTH_CACHE")
 
-        print(self.AUTH_CACHE)
-
-        self.spotipy = spotipy.Spotify(auth_manager=SpotifyOAuth(
+        auth = SpotifyOAuth(
             client_id=self.CLIENT_ID,
             client_secret=self.CLIENT_SECRET,
             redirect_uri=self.REDIRECT_URI,
-            cache_handler=MemoryCacheHandler(self.AUTH_CACHE)))
+            cache_handler=MemoryCacheHandler(os.getenv("AUTH_CACHE")))
+        self.spotipy = spotipy.Spotify(auth_manager=auth)
 
     def get_songs_of_playlist(self, playlist_id: str, market: str = "US") -> list | None:
         """
