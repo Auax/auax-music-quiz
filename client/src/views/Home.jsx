@@ -8,8 +8,8 @@ const Home = () => {
             <div className="text-center px-4">
                 <h1 className="text-7xl md:text-9xl sm:text-8xl font-bold text-white tracking-tight">Music
                     Quiz</h1>
-                <p className="text-white/70">Spotify Powered</p>
-                <p className="text-white/40 text-sm">Not all songs can be played because of the Spotify's API</p>
+                <p className="text-white/70">Deezer Powered</p>
+                <p className="text-white/40 text-sm">If you like this website, please consider donating</p>
                 <Link to="/choose">
                     <button className="btn btn-primary mt-5 px-10">PLAY</button>
                 </Link>

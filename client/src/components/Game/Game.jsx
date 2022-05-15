@@ -4,7 +4,6 @@ import {Toaster, toast} from "react-hot-toast";
 import 'react-toastify/dist/ReactToastify.css';
 import stringSimilarity from "string-similarity";
 
-import * as variables from "data/Variables";
 import {useCountdown, useScore} from 'components';
 import {AnswerModal, InputAnswer, ProgressBar, ScoreModal, Track, VolumeSlider} from "./GameComponents";
 import {InvalidPlaylistId, TooManyRequests,} from "api/exceptions";
@@ -12,18 +11,6 @@ import fetchTracks from "api/Api";
 
 // TODO: fix progress bar progression when window's not focused
 // TODO: ADD skip button and volume controller
-
-const assertMusicGenre = (identifier: string, redirect_to: string = "/play", history: any) => {
-    if (identifier === "custom") return; // Custom mode
-    // Genres className instance
-    const genresClass = new variables.MusicGenres();
-    // Assert the genre exists, if not, redirect to "/play"
-    const genre = genresClass.getGenreByIdentifier(identifier);
-    if (genre === null) {
-        history.push(redirect_to);
-    }
-}
-
 const Game = (props) => {
     const location = new URL(window.location.href);
     // Tracks number
