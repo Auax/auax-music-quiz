@@ -9,13 +9,6 @@ from dotenv import load_dotenv
 
 
 class Data:
-    genres = {
-        "all": None,
-        "rock": "6TeyryiZ2UEf3CbLXyztFA",
-        "hiphop": "5z0HyrtGeJAlxlsAa0REoP",
-        "pop": "6mtYuOxzl58vSGnEDtZ9uB"
-    }
-
     valid_scopes = ["ugc-image-upload", "user-modify-playback-state", "user-read-playback-state",
                     "user-read-currently-playing", "user-follow-modify", "user-follow-read",
                     "user-read-recently-played", "user-read-playback-position", "user-top-read",
