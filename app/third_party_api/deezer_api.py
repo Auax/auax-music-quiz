@@ -38,7 +38,7 @@ class DeezerAPI:
                  "preview": t.preview,
                  "artist": t.artist.name,
                  "image": t.album.cover_xl
-                 } for t in tracks]
+                 } for t in tracks if t.preview]
 
     def get_rnd_of_playlist(self, playlist_id: Any, k: int = 10) -> list | None:
         """
