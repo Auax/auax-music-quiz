@@ -2,10 +2,10 @@
 
 ### Deezer Version - No OAUTH method!
 
-
 Development started around the following date: **2nd of April 2022**
 
 ## TODO:
+
 * Add more modes
 * Fix styling / UI (Change bg maybe?)
 * Organize project
@@ -27,3 +27,22 @@ Add a file called `_redirects` with `/* /index.html 200` inside the build direct
 **Under the client dir (" /client ")**
 
 * `REACT_APP_API_URL`= _API URL_
+
+# Database Schema
+
+### Used to manage the modes
+
+Inside **pgAdmin 4**:
+<br/>
+<img width="80%" src="https://user-images.githubusercontent.com/16353807/168660500-11ed00cc-9167-4189-8163-ba306ff08116.png">
+
+Python schema class:
+
+```python3
+class ModeCreate(BaseModel):
+    pid: str
+    title: str
+    genre: str
+    image: AnyUrl
+    difficulty: Optional[int] = Field(..., gt=1, le=3) # Any difficulty from 1 to 3
+```

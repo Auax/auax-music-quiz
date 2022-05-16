@@ -119,7 +119,7 @@ const Game = (props) => {
                 setGameState("started");
                 setCurrentTrackNo(currentTrackNo + 1);
             }
-        }), 5000);
+        }), 50000);
     }, [countdown]);
 
     const checkAnswer = (event, inputRef) => {
@@ -188,12 +188,15 @@ const Game = (props) => {
         );
     }
 
+    if (gameState === "finished") {
+        return <ScoreModal score={score.correct} show={true} tracks={tracks}/>;
+    }
+
     // Once the songs are loaded
     return (
         <div className="hero-height bg-base-300">
             <Toaster position="top-center" reverseOrder={false}/>
             <AnswerModal track={tracks[currentTrackNo]} show={roundAnswer.show}/>
-            <ScoreModal score={score.correct} show={gameState === "finished"} tracks={tracks}/>
             <div className="container mx-auto text-center px-4">
                 <h1 className="text-7xl font-bold sm:px-0 tracking-tight pt-12 capitalize mb-2">Round {currentTrackNo + 1}</h1>
                 {gameState === "init"

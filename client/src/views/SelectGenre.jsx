@@ -26,8 +26,10 @@ const SelectMusicGenre = () => {
                     cards.push(
                         <VerticalCard key={mode.title} customHeightClass="h-40"
                                       link={"/play?" + queryString.stringify({id: mode.pid, tn: 10})}
+                                      pid={mode.pid}
                                       title={mode.title}
-                                      img={mode.image}/>);
+                                      img={mode.image}
+                                      difficulty={mode.difficulty}/>);
                 });
                 let container = (
                     <div className="container mb-5 w-full" key={genre + " container"}>
@@ -47,7 +49,7 @@ const SelectMusicGenre = () => {
             <div className="lg:px-20 md:px-10 px-2 mx-auto text-center overflow-auto">
                 <h1 className="text-7xl font-bold sm:px-0 tracking-tight mt-12">Play</h1>
                 <p className="text-base-300-content/50 mt-2">Choose a music genre</p>
-                <div className="container my-10 rounded-lg mx-auto w-auto">
+                <div className="container mt-5 rounded-lg mx-auto w-auto">
                     <div
                         className="card-container w-full mx-auto lg:w-4/5 grid grid-cols-1 md:grid-cols-2 gap-4 justify-center">
                         {toRender}

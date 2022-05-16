@@ -9,6 +9,7 @@ import {Buffer} from "buffer";
 const CreateMode = () => {
     const {toasts} = useToasterStore();
     const [adminMode, setAdminMode] = useState(false);
+    const [difficulty, setDifficulty] = useState(1);
     const TOAST_LIMIT = 2
 
     useEffect(() => {
@@ -25,7 +26,7 @@ const CreateMode = () => {
 
         // Get and extract id
         let id = document.getElementById("playlistId").value;
-        if (id.length !== 10) {
+        if (!(/^[0-9]+$/.test(id))) {
             toast.error("Please input a valid ID!");
             return;
         }
@@ -36,6 +37,7 @@ const CreateMode = () => {
             let title = document.getElementById("title").value;
             let genre = document.getElementById("genre").value;
             let image = document.getElementById("image").value;
+            let difficulty = document.getElementById("difficulty").value;
 
             let base64encodedData = Buffer.from(username + ':' + password).toString('base64');
 
@@ -47,7 +49,8 @@ const CreateMode = () => {
                     pid: id,
                     title: title,
                     genre: genre,
-                    image: image
+                    image: image,
+                    difficulty: difficulty
                 }
             }).then(r => {
                 if (r.status === 200) toast.success("Successfully created a new mode!");
@@ -106,7 +109,8 @@ const CreateMode = () => {
                                        className="input bg-base-200 w-full" required/>
 
                                 <label className="label mt-2"><span
-                                    className="label-text">Mode image <span className="text-base-content/50">(920x421)</span></span></label>
+                                    className="label-text">Mode image <span
+                                    className="text-base-content/50">(920x421)</span></span></label>
                                 <input type="text" name="image" id="image"
                                        placeholder="URL"
                                        className="input bg-base-200 w-full" required autoComplete="off"/>
@@ -120,6 +124,14 @@ const CreateMode = () => {
                                 <input type="password" name="password" id="password"
                                        placeholder="Password"
                                        className="input bg-base-200 w-full" required/>
+                                <label className="label mt-2"><span
+                                    className="label-text">Difficulty: {difficulty}</span></label>
+                                <input type="range" min={1} max={3} step={1} defaultValue={0} name="difficulty"
+                                       id="difficulty"
+                                       placeholder="Difficulty" onChange={e => {
+                                    setDifficulty(e.target.value)
+                                }}
+                                       className="input px-0 bg-base-200 w-full range range-xs" required/>
                             </div>
                         )
                     }

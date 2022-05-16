@@ -10,7 +10,7 @@ from starlette import status
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.config import settings
-from app.database.models.modes import Mode
+from app.database.models.modes import Modes
 from app.database.respository.modes import create_new_mode
 from app.database.schemas.modes import ModeCreate
 from app.database.session import get_db
@@ -70,7 +70,7 @@ async def create_mode(mode: ModeCreate,
 
 @app.get("/api/get/modes")
 async def get_modes():
-    return db.session.query(Mode).all()
+    return db.session.query(Modes).all()
 
 
 @app.get("/api/get/songs")

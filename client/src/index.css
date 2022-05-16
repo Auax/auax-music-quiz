@@ -60,3 +60,7 @@ code {
 .hero-height {
     height: calc(100vh - calc(var(--navbar-height) + (var(--footer-height))));
 }
+
+.navbar-margin {
+    margin-top: var(--navbar-height);
+}
