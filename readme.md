@@ -2,6 +2,8 @@
 
 Development started around the following date: **2nd of April 2022**
 
+### A quiz game isn't allowed in Spotify's TOS. That's why I currently use Deezer's API.
+
 ## TODO:
 
 * ~~Fix REFRESH_TOKEN ERROR!~~
