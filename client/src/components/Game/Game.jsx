@@ -119,7 +119,7 @@ const Game = (props) => {
                 setGameState("started");
                 setCurrentTrackNo(currentTrackNo + 1);
             }
-        }), 50000);
+        }), 4000);
     }, [countdown]);
 
     const checkAnswer = (event, inputRef) => {
