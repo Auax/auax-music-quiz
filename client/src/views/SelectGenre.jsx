@@ -2,11 +2,13 @@ import React, {useEffect, useState} from "react";
 import {withRouter} from "react-router-dom";
 import VerticalCard from "components/Card/ImageCard";
 import * as queryString from "query-string";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
+import LoaderScreen from "components/Loading/LoaderScreen";
 
 const SelectMusicGenre = () => {
 
     const [toRender, setToRender] = useState([]);
+    const [throwError, setThrowError] = useState(null);
 
     useEffect(() => {
         let genresToRender = []
@@ -41,8 +43,10 @@ const SelectMusicGenre = () => {
                 genresToRender.push(container);
             }
             setToRender(genresToRender);
-        });
+        }).catch(() => setThrowError("Cannot load the modes."));
     }, []);
+
+    if (toRender.length === 0) return <LoaderScreen throwError={throwError} loadingMsg={"Loading modes..."}/>;
 
     return (
         <div className="bg-base-300 overflow-auto hero-height">

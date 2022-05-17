@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 import "./card.css"
-import StarRating from "../Rating/StarRating";
+import StarRating from "components/Rating/StarRating";
 
 const VerticalCard = (props) => {
     let difficultyClasses;
