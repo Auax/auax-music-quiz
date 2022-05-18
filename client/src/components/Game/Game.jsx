@@ -7,7 +7,7 @@ import stringSimilarity from "string-similarity";
 import {useCountdown, useScore} from 'components';
 import {AnswerModal, InputAnswer, ProgressBar, ScoreModal, Track, VolumeSlider} from "./GameComponents";
 import {InvalidPlaylistId, TooManyRequests,} from "api/exceptions";
-import fetchTracks from "api/Api";
+import {fetchTracks} from "api/Api";
 import LoaderScreen from "components/Loading/LoaderScreen";
 
 // TODO: fix progress bar progression when window's not focused

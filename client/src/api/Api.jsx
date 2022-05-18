@@ -3,6 +3,8 @@ import Cookies from 'js-cookie';
 import * as MetadataFilter from 'metadata-filter';
 import * as queryString from "query-string";
 import {InvalidPlaylistId, TooManyRequests} from "api/exceptions";
+import {groupByKey} from "util/Functions";
+import React from "react";
 
 // TODO CREATE TRACK OBJECT
 const filterSet = {
@@ -21,7 +23,17 @@ const filterSet = {
 const metadataCustomFilter = MetadataFilter.createFilter(filterSet);
 
 
-const fetchTracks = async (
+export const fetchModes = async () => {
+    let data = null;
+    await axios.get(process.env.REACT_APP_API_URL + "/api/get/modes")
+        .then(r => {
+            data = groupByKey(r.data, "genre");
+        })
+        .catch();
+    return data;
+}
+
+export const fetchTracks = async (
     playlist_id: string,
     tracksNo: number = 10): Object => {
     let songs_ = []
@@ -55,5 +67,3 @@ const fetchTracks = async (
         });
     return songs_.length === 0 ? null : songs_;
 }
-
-export default fetchTracks;
