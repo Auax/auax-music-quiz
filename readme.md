@@ -9,6 +9,7 @@ Development started around the following date: **2nd of April 2022**
 * Add more modes
 * Fix styling / UI (Change bg maybe?)
 * Organize project
+* Fix Database env variable for Heroku
 
 ## Important
 
