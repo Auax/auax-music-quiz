@@ -164,7 +164,7 @@ const Game = (props) => {
     if (tracks == null) return <LoaderScreen throwError={throwError} loadingMsg={"Loading songs..."}/>;
 
     if (gameState === "finished") {
-        return <ScoreModal score={score.correct} show={true} tracks={tracks}/>;
+        return <ScoreModal score={score.correct} maxScore={tn * 2} show={true} tracks={tracks}/>;
     }
 
     // Once the songs are loaded

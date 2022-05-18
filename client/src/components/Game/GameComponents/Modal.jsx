@@ -112,7 +112,7 @@ export const ScoreModal = (props) => {
 
     let tracks = [];
     props.tracks.forEach(track => {
-        tracks.push(<li key={track.title}>{track.title} - {track.artist}</li>);
+        tracks.push(<li key={track.title}><b>{track.title}</b> - {track.artist}</li>);
     });
     // const tracks = []
 
@@ -127,8 +127,8 @@ export const ScoreModal = (props) => {
             <div className="w-full h-full rounded text-left px-16 py-12">
                 <h1 className="text-4xl md:text-5xl">Summary</h1>
                 <div className="divider"/>
-                <h2 className="text-3xl md:text-4xl">Score: <span
-                    className="text-base-content/70">{props.score}</span></h2>
+                <h2 className="text-3xl md:text-4xl">Correct: <span
+                    className="text-base-content/70">{props.score / props.maxScore * 100}%</span></h2>
                 <h2 className="text-3xl md:text-4xl mt-5">Tracks:</h2>
                 <div className="overflow-y-scroll max-h-36">
                     <ul className="list-disc text-base ml-7 text-base-content/70">
