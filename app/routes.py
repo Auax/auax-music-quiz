@@ -65,6 +65,7 @@ async def create_mode(mode: ModeCreate,
             headers={"WWW-Authenticate": "Basic"},
         )
 
+    mode.difficulty = 0
     return create_new_mode(mode=mode, db=db_)
 
 

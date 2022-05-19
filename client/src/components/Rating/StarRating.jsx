@@ -3,7 +3,7 @@ import React from "react";
 
 const StarRating = (props) => {
     return (
-        <div className="rating-container">
+        <div style={props.customContainerStyle} className="starRatingContainer">
             <ul className="flex justify-center">
                 {[...Array(props.stars)].map((_, i) => (
                     <li key={i}>

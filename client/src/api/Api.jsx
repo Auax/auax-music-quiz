@@ -3,7 +3,6 @@ import Cookies from 'js-cookie';
 import * as MetadataFilter from 'metadata-filter';
 import * as queryString from "query-string";
 import {InvalidPlaylistId, TooManyRequests} from "api/exceptions";
-import {groupByKey} from "util/Functions";
 import React from "react";
 
 // TODO CREATE TRACK OBJECT
@@ -27,7 +26,7 @@ export const fetchModes = async () => {
     let data = null;
     await axios.get(process.env.REACT_APP_API_URL + "/api/get/modes")
         .then(r => {
-            data = groupByKey(r.data, "genre");
+            data = r.data;
         })
         .catch();
     return data;

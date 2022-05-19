@@ -36,17 +36,18 @@ code {
     monospace;
 }
 
-
-.hero-main-page {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(1, 120, 255, 0.5)),
+.hero-main-page:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.2;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(29, 6, 232, 0.5)),
     url("/src/assets/images/hero-image.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .hero-create-page {
@@ -63,4 +64,42 @@ code {
 
 .navbar-margin {
     margin-top: var(--navbar-height);
+}
+
+@layer components {
+    .btn {
+        @apply
+        text-sm
+        px-4
+        py-3
+        mr-2
+        rounded-sm
+    }
+
+    .btn-primary {
+        @apply
+        bg-white
+        text-semiBlack
+        hover:bg-neutral-300
+    }
+
+
+    .btn-secondary {
+        @apply
+        bg-transparent
+        hover:bg-white
+        hover:text-black
+        border-2
+        text-white
+    }
+
+    .input {
+        @apply
+        text-white
+        bg-base200
+        px-5
+        py-3
+        font-bold
+    }
+
 }

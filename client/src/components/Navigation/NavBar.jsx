@@ -11,12 +11,12 @@ const NavBar = () => {
     }, [])
 
     return (
-        <nav className="navbar z-50">
+        <nav className="navbar">
             <div className="flex items-center flex-shrink-0 mr-6 ml-3 sm:ml-0">
                 <Link to="/">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1028 1028"
                          width="40" height="40" stroke="currentColor"
-                         className="ml-1 hover:scale-110 ease-in duration-75">
+                         className="text-white ml-1 hover:scale-110 ease-in duration-75">
                         <defs>
                             <clipPath id="_clipPath_yIrMOZXHCGKYzlTTE44mHhzImaVYbfsN">
                                 <rect width="1028" height="1028"/>
@@ -40,127 +40,20 @@ const NavBar = () => {
                     </svg>
                 </button>
             </div>
-            <div className={`menu-content ${isOpen ? "block" : "hidden"}`}>
+            <div className={`menu-content ${isOpen ? "block" : "block"}`}>
                 <div className="ml-3 sm:ml-0 text-sm sm:flex-grow">
                     <Link to="/choose" className="link-component">
                         Play
                     </Link>
-                    <Link to="/create/mode" className="link-component">
-                        Create Mode
+                    <Link to="https://paypal.me/zellius" className="link-component">
+                        Donate
                     </Link>
                     <a href="https://github.com/Auax/auax-music-quiz" className="link-component" target="blank">
                         GitHub
                     </a>
                 </div>
                 <div className="m-3 sm:m-0">
-                    <a href="https://paypal.me/zellius" className="btn link-btn-component w-full sm:w-auto">Donate </a>
-                </div>
-            </div>
-            <div className="changeThemeContainer mx-4 right-14 absolute z-50">
-                <div title="Change Theme" className="dropdown dropdown-end">
-                    <div tabIndex="0" className="btn link-btn-component gap-1 normal-case">
-                        <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                             className="inline-block h-5 w-5 stroke-current sm:h-6 sm:w-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                  d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
-                        </svg>
-                        <span className="hidden sm:inline">Theme</span>
-                        <svg width="12px" height="12px"
-                             className="ml-1 hidden h-3 w-3 fill-current opacity-60 sm:inline-block"
-                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
-                            <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"/>
-                        </svg>
-                    </div>
-                    <div
-                        className="dropdown-content bg-base-200 text-base-content rounded-t-box rounded-b-box top-0 w-52 overflow-y-auto shadow-lg mt-16">
-                        <div className="grid grid-cols-1 gap-3 p-3" tabIndex="0">
-                            <div className="outline-base-content overflow-hidden rounded-lg outline-2 outline-offset-2"
-                                 data-set-theme="auax" data-act-class="outline">
-                                <div data-theme="auax"
-                                     className="bg-base-100 text-base-content w-full cursor-pointer font-sans">
-                                    <div className="grid grid-cols-5 grid-rows-3">
-                                        <div className="col-span-5 row-span-3 row-start-1 flex gap-1 py-3 px-4">
-                                            <div className="flex-grow text-sm font-bold">Dark</div>
-                                            <div className="flex flex-shrink-0 flex-wrap gap-1">
-                                                <div className="bg-primary w-2 rounded"/>
-                                                <div className="bg-secondary w-2 rounded"/>
-                                                <div className="bg-accent w-2 rounded"/>
-                                                <div className="bg-neutral w-2 rounded"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="outline-base-content overflow-hidden rounded-lg outline-2 outline-offset-2"
-                                 data-set-theme="night" data-act-class="outline">
-                                <div data-theme="night"
-                                     className="bg-base-100 text-base-content w-full cursor-pointer font-sans">
-                                    <div className="grid grid-cols-5 grid-rows-3">
-                                        <div className="col-span-5 row-span-3 row-start-1 flex gap-1 py-3 px-4">
-                                            <div className="flex-grow text-sm font-bold">Night</div>
-                                            <div className="flex flex-shrink-0 flex-wrap gap-1">
-                                                <div className="bg-primary w-2 rounded"/>
-                                                <div className="bg-secondary w-2 rounded"/>
-                                                <div className="bg-accent w-2 rounded"/>
-                                                <div className="bg-neutral w-2 rounded"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="outline-base-content overflow-hidden rounded-lg outline-2 outline-offset-2"
-                                 data-set-theme="halloween" data-act-class="outline">
-                                <div data-theme="halloween"
-                                     className="bg-base-100 text-base-content w-full cursor-pointer font-sans">
-                                    <div className="grid grid-cols-5 grid-rows-3">
-                                        <div className="col-span-5 row-span-3 row-start-1 flex gap-1 py-3 px-4">
-                                            <div className="flex-grow text-sm font-bold">Halloween</div>
-                                            <div className="flex flex-shrink-0 flex-wrap gap-1">
-                                                <div className="bg-primary w-2 rounded"/>
-                                                <div className="bg-secondary w-2 rounded"/>
-                                                <div className="bg-accent w-2 rounded"/>
-                                                <div className="bg-neutral w-2 rounded"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="outline-base-content overflow-hidden rounded-lg outline-2 outline-offset-2"
-                                 data-set-theme="dracula" data-act-class="outline">
-                                <div data-theme="dracula"
-                                     className="bg-base-100 text-base-content w-full cursor-pointer font-sans">
-                                    <div className="grid grid-cols-5 grid-rows-3">
-                                        <div className="col-span-5 row-span-3 row-start-1 flex gap-1 py-3 px-4">
-                                            <div className="flex-grow text-sm font-bold">Dracula</div>
-                                            <div className="flex flex-shrink-0 flex-wrap gap-1">
-                                                <div className="bg-primary w-2 rounded"/>
-                                                <div className="bg-secondary w-2 rounded"/>
-                                                <div className="bg-accent w-2 rounded"/>
-                                                <div className="bg-neutral w-2 rounded"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="outline-base-content overflow-hidden rounded-lg outline-2 outline-offset-2"
-                                 data-set-theme="lofi" data-act-class="outline">
-                                <div data-theme="lofi"
-                                     className="bg-base-100 text-base-content w-full cursor-pointer font-sans">
-                                    <div className="grid grid-cols-5 grid-rows-3">
-                                        <div className="col-span-5 row-span-3 row-start-1 flex gap-1 py-3 px-4">
-                                            <div className="flex-grow text-sm font-bold">Lofi</div>
-                                            <div className="flex flex-shrink-0 flex-wrap gap-1">
-                                                <div className="bg-primary w-2 rounded"/>
-                                                <div className="bg-secondary w-2 rounded"/>
-                                                <div className="bg-accent w-2 rounded"/>
-                                                <div className="bg-neutral w-2 rounded"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="/create/mode" className="btn btn-secondary w-full sm:w-auto">Creator </a>
                 </div>
             </div>
         </nav>

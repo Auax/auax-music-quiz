@@ -8,4 +8,4 @@ class ModeCreate(BaseModel):
     title: str
     genre: str
     image: AnyUrl
-    difficulty: Optional[int] = Field(..., gt=1, le=3)
+    difficulty: Optional[int] = Field(..., gt=0, le=3)

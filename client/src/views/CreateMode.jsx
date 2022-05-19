@@ -48,7 +48,7 @@ const CreateMode = () => {
                 data: {
                     pid: id,
                     title: title,
-                    genre: genre,
+                    genre: genre.toLowerCase(),
                     image: image,
                     difficulty: difficulty
                 }
@@ -126,7 +126,7 @@ const CreateMode = () => {
                                        className="input bg-base-200 w-full" required/>
                                 <label className="label mt-2"><span
                                     className="label-text">Difficulty: {difficulty}</span></label>
-                                <input type="range" min={1} max={3} step={1} defaultValue={0} name="difficulty"
+                                <input type="range" min={1} max={3} step={1} defaultValue={1} name="difficulty"
                                        id="difficulty"
                                        placeholder="Difficulty" onChange={e => {
                                     setDifficulty(e.target.value)

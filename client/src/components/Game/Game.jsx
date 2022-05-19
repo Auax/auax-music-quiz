@@ -161,7 +161,10 @@ const Game = (props) => {
     }
 
     // While fetching songs
-    if (tracks == null) return <LoaderScreen throwError={throwError} loadingMsg={"Loading songs..."}/>;
+    if (tracks == null) return (
+        <div className="hero-height align-middle">
+            <LoaderScreen throwError={throwError} loadingMsg={"Loading songs..."}/>
+        </div>);
 
     if (gameState === "finished") {
         return <ScoreModal score={score.correct} maxScore={tn * 2} show={true} tracks={tracks}/>;

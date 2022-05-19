@@ -130,7 +130,7 @@ export const ScoreModal = (props) => {
                 <h2 className="text-3xl md:text-4xl">Correct: <span
                     className="text-base-content/70">{props.score / props.maxScore * 100}%</span></h2>
                 <h2 className="text-3xl md:text-4xl mt-5">Tracks:</h2>
-                <div className="overflow-y-scroll max-h-36">
+                <div className="overflow-y-scroll max-h-64">
                     <ul className="list-disc text-base ml-7 text-base-content/70">
                         {tracks}
                     </ul>
