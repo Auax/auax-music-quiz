@@ -53,7 +53,7 @@ const Home = () => {
                                        mode: "grab",
                                        parallax: {
                                            enable: true,
-                                           force: 100,
+                                           force: 65,
                                            smooth: 10
                                        }
                                    },

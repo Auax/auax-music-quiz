@@ -26,7 +26,11 @@ const ModeCardViewer = (props) => {
             setData(fetchedModes);
             return fetchedModes;
         }
-        execute().then(r => updateEntries(r, props.groupViewBy, props.filterValue));
+        execute().then(r => updateEntries(r, props.groupViewBy, props.filterValue))
+            .catch((error) => {
+                setThrowError("Could not load modes!");
+                console.error(error);
+            });
     }, []);
 
     // Update render
@@ -80,7 +84,7 @@ const ModeCardViewer = (props) => {
     }, [genres]);
 
     if (toRender.length === 0)
-        return <LoaderScreen throwError={throwError} loadingMsg={"Loading modes..."}/>;
+        return <div className="mb-10"><LoaderScreen throwError={throwError} loadingMsg={"Loading modes..."}/></div>;
 
     return (
         <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 justify-center">

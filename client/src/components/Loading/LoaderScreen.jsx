@@ -3,7 +3,7 @@ import React from "react";
 
 const LoaderScreen = (props) => {
     return (
-        <div className="w-full h-full text-center overflow-hidden">
+        <div className="w-full h-full text-center overflow-hidden text-white">
             {props.throwError ?
                 <div className="content-center grid h-full">
                     <span className="font-semibold">{props.throwError} Please try again.</span>

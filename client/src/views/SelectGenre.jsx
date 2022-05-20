@@ -18,7 +18,7 @@ const SelectMusicGenre = () => {
                 <p className="text-neutral-300 text-base-300-content/50 mt-2 mb-6">Choose a music mode</p>
                 <CategoryFilter categories={genres} setFilterValue={setFilterViewBy}
                                 setGroupBy={setGroupDataBy}/>
-                <div className="container pt-5 px-10 mx-auto w-auto bg-base300">
+                <div className="container overflow-auto pt-5 px-10 mx-auto w-auto bg-base300">
                     <ModeCardViewer groupViewBy={groupDataBy} filterValue={filterViewBy} setGenres={setGenres}/>
                 </div>
             </div>

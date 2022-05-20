@@ -1,4 +1,5 @@
 import React from "react";
+import DropdownList from "components/Dropdown/Dropdown";
 
 const CategoryFilter = (props) => {
 
@@ -26,16 +27,17 @@ const CategoryFilter = (props) => {
                     {options}
                 </select>
             </div>
-            <div className="selector ml-5">
-                <label className="label"><span className="text-white/70 select-none">Difficulty:</span></label>
-                <select id="difficulty" className="input w-full float-left "
-                        onChange={e => updateSelected(e, "difficulty")}>
-                    <option defaultValue value={-1}>All</option>
-                    <option value={1}>Easy</option>
-                    <option value={2}>Medium</option>
-                    <option value={3}>Hard</option>
-                </select>
-            </div>
+            <DropdownList/>
+            {/*<div className="selector ml-5">*/}
+            {/*    <label className="label"><span className="text-white/70 select-none">Difficulty:</span></label>*/}
+            {/*    <select id="difficulty" className="input w-full float-left "*/}
+            {/*            onChange={e => updateSelected(e, "difficulty")}>*/}
+            {/*        <option defaultValue value={-1}>All</option>*/}
+            {/*        <option value={1}>Easy</option>*/}
+            {/*        <option value={2}>Medium</option>*/}
+            {/*        <option value={3}>Hard</option>*/}
+            {/*    </select>*/}
+            {/*</div>*/}
         </div>
     );
 }
