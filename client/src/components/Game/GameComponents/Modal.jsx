@@ -143,6 +143,9 @@ export const ScoreModal = (props) => {
                 <Link to="/choose">
                     <button className="btn btn-primary mb-5">Leave</button>
                 </Link>
+
+                <button onClick={() => window.location.reload(false)} className="btn btn-primary mb-5">Play Again
+                </button>
             </div>
         </ScoreModalObj>
 

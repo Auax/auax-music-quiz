@@ -22,6 +22,8 @@ export const Track = (props) => {
             src={props.track.preview}
             ref={myAudio}
             type="audio"
+            onPause={() => props.setPause(true)}
+            onPlay={() => props.setPause(false)}
             style={{display: 'none'}}
             loop
         />

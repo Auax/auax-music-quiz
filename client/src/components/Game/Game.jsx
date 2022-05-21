@@ -8,6 +8,7 @@ import {AnswerModal, InputAnswer, ProgressBar, ScoreModal, Track, VolumeSlider} 
 import {InvalidPlaylistId, TooManyRequests,} from "api/exceptions";
 import {fetchTracks} from "api/Api";
 import LoaderScreen from "components/Loading/LoaderScreen";
+import {BsFillPauseFill, BsFillPlayFill, BsFillSkipEndFill} from "react-icons/bs";
 
 // TODO: fix progress bar progression when window's not focused
 const Game = (props) => {
@@ -84,15 +85,18 @@ const Game = (props) => {
                 setCurrentTrackNo(0);
                 break;
 
-            case "started":
+            case "start":
                 startCountdown();
                 break;
 
-            case "paused":
+            case "pause":
                 pauseCountdown();
                 break;
 
-            case "finished":
+            case "next":
+                zeroCountdown();
+
+            case "finish":
                 pauseCountdown();
                 break;
 
@@ -104,18 +108,18 @@ const Game = (props) => {
     useEffect(() => {
         // Countdown finished
         if (countdown > 0) return;
+        if (gameState !== "next") setGameState("next");
         setShowRoundAnswer(true);
         setArtistRoundAnswer(false);
         setSongRoundAnswer(false);
-        setGameState("paused");
-        document.querySelector("#userInput").value = "";
+        resetCountdown();
 
+        document.querySelector("#userInput").value = "";
         setTimeout((() => {
-            resetCountdown();
             setShowRoundAnswer(false);
-            if (currentTrackNo + 1 >= tn) setGameState("finished"); // Finish game
+            if (currentTrackNo + 1 >= tn) setGameState("finish"); // Finish game
             else {
-                setGameState("started");
+                setGameState("start");
                 setCurrentTrackNo(currentTrackNo + 1);
             }
         }), 4000);
@@ -123,7 +127,7 @@ const Game = (props) => {
 
     const checkAnswer = (event, inputRef) => {
         if (event.key !== "Enter" && event.type !== "click") return;
-        if (gameState !== "started") {
+        if (gameState !== "start") {
             inputRef.current.value = "";
             return;
         }
@@ -164,7 +168,7 @@ const Game = (props) => {
             <LoaderScreen throwError={throwError} loadingMsg={"Loading songs..."}/>
         </div>);
 
-    if (gameState === "finished") {
+    if (gameState === "finish") {
         return <ScoreModal score={score.correct} maxScore={tn * 2} show={true} tracks={tracks}/>;
     }
 
@@ -182,18 +186,18 @@ const Game = (props) => {
                         <button id="startRoundBtn"
                                 className="btn btn-primary font-bold mt-4"
                                 onClick={() => {
-                                    setGameState("started")
+                                    setGameState("start")
                                 }}>Start
                         </button>
                     </div>
-                    : // Started
+                    : // start
                     <div>
                         <span className="text-neutral-300">Score: {score.correct} / {tn * 2}</span>
                         <br/>
                         <button id="startRoundBtn"
                                 className="btn btn-primary font-bold mt-4"
                                 onClick={() => {
-                                    setGameState("finished")
+                                    setGameState("finish")
                                 }}>End game
                         </button>
                     </div>
@@ -202,22 +206,31 @@ const Game = (props) => {
                     <span>{printTime()}</span>
                     <ProgressBar
                         bgcolor="#005FFF"
-                        run={gameState === 'started'}
-                        time={props.timePerRound}/>
+                        gameState={gameState}
+                        initTime={props.timePerRound}
+                        time={countdown}/>
                 </div>
-                <Track track={tracks[currentTrackNo]} running={gameState === 'started'} volume={volume}/>
+                <Track track={tracks[currentTrackNo]} running={gameState === 'start'}
+                       setPause={(p) => setGameState(p ? "pause" : "start")} volume={volume}/>
                 <InputAnswer submitAnswer={checkAnswer}/>
                 <div className="text-left flex justify-start items-center mt-2">
+                    <button id="pauseBtn"
+                            className="btn btn-secondary text-white font-bold h-12"
+                            onClick={() => {
+                                if (gameState === "pause" || gameState !== "start") setGameState("start");
+                                else setGameState("pause");
+                            }}>
+                        {gameState === "pause" || gameState !== "start" ?
+                            <BsFillPlayFill size={"1.5em"}/> :
+                            <BsFillPauseFill size={"1.5em"}/>
+                        }
+                    </button>
                     <button id="skipRoundBtn"
                             className="btn btn-secondary text-white font-bold h-12"
                             onClick={() => {
-                                if (gameState === "started") zeroCountdown();
+                                if (gameState === "start" || gameState === "pause") setGameState("next");
                             }}>
-                        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polygon points="5 4 15 12 5 20 5 4"/>
-                            <line x1="19" y1="5" x2="19" y2="19"/>
-                        </svg>
+                        <BsFillSkipEndFill size={"1.5em"}/>
                     </button>
                     <VolumeSlider volumeSetter={setVolume}/>
                 </div>
