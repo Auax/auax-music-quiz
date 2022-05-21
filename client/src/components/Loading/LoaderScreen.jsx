@@ -5,13 +5,13 @@ const LoaderScreen = (props) => {
     return (
         <div className="w-full h-full text-center overflow-hidden text-white">
             {props.throwError ?
-                <div className="content-center grid h-full">
-                    <span className="font-semibold">{props.throwError} Please try again.</span>
-                    <h1 className="text-9xl select-none">:(</h1>
+                <div className="content-center grid h-full mb-7">
+                    <span className="font-bold">{props.throwError} Please try again.</span>
+                    <h1 className="text-9xl font-semibold select-none">:(</h1>
                 </div>
                 :
                 <div className="content-center grid h-full justify-center">
-                    <span className="font-semibold mb-2">{props.loadingMsg}</span>
+                    <span className="font-bold mb-2">{props.loadingMsg}</span>
                         <svg role="status" className="mx-auto mb-8 inline w-10 h-10 animate-spin fill-info"
                              viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path

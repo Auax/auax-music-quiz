@@ -56,6 +56,8 @@ const CreateMode = () => {
                 if (r.status === 200) toast.success("Successfully created a new mode!");
             }).catch((reason: AxiosError) => {
                 if (reason.response.status === 401) toast.error(reason.response.data.detail);
+                else if (reason.response.status === 422) toast.error("Incorrect data!");
+                else toast.error(`Unknown error: ${reason}`);
             });
 
         } else {
