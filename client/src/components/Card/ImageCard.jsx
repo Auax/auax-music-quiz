@@ -27,7 +27,7 @@ const Card = styled.div`
   
   &:hover {
     & > img {
-      filter: opacity(80%) blur(2px);
+      filter: brightness(80%) blur(2px);
       transform: scale(103%);
     }
 
@@ -51,12 +51,13 @@ const Image = styled.img`
   position: absolute;
   top: 0;
   left: 0;
-  filter: opacity(40%) blur(0);
+  filter: brightness(60%) blur(0);
   transition: .2s ease-in-out;
 `;
 
 const Title = styled.h1`
   font-size: 3em;
+  font-weight: bold;
   color: white;
   transition: .2s ease-in-out;
   z-index: 1;

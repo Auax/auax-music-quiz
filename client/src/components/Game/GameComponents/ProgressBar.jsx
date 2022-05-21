@@ -31,8 +31,8 @@ export const ProgressBar = (props) => {
     }
 
     return (
-        <div style={containerStyles} id="trackProgressbar" className="bg-primary-content shadow-lg rounded-md">
-            <AnimateFiller active={props.run} time={props.time} width={width} className="bg-primary "/>
+        <div style={containerStyles} id="trackProgressbar" className="bg-base300 shadow-lg rounded-sm">
+            <AnimateFiller active={props.run} time={props.time} width={width} className="bg-blue-600 "/>
         </div>
     )
 }

@@ -69,7 +69,7 @@ const CreateMode = () => {
     }
 
     return (
-        <div className="hero-height hero-create-page bg-base-300 overflow-auto">
+        <div className="hero-height hero-create-page overflow-auto">
             <Toaster
                 position="top-center"
                 reverseOrder={false}
@@ -77,17 +77,16 @@ const CreateMode = () => {
             <div className="text-center px-4 sm:px-5 px-0">
                 <h1 className="text-5xl md:text-7xl font-bold sm:px-0 tracking-tight mt-12 text-white">Create Mode</h1>
                 <form onSubmit={(e) => createGame(e)}
-                      className="bg-base-100 px-10 pt-10 pb-7 my-6 rounded text-left w-full md:w-3/5 lg:w-1/3 mx-auto">
-                    <h2 className="text-2xl">Settings</h2>
-                    <label className="label"><span className="label-text">Deezer playlist ID</span></label>
+                      className="bg-base200 px-10 pt-10 pb-7 my-6 rounded text-left w-full md:w-3/5 lg:w-1/3 mx-auto">
+                    <h2 className="text-2xl font-bold text-white">Settings</h2>
+                    <label className="text-white/50"><span>Deezer playlist ID</span></label>
                     <input type="text" name="playlistId" id="playlistId" placeholder="ID"
                            className="input bg-base-200 w-full"
                            autoComplete="off" required/>
                     {!adminMode &&
                         (
-                            <div>
-                                <label className="label mt-2"><span
-                                    className="label-text">Number of tracks</span></label>
+                            <div className="mt-2">
+                                <label className="text-white/50"><span>Number of tracks</span></label>
                                 <input type="number" name="tracksNumber" id="tracksNumber" defaultValue="10" max="50"
                                        min="2"
                                        placeholder="10"
@@ -98,48 +97,59 @@ const CreateMode = () => {
                     {adminMode &&
                         (
                             <div>
-                                <label className="label mt-2"><span className="label-text">Mode title</span></label>
-                                <input type="text" name="title" id="title"
-                                       placeholder="Title"
-                                       className="input bg-base-200 w-full" required/>
+                                <div className="mt-2">
+                                    <label className="text-white/50"><span>Mode title</span></label>
+                                    <input type="text" name="title" id="title"
+                                           placeholder="Title"
+                                           className="input bg-base-200 w-full" required/>
+                                </div>
 
-                                <label className="label mt-2"><span className="label-text">Genre</span></label>
-                                <input type="text" name="genre" id="genre"
-                                       placeholder="Genre (case sensitive)"
-                                       className="input bg-base-200 w-full" required/>
+                                <div className="mt-2">
+                                    <label className="text-white/50"><span>Genre</span></label>
+                                    <input type="text" name="genre" id="genre"
+                                           placeholder="Genre (case sensitive)"
+                                           className="input bg-base-200 w-full" required/>
+                                </div>
 
-                                <label className="label mt-2"><span
-                                    className="label-text">Mode image <span
-                                    className="text-base-content/50">(920x421)</span></span></label>
-                                <input type="text" name="image" id="image"
-                                       placeholder="URL"
-                                       className="input bg-base-200 w-full" required autoComplete="off"/>
+                                <div className="mt-2">
+                                    <label className="text-white/50"><span>Mode image <span
+                                        className="text-base-content/50">(920x421)</span></span></label>
+                                    <input type="text" name="image" id="image"
+                                           placeholder="URL"
+                                           className="input bg-base-200 w-full" required autoComplete="off"/>
+                                </div>
 
-                                <label className="label mt-2"><span className="label-text">Your username</span></label>
-                                <input type="text" name="username" id="username"
-                                       placeholder="Username"
-                                       className="input bg-base-200 w-full" required/>
+                                <div className="mt-2">
+                                    <label className="text-white/50"><span>Your username</span></label>
+                                    <input type="text" name="username" id="username"
+                                           placeholder="Username"
+                                           className="input bg-base-200 w-full" required/>
+                                </div>
 
-                                <label className="label mt-2"><span className="label-text">Your password</span></label>
-                                <input type="password" name="password" id="password"
-                                       placeholder="Password"
-                                       className="input bg-base-200 w-full" required/>
-                                <label className="label mt-2"><span
-                                    className="label-text">Difficulty: {difficulty}</span></label>
-                                <input type="range" min={1} max={3} step={1} defaultValue={1} name="difficulty"
-                                       id="difficulty"
-                                       placeholder="Difficulty" onChange={e => {
-                                    setDifficulty(e.target.value)
-                                }}
-                                       className="input px-0 bg-base-200 w-full range range-xs" required/>
+                                <div className="mt-2">
+                                    <label className="text-white/50"><span>Your password</span></label>
+                                    <input type="password" name="password" id="password"
+                                           placeholder="Password"
+                                           className="input bg-base-200 w-full" required/>
+                                </div>
+
+                                <div className="mt-2">
+                                    <label className="text-white/50"><span>Difficulty: {difficulty}</span></label>
+                                    <input type="range" min={1} max={3} step={1} defaultValue={1} name="difficulty"
+                                           id="difficulty"
+                                           placeholder="Difficulty" onChange={e => {
+                                        setDifficulty(e.target.value)
+                                    }} className="input px-0 bg-base-200 w-full range range-xs" required/>
+                                </div>
                             </div>
+
                         )
                     }
 
                     <div>
-                        <input type="submit" className="btn btn-primary mt-5 px-10"
+                        <input type="submit" className="btn btn-primary bg-white mt-5 px-10 mb-3"
                                value="Play"/>
-                        <a href="#" className="text-xs float-right mt-12"
+                        <a href="#" className="text-neutral-300 text-xs float-right mt-12"
                            onClick={() => setAdminMode(!adminMode)}>{adminMode ? "Disable " : "Enable "}
                             Admin Mode</a>
                     </div>

@@ -6,13 +6,6 @@ import {fetchModes} from "api/Api";
 import * as queryString from "query-string";
 import {groupEntriesByKey} from "util/Functions";
 
-Object.defineProperty(String.prototype, 'capitalize', {
-    value: function () {
-        return this.charAt(0).toUpperCase() + this.slice(1);
-    },
-    enumerable: false
-});
-
 const ModeCardViewer = (props) => {
     const [data, setData] = useState(null); // Fetched modes data
     const [toRender, setToRender] = useState([]); // Elements to render
@@ -65,7 +58,7 @@ const ModeCardViewer = (props) => {
                     />);
             });
             let container = (
-                <div className="container mb-5 w-full" key={identifier + new Date().getTime()}>
+                <div className="container mx-auto mb-5 w-full" key={identifier + new Date().getTime()}>
                     <div className="relative flex py-5 items-center">
                         <div className="flex-grow border-t-2 border-white/30"/>
                         <span className="flex-shrink mx-4 text-white text-sm"><b>{identifier.toUpperCase()}</b></span>
@@ -84,10 +77,10 @@ const ModeCardViewer = (props) => {
     }, [genres]);
 
     if (toRender.length === 0)
-        return <div className="mb-10"><LoaderScreen throwError={throwError} loadingMsg={"Loading modes..."}/></div>;
+        return <div><LoaderScreen throwError={throwError} loadingMsg={"Loading modes..."}/></div>;
 
     return (
-        <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 justify-center">
+        <div className={`w-full mx-auto grid grid-cols-1 gap-4 justify-center ${props.filterValue === "all" ? "md:grid-cols-2" : ""}`}>
             {toRender}
         </div>
     );

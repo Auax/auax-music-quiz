@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {withRouter} from "react-router-dom";
 import {Toaster, toast} from "react-hot-toast";
-import 'react-toastify/dist/ReactToastify.css';
 import stringSimilarity from "string-similarity";
 
 import {useCountdown, useScore} from 'components';
@@ -11,7 +10,6 @@ import {fetchTracks} from "api/Api";
 import LoaderScreen from "components/Loading/LoaderScreen";
 
 // TODO: fix progress bar progression when window's not focused
-// TODO: ADD skip button and volume controller
 const Game = (props) => {
     const location = new URL(window.location.href);
     // Tracks number
@@ -162,7 +160,7 @@ const Game = (props) => {
 
     // While fetching songs
     if (tracks == null) return (
-        <div className="hero-height align-middle">
+        <div className="bg-base200 hero-height align-middle">
             <LoaderScreen throwError={throwError} loadingMsg={"Loading songs..."}/>
         </div>);
 
@@ -172,17 +170,17 @@ const Game = (props) => {
 
     // Once the songs are loaded
     return (
-        <div className="hero-height bg-base-300">
+        <div className="hero-height bg-base200">
             <Toaster position="top-center" reverseOrder={false}/>
             <AnswerModal track={tracks[currentTrackNo]} show={roundAnswer.show}/>
             <div className="container mx-auto text-center px-4">
-                <h1 className="text-7xl font-bold sm:px-0 tracking-tight pt-12 capitalize mb-2">Round {currentTrackNo + 1}</h1>
+                <h1 className="text-neutral-200 text-7xl font-bold sm:px-0 tracking-tight pt-12 mb-2">ROUND {currentTrackNo + 1}</h1>
                 {gameState === "init"
                     ? // Init
                     <div>
-                        <p className="text-base-content/50 mt-2">Guess the song and the artist!</p>
+                        <p className="text-neutral-300 mt-2">Guess the song and the artist!</p>
                         <button id="startRoundBtn"
-                                className="btn font-bold btn-primary mt-4"
+                                className="btn btn-primary font-bold mt-4"
                                 onClick={() => {
                                     setGameState("started")
                                 }}>Start
@@ -190,17 +188,17 @@ const Game = (props) => {
                     </div>
                     : // Started
                     <div>
-                        <span>Score: {score.correct} / {tn * 2}</span>
+                        <span className="text-neutral-300">Score: {score.correct} / {tn * 2}</span>
                         <br/>
                         <button id="startRoundBtn"
-                                className="btn font-bold btn-primary mt-4"
+                                className="btn btn-primary font-bold mt-4"
                                 onClick={() => {
                                     setGameState("finished")
                                 }}>End game
                         </button>
                     </div>
                 }
-                <div className="my-5 text-left">
+                <div className="my-5 text-left text-neutral-300">
                     <span>{printTime()}</span>
                     <ProgressBar
                         bgcolor="#005FFF"
@@ -211,11 +209,11 @@ const Game = (props) => {
                 <InputAnswer submitAnswer={checkAnswer}/>
                 <div className="text-left flex justify-start items-center mt-2">
                     <button id="skipRoundBtn"
-                            className="btn btn-ghost font-bold bg-base-100"
+                            className="btn btn-secondary text-white font-bold h-12"
                             onClick={() => {
                                 if (gameState === "started") zeroCountdown();
                             }}>
-                        <svg className="text-base-content h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polygon points="5 4 15 12 5 20 5 4"/>
                             <line x1="19" y1="5" x2="19" y2="19"/>

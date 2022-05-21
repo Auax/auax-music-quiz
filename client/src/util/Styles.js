@@ -1,7 +1,8 @@
 // CONSTANTS
 export const colors = {
     base100: "#000710",
-    base200: "#080d1c",
+    base200: "#0f172c",
+    base300: "#16213b",
     gray: "#2f314b",
     darkGray: "#191919",
     darkGray2: "#121212",

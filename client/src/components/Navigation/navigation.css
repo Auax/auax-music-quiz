@@ -16,7 +16,7 @@
         p-3
         w-full
         relative
-        z-50
+        z-40
     }
 
     .navbar .link-component {
@@ -28,14 +28,21 @@
         sm:inline-block
         sm:mt-0
         mr-4
+        font-bold
+        bg-base300
+        sm:bg-transparent
+        p-3
+        sm:p-0
+        sm:font-medium
     }
 
     .navbar .menu-content {
         top: var(--navbar-height);
         @apply sm:top-0
         shadow-lg
+        bg-base200
         sm:shadow-none
-        z-50
+        z-40
         w-full
         sm:translate-y-0
         sm:bg-transparent

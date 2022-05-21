@@ -33,14 +33,14 @@ const NavBar = () => {
             </div>
             <div className="block sm:hidden mr-3">
                 <button onClick={() => setIsOpen(!isOpen)}
-                        className="btn">
+                        className="btn btn-primary">
                     <svg className="fill-current h-4 w-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <title>Menu</title>
                         <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
                     </svg>
                 </button>
             </div>
-            <div className={`menu-content ${isOpen ? "block" : "block"}`}>
+            <div className={`menu-content ${isOpen ? "block" : "hidden"}`}>
                 <div className="ml-3 sm:ml-0 text-sm sm:flex-grow">
                     <Link to="/choose" className="link-component">
                         Play
@@ -52,8 +52,8 @@ const NavBar = () => {
                         GitHub
                     </a>
                 </div>
-                <div className="m-3 sm:m-0">
-                    <a href="/create/mode" className="btn btn-secondary w-full sm:w-auto">Creator </a>
+                <div className="my-6 mx-3 sm:m-0">
+                    <a href="/create/mode" className="btn btn-secondary-outline">Creator </a>
                 </div>
             </div>
         </nav>
