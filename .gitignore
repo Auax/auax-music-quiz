@@ -40,3 +40,6 @@ packages/react-devtools-shell/dist
 packages/react-devtools-timeline/dist
 # Local Netlify folder
 netlify.toml
+
+# Local Netlify folder
+.netlify
