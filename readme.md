@@ -7,12 +7,9 @@ Development started around the following date: **2nd of April 2022**
 ## TODO:
 
 * Add more modes
-* Fix styling / UI (Change bg maybe?)
 * Organize project
-
-## Important
-
-Add a file called `_redirects` with `/* /index.html 200` inside the build directory if you're using Netlify.
+* Can't answer when the game is paused
+* Check the create mode form
 
 ## Enviroment variables
 
@@ -44,5 +41,5 @@ class ModeCreate(BaseModel):
     title: str
     genre: str
     image: AnyUrl
-    difficulty: Optional[int] = Field(..., gt=1, le=3) # Any difficulty from 1 to 3
+    difficulty: Optional[int] = Field(..., gt=1, le=3)  # Any difficulty from 1 to 3
 ```
