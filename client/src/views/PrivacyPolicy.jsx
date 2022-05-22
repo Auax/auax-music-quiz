@@ -7,6 +7,7 @@ const TitleH1 = styled.h1`
   font-weight: bold;
   line-height: 1em;
   text-align: left;
+  margin-bottom: 10px;
 `;
 
 const TitleH2 = styled.h2`
@@ -15,12 +16,13 @@ const TitleH2 = styled.h2`
   line-height: 1em;
   margin-top: 40px;
   text-align: left;
+  margin-bottom: 6px;
 `;
 
 
 const PrivacyPolicy = () => {
     return (
-        <div className="container p-20 text-justify">
+        <div className="container p-10 sm:p-14 md:p-20 text-justify">
             <TitleH1>Privacy Policy for musicquiz</TitleH1>
 
             <p>At musicquiz, accessible from musicquiz.me, one of our main priorities is the privacy of our visitors.
@@ -76,20 +78,6 @@ const PrivacyPolicy = () => {
                 linked to any information that is personally identifiable. The purpose of the information is for
                 analyzing trends, administering the site, tracking users' movement on the website, and gathering
                 demographic information.</p>
-
-            <TitleH2>Cookies and Web Beacons</TitleH2>
-
-            <p>Like any other website, musicquiz uses 'cookies'. These cookies are used to store information including
-                visitors' preferences, and the pages on the website that the visitor accessed or visited. The
-                information is used to optimize the users' experience by customizing our web page content based on
-                visitors' browser type and/or other information.</p>
-
-            <p>For more general information on cookies, please read <a
-                href="https://www.termsfeed.com/blog/sample-cookies-policy-template/#What_Are_Cookies">the Cookies
-                article on TermsFeed website</a>.</p>
-
-
-            <TitleH2>Advertising Partners Privacy Policies</TitleH2>
 
             <p>You may consult this list to find the Privacy Policy for each of the advertising partners of
                 musicquiz.</p>
