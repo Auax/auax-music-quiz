@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {withRouter} from "react-router-dom";
 import CategoryFilter from "components/CategoryFilter/CategoryFilter";
 import ModeCardViewer from "components/ModeViewer/ModeCardViewer";
-import styled from "styled-components";
 
 const SelectMusicGenre = () => {
 

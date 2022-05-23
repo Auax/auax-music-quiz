@@ -1,8 +1,7 @@
 import React from "react";
 import {Link, withRouter} from "react-router-dom";
-import Particles from "react-tsparticles";
-import {loadFull} from "tsparticles";
 import styled from "styled-components";
+import DefaultParticles from "components/DefaultParticles/DefaultPageParticles";
 
 
 const MainPageDiv = styled.div`
@@ -22,68 +21,10 @@ const MainPageTitle = styled.h1`
 
 const Home = () => {
 
-    const particlesInit = async (main) => {
-        console.log("Loaded engine");
-        await loadFull(main);
-    };
-
-    const particlesLoaded = (_) => {
-        console.log("Loaded particles");
-    };
-
     return (
         <MainPageDiv className="hero-height hero-main-page">
             {/*https://particles.js.org/docs/interfaces/Options_Interfaces_IOptions.IOptions.html*/}
-            <Particles className="w-full h-full absolute"
-                       init={particlesInit}
-                       loaded={particlesLoaded}
-                       options={{
-                           fpsLimit: 60,
-                           number: {
-                               density: {
-                                   enable: true,
-                                   value_area: 1000
-                               },
-                               value: 100
-                           },
-                           interactivity: {
-                               events: {
-                                   onHover: {
-                                       enable: true,
-                                       mode: "grab",
-                                       parallax: {
-                                           enable: true,
-                                           force: 65,
-                                           smooth: 10
-                                       }
-                                   },
-                                   resize: true,
-                               },
-                           },
-                           retina_detect: true,
-                           particles: {
-                               color: {
-                                   value: "#454b93"
-                               },
-                               number: {
-                                   density: {enable: true},
-                                   value: 80,
-                               },
-                               links: {
-                                   enable: true,
-                                   color: "#21245e",
-                                   distance: 150,
-                                   opacity: 0.5,
-                               },
-                               opacity: {
-                                   value: 0.5,
-                               },
-                               move: {
-                                   enable: true
-                               }
-                           }
-                       }}
-            />
+            <DefaultParticles/>
             <div className="text-center px-4 z-1 relative">
                 <MainPageTitle className="text-7xl sm:text-8xl md:text-9xl text-white">Music
                     <span className="text-blue-700"> Quiz</span></MainPageTitle>

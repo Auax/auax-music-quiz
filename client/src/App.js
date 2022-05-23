@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 
 // Routes
-import {Home, CreateMode, SelectMusicGenre, PrivacyPolicy} from "views";
+import {Home, CreateMode, SelectMusicGenre, PrivacyPolicy, NotFoundPage} from "views";
 import {Game} from "components";
 import {Footer, NavBar} from "components";
 
@@ -18,6 +18,8 @@ function App() {
                     <Route path="/create/mode" exact component={() => <CreateMode/>}/>
                     <Route path="/play" exact component={() => <Game timePerRound={30} totalRounds={2}/>}/>
                     <Route path="/privacy-policy" exact component={() => <PrivacyPolicy/>}/>
+                    {/* 404 Not found */}
+                    <Route component={() => <NotFoundPage/>}/>
                 </Switch>
                 <Footer/>
             </Router>

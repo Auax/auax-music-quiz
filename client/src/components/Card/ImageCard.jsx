@@ -7,7 +7,6 @@ import {colors, shadows} from "util/Styles";
 import styled, {css} from "styled-components";
 
 
-
 const Card = styled.div`
   width: 100%;
   margin-left: auto;
@@ -24,7 +23,7 @@ const Card = styled.div`
     transition: all .2s ease-in-out;
     filter: opacity(100%);
   }
-  
+
   &:hover {
     & > img {
       filter: brightness(80%) blur(2px);
@@ -69,7 +68,7 @@ const VerticalCard = (props) => {
     return (
         <Link to={props.link}>
             <Card style={props.customCardStyle}>
-                <Image src={props.img}/>
+                <Image src={props.img} alt={props.title}/>
                 <Title>{props.title}</Title>
                 {props.difficulty &&
                     <StarRating stars={props.difficulty} totalStars={3}/>
