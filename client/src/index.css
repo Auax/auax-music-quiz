@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --navbar-height: 80px;
+    --footer-height: 80px;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+button,
+a {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+}
+
+.font-roboto {
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif !important;
+}
+
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.hero-main-page:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.2;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(29, 6, 232, 0.5)),
+    url("/src/assets/images/hero-image.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero-create-page {
+    background: linear-gradient(rgba(11, 22, 103, 0.5), rgba(8, 82, 166, 0.5)),
+    url("/src/assets/images/hero-image.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero-height {
+    height: calc(100vh - calc(var(--navbar-height) + (var(--footer-height))));
+}
+
+.navbar-margin {
+    margin-top: var(--navbar-height);
+}
+
+@layer components {
+    .btn {
+        @apply
+        text-sm
+        px-4
+        py-3
+        mr-2
+        rounded-sm
+        hover:scale-105
+    }
+
+    .btn-primary {
+        @apply
+        bg-white
+        hover:bg-neutral-300
+        text-semiBlack
+        duration-75
+        ease-in-out
+    }
+
+    .btn-secondary {
+        @apply
+        bg-base300
+        duration-75
+        ease-in-out
+    }
+
+    .btn-secondary:hover {
+        background-color: #212f52;
+    }
+
+    .btn-secondary-outline {
+        @apply
+        bg-transparent
+        hover:bg-white
+        hover:text-black
+        border-2
+        text-white
+    }
+
+    .input {
+        @apply
+        rounded-sm
+        text-white
+        bg-base300
+        px-5
+        py-3
+        font-bold
+    }
+
+}

@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.image-full {
+    overflow: hidden;
+}
+
+.image-full:before {
+    border-radius: inherit !important;
+}
+
+.image-full img {
+    transform: scale(1.05);
+}
+
+.image-full:hover img {
+    transform: scale(1);
+    filter: blur(2px) brightness(200%);
+}
+
+.image-full:hover h1 {
+    transform: scale(1.05);
+    text-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+}

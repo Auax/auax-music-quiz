@@ -1,0 +1,36 @@
+{
+  "name": "auaxmq-backend",
+  "version": "1.0.0",
+  "description": "Auax-music-quiz backend API. Mainly used to fetch songs and modes.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel index.js -d dist",
+    "start": "nodemon --exec babel-node index.js"
+  },
+  "keywords": [
+    "music",
+    "game",
+    "quiz",
+    "fun"
+  ],
+  "author": "Ibai Farina",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.2",
+    "@babel/node": "^7.17.10",
+    "axios": "^0.27.2",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "firebase-admin": "^10.2.0",
+    "helmet": "^5.1.0",
+    "joi": "^17.6.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.16"
+  }
+}
