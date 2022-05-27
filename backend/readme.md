@@ -2,6 +2,8 @@
 
 ---
 
+# Commands
+
 ## To install:
 
 #### `yarn install`
@@ -22,3 +24,29 @@
 ## Build
 
 Build: `yarn build`
+
+# Database Schema
+
+### Create mode schema
+
+**Javascript** Joi schema:
+
+```js
+export const modeSchema = Joi.object({
+    pid: Joi.string()
+        .required(),
+    title: Joi.string()
+        .required(),
+    genre: Joi.string()
+        .min(2)
+        .max(30)
+        .required(),
+    image: Joi.string()
+        .max(2000)
+        .required(),
+    difficulty: Joi.number()
+        .integer()
+        .min(1)
+        .max(3)
+});
+```

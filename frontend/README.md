@@ -4,6 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ---
 
+# Commands
+
 ## To install:
 
 #### `yarn install`
@@ -12,7 +14,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 #### `yarn start`
 
-## Environment variables in `/client`:
+## Environment variables in `/frontend`:
 
 You must only specify the following variable:
 
