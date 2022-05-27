@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel index.js -d build",
-    "start": "nodemon --exec babel-node index.js"
+    "start": "nodemon ./index.js"
   },
   "keywords": [
     "music",
@@ -35,5 +34,8 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.16",
     "tsscmp": "^1.0.6"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.2.5"
   }
 }

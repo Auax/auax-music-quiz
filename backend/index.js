@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import app from "./app/config.js";
+import app from "./app/app.js";
 import * as routes from "./app/routes.js";
 import {basicAuth} from "./app/middleware/auth.js";
 
