@@ -3,6 +3,10 @@ import helmet from "helmet";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
+import dotenv from "dotenv";
+
+// Load ENV
+dotenv.config();
 
 const app = express();
 
@@ -22,6 +26,8 @@ app.use(cors({
     methods: ["GET", "POST", "OPTIONS"],
     headers: ["Content-Type", "Set-Cookie", "Authorization", "X-Requested-With"],
 }));
+
+console.log(process.env.ALLOWED_ORIGIN);
 
 // TODO: add express-session (secret key)
 

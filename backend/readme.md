@@ -15,6 +15,7 @@
 ## Environment variables in `/backend`:
 
 - `PORT`=8000
+- `ALLOWED_ORIGIN`
 - `ADMIN_USER`= [_user_]
 - `ADMIN_PASSWORD`= [_password_]
 - `FIREBASE_PROJECT_ID`

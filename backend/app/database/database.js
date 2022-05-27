@@ -4,8 +4,6 @@ import dotenv from "dotenv";
 dotenv.config();
 // Initialize the app with a service account, granting admin privileges
 
-console.log(process.env.FIREBASE_PROJECT_ID);
-
 admin.initializeApp({
     // Use environment variables instead to deploy.
     credential: admin.credential.cert({
