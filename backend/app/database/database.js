@@ -1,5 +1,5 @@
-import admin from "firebase-admin";
-import dotenv from "dotenv";
+const admin = require("firebase-admin");
+const dotenv = require("dotenv");
 
 dotenv.config();
 // Initialize the app with a service account, granting admin privileges
@@ -16,5 +16,10 @@ admin.initializeApp({
 });
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
-export const db = admin.firestore();
-export const modesRef = db.collection("modes").orderBy("genre", "desc");
+const db = admin.firestore();
+const modesRef = db.collection("modes").orderBy("genre", "desc");
+
+module.exports = {
+    db,
+    modesRef,
+};

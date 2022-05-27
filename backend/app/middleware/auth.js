@@ -1,5 +1,5 @@
-import auth from "basic-auth";
-import compare from "tsscmp";
+const auth = require("basic-auth");
+const compare = require("tsscmp");
 
 const safeCheckCredentials = (user, password) => {
     const envUser = process.env.ADMIN_USER || null;
@@ -9,11 +9,15 @@ const safeCheckCredentials = (user, password) => {
     return compare(user, envUser) && compare(password, envPassword);
 }
 
-export const basicAuth = (req, res, next) => {
+const basicAuth = (req, res, next) => {
     const credentials = auth(req);
     if (credentials && safeCheckCredentials(credentials.name, credentials.pass)) {
         return next();
     }
     res.set("WWW-Authenticate", "Basic");
     return res.status(401).send({detail: "invalid credentials"});
+};
+
+module.exports = {
+    basicAuth
 };

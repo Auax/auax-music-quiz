@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Auax-music-quiz backend API. Mainly used to fetch songs and modes.",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./index.js"

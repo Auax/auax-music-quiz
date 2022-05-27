@@ -1,7 +1,7 @@
-import {db, modesRef} from "./database/database.js";
-import {modeSchema} from "./database/modeSchema.js";
-import {InvalidPlaylistId} from "./deezer_api/exceptions.js";
-import DeezerAPI from "./deezer_api/deezer.js";
+const {DeezerAPI} = require("./deezer_api/deezer");
+const {modesRef, db} = require("./database/database");
+const {modeSchema} = require("./database/modeSchema");
+const DeezerExceptions = require("./deezer_api/exceptions");
 
 // Initialize Deezer API
 const deezerAPI = new DeezerAPI();
@@ -9,7 +9,7 @@ const deezerAPI = new DeezerAPI();
 /* GET ROUTES */
 
 /** Fetch the music modes `[get]` */
-export const getModesRoute = async (req, res) => {
+const getModesRoute = async (req, res) => {
     let modes = []
     await modesRef.get().then((snapshot) => {
         snapshot.forEach(doc => {
@@ -23,7 +23,7 @@ export const getModesRoute = async (req, res) => {
 
 
 /** Fetch the songs `[get]` */
-export const getSongsRoute = async (req, res) => {
+const getSongsRoute = async (req, res) => {
     const pid = req.query.id;
     const amount = req.query.amount || 10;
 
@@ -36,7 +36,7 @@ export const getSongsRoute = async (req, res) => {
         else res.status(400).send({detail: "no songs"});
     } catch (err) {
         // Handle errors
-        if (err instanceof InvalidPlaylistId) return res.status(404).send({detail: "id does not exist"});
+        if (err instanceof DeezerExceptions.InvalidPlaylistId) return res.status(404).send({detail: "id does not exist"});
         // Unknown error
         res.status(500).send({detail: `Unknown error: ${err}`});
     }
@@ -46,7 +46,7 @@ export const getSongsRoute = async (req, res) => {
 /* POST ROUTES */
 
 /** Create a new mode and store it in the db. Requires an HTTP Basic Authentication. `[post]` */
-export const createModeRoute = async (req, res) => {
+const createModeRoute = async (req, res) => {
     // Check HTTP basic auth
     const {error, value} = modeSchema.validate(req.body); // Validate the data received
     if (error) {
@@ -60,3 +60,9 @@ export const createModeRoute = async (req, res) => {
 
     res.send("ok");
 }
+
+module.exports = {
+    getModesRoute,
+    getSongsRoute,
+    createModeRoute,
+};

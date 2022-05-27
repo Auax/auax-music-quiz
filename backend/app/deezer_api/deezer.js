@@ -1,5 +1,6 @@
-import axios from "axios";
-import {InvalidPlaylistId} from "./exceptions.js";
+const axios = require("axios");
+
+const DeezerExceptions = require("./exceptions.js");
 
 class DeezerAPI {
     constructor() {
@@ -15,7 +16,7 @@ class DeezerAPI {
         if (error) {
             switch (error.message) {
                 case "no data":
-                    throw new InvalidPlaylistId;
+                    throw new DeezerExceptions.InvalidPlaylistId;
 
                 // Add more errors here
             }
@@ -41,4 +42,6 @@ class DeezerAPI {
     }
 }
 
-export default DeezerAPI;
+module.exports = {
+    DeezerAPI
+};

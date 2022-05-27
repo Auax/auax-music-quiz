@@ -1,9 +1,9 @@
-import express from "express";
-import helmet from "helmet";
-import bodyParser from "body-parser";
-import cors from "cors";
-import morgan from "morgan";
-import dotenv from "dotenv";
+const express = require("express");
+const helmet = require("helmet");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const morgan = require("morgan");
+const dotenv = require("dotenv");
 
 // Load ENV
 dotenv.config();
@@ -35,4 +35,6 @@ console.log(process.env.ALLOWED_ORIGIN);
 app.use(morgan('combined'));
 
 
-export default app;
+module.exports = {
+    app
+};

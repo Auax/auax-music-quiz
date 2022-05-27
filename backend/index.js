@@ -1,7 +1,8 @@
-import dotenv from "dotenv";
-import app from "./app/app.js";
-import * as routes from "./app/routes.js";
-import {basicAuth} from "./app/middleware/auth.js";
+const dotenv = require("dotenv");
+
+const {app} = require("./app/app")
+const {basicAuth} = require("./app/middleware/auth");
+const routes = require("./app/routes");
 
 // Load ENV
 dotenv.config();
