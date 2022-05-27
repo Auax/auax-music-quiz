@@ -1,4 +1,4 @@
-import {modesRef} from "./database/database.js";
+import {db, modesRef} from "./database/database.js";
 import {modeSchema} from "./database/modeSchema.js";
 import {InvalidPlaylistId} from "./deezer_api/exceptions.js";
 import DeezerAPI from "./deezer_api/deezer.js";
@@ -17,8 +17,8 @@ export const getModesRoute = async (req, res) => {
             modes.push(data);
         })
     });
-    console.log(`Fetched ${modes.length} modes >> /api/get/modes`)
     res.send(modes);
+    console.log(`Fetched ${modes.length} modes >> /api/get/modes`);
 }
 
 
@@ -45,9 +45,18 @@ export const getSongsRoute = async (req, res) => {
 
 /* POST ROUTES */
 
-/** Create a new mode and store it in the db `[post]` */
+/** Create a new mode and store it in the db. Requires an HTTP Basic Authentication. `[post]` */
 export const createModeRoute = async (req, res) => {
+    // Check HTTP basic auth
     const {error, value} = modeSchema.validate(req.body); // Validate the data received
-    if (error) res.status(422).send({detail: error.details[0].message}); // Invalid body data
-    console.log(value);
+    if (error) {
+        res.status(422).send({detail: error.details[0].message}); // Invalid body data
+        return;
+    }
+    console.log(`Created mode with PID: '${value.pid}' TITLE: '${value.title}' >> /api/get/modes`);
+
+    // Create new document in Firebase
+    await db.collection("modes").doc(value.pid).set(value);
+
+    res.send("ok");
 }
