@@ -1,6 +1,6 @@
 # Auax Music Quiz
 
-### Express.js :: Deezer Version
+### Deezer Version
 
 Development started around the following date: **2nd of April 2022**
 
