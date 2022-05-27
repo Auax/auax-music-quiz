@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel index.js -d dist",
+    "build": "babel index.js -d build",
     "start": "nodemon --exec babel-node index.js"
   },
   "keywords": [
