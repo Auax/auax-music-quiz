@@ -1,6 +1,6 @@
 const dotenv = require("dotenv");
 
-const {app} = require("./app/app")
+const {app, allowed_origin} = require("./app/app")
 const {basicAuth} = require("./app/middleware/auth");
 const routes = require("./app/routes");
 
@@ -8,6 +8,8 @@ const routes = require("./app/routes");
 dotenv.config();
 
 /* ROUTES */
+
+app.get("/", (req, res) => res.send({allowed: allowed_origin}))
 
 // GET
 app.get("/api/get/modes", routes.getModesRoute);

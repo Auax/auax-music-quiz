@@ -27,7 +27,7 @@ app.use(cors({
     headers: ["Content-Type", "Set-Cookie", "Authorization", "X-Requested-With"],
 }));
 
-console.log(process.env.ALLOWED_ORIGIN);
+const allowed_origin = process.env.ALLOWED_ORIGIN;
 
 // TODO: add express-session (secret key)
 
@@ -36,5 +36,6 @@ app.use(morgan('combined'));
 
 
 module.exports = {
-    app
+    app,
+    allowed_origin
 };
