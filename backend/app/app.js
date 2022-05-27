@@ -23,11 +23,11 @@ app.use(cors({
     origin: process.env.ALLOWED_ORIGIN || "*",
     optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
     credentials: true,
-    methods: ["GET", "POST", "OPTIONS"],
-    headers: ["Content-Type", "Set-Cookie", "Authorization", "X-Requested-With"],
+    methods: "GET, POST, OPTIONS",
+    allowedHeaders: "Content-Type, Set-Cookie, Authorization, X-Requested-With",
 }));
 
-const allowed_origin = process.env.ALLOWED_ORIGIN;
+const allowed_origin = process.env.ALLOWED_ORIGIN || "*";
 
 // TODO: add express-session (secret key)
 
