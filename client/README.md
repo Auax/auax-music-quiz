@@ -12,7 +12,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 #### `yarn start`
 
-## Environment variables under `/client`:
+## Environment variables in `/client`:
 
 You must only specify the following variable:
 

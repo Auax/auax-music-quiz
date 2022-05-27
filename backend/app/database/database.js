@@ -1,11 +1,18 @@
 import admin from "firebase-admin";
+import dotenv from "dotenv";
 
-// Fetch the service account key JSON file contents
-import serviceAccount from "./config/serviceAccountKey.json" assert {type: "json"};
-
+dotenv.config();
 // Initialize the app with a service account, granting admin privileges
+
+console.log(process.env.FIREBASE_PROJECT_ID);
+
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    // Use environment variables instead to deploy.
+    credential: admin.credential.cert({
+        "project_id": process.env.FIREBASE_PROJECT_ID,
+        "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'), // Remove \n
+        "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+    }),
     // The database URL depends on the location of the database
     databaseURL: "https://DATABASE_NAME.firebaseio.com"
 });

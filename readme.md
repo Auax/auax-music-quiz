@@ -39,5 +39,7 @@ export const modeSchema = Joi.object({
         .required(),
     difficulty: Joi.number()
         .integer()
+        .min(1)
+        .max(3)
 });
 ```

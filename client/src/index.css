@@ -75,12 +75,15 @@ code {
         mr-2
         rounded-sm
         hover:scale-105
+        disabled:hover:scale-100
     }
 
     .btn-primary {
         @apply
         bg-white
         hover:bg-neutral-300
+        disabled:bg-neutral-400
+        disabled:hover:bg-neutral-400
         text-semiBlack
         duration-75
         ease-in-out
@@ -91,6 +94,8 @@ code {
         bg-base300
         duration-75
         ease-in-out
+        disabled:bg-neutral-400
+        disabled:hover:bg-neutral-400
     }
 
     .btn-secondary:hover {
@@ -104,6 +109,9 @@ code {
         hover:text-black
         border-2
         text-white
+        disabled:bg-neutral-400
+        disabled:hover:bg-neutral-400
+        disabled:hover:text-white
     }
 
     .input {

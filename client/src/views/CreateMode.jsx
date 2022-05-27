@@ -10,6 +10,7 @@ const CreateMode = () => {
     const {toasts} = useToasterStore();
     const [adminMode, setAdminMode] = useState(false);
     const [difficulty, setDifficulty] = useState(1);
+    const [canCreate, setCanCreate] = useState(true);
     const TOAST_LIMIT = 2
 
     useEffect(() => {
@@ -24,9 +25,11 @@ const CreateMode = () => {
         e.preventDefault();
         e.stopPropagation();
 
+        setCanCreate(false);
+
         // Get and extract id
         let id = document.getElementById("playlistId").value;
-        if (!(/^[0-9]+$/.test(id))) {
+        if (!(/^\d+$/.test(id))) {
             toast.error("Please input a valid ID!");
             return;
         }
@@ -53,12 +56,16 @@ const CreateMode = () => {
                     difficulty: difficulty
                 }
             }).then(r => {
-                if (r.status === 200) toast.success("Successfully created a new mode!");
+                if (r.status === 200) {
+                    toast.success("Successfully created a new mode!");
+                }
+
             }).catch((reason: AxiosError) => {
-                if (reason.response.status === 401) toast.error(reason.response.data.detail);
-                else if (reason.response.status === 422) toast.error(<span><b>Fix: </b>{reason.response.data.detail}!</span>);
+                if (reason.response.status === 401) toast.error(reason.response.data.detail, {style: {textTransform: "capitalize"}});
+                else if (reason.response.status === 422) toast.error(
+                    <span><b>Fix: </b>{reason.response.data.detail}!</span>);
                 else toast.error(`Unknown error: ${reason}`);
-            });
+            }).finally(() => setCanCreate(true));
 
         } else {
             let nOfTracks = document.getElementById("tracksNumber").value;
@@ -67,7 +74,6 @@ const CreateMode = () => {
                 window.location.replace("/play?" + queryString.stringify({mg: "custom", tn: nOfTracks, id: id}));
             }
         }
-
     }
 
     return (
@@ -149,8 +155,8 @@ const CreateMode = () => {
                     }
 
                     <div>
-                        <input type="submit" className="btn btn-primary bg-white mt-5 px-10 mb-3"
-                               value="Play"/>
+                        <input type="submit" className="btn btn-primary bg-white mt-5 px-10 mb-3" disabled={!canCreate}
+                               value={adminMode ? "Create" : "Play"}/>
                         <a href="#" className="text-neutral-300 text-xs float-right mt-12"
                            onClick={() => setAdminMode(!adminMode)}>{adminMode ? "Disable " : "Enable "}
                             Admin Mode</a>
