@@ -38,7 +38,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "sitemap": "node src/sitemap_generator.js"
   },
   "eslintConfig": {
     "extends": [
@@ -61,6 +61,7 @@
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "babel-plugin-module-resolver": "^4.1.0",
+    "sitemap": "^7.1.1",
     "web-vitals": "^2.1.4"
   }
 }

@@ -1,26 +1,17 @@
 import React from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
+import {Footer, NavBar} from "./components";
+import Routes from "./Routes";
 
-// Routes
-import {Home, CreateMode, SelectMusicGenre, PrivacyPolicy, NotFoundPage} from "views";
-import {Game} from "components";
-import {Footer, NavBar} from "components";
+// Sitemap
 
 function App() {
     return (
         <div className="App">
             <Router>
                 <NavBar/>
-                <Switch>
-                    <Route path="/" exact component={() => <Home/>}/>
-                    <Route path="/choose" exact component={() => <SelectMusicGenre/>}/>
-                    <Route path="/create/mode" exact component={() => <CreateMode/>}/>
-                    <Route path="/play" exact component={() => <Game timePerRound={30} totalRounds={2}/>}/>
-                    <Route path="/privacy-policy" exact component={() => <PrivacyPolicy/>}/>
-                    {/* 404 Not found */}
-                    <Route component={() => <NotFoundPage/>}/>
-                </Switch>
+                <Routes/>
                 <Footer/>
             </Router>
         </div>
