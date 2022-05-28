@@ -45,9 +45,9 @@ const NavBar = () => {
                     <Link to="/choose" className="link-component">
                         Play
                     </Link>
-                    <Link to="https://paypal.me/zellius" className="link-component">
+                    <a href="https://paypal.me/zellius" className="link-component">
                         Donate
-                    </Link>
+                    </a>
                     <a href="https://github.com/Auax/auax-music-quiz" className="link-component" target="blank">
                         GitHub
                     </a>

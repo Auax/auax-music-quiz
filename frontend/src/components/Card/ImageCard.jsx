@@ -13,7 +13,7 @@ const Card = styled.div`
   margin-right: auto;
   box-shadow: ${shadows.shadowLg};
   transition: all 1s ease-in-out;
-  border-radius: 5px;
+  border-radius: 2px;
   overflow: hidden;
   box-shadow: ${shadows.shadowLg};
   position: relative;
