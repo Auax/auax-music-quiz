@@ -110,7 +110,7 @@ const ModeCard = (props) => {
         <Card style={props.customCardStyle}>
             <Link to={props.link}><Image src={props.img} alt={props.title}/></Link>
             <Link to={props.link}
-                  className="text-left font-inter text-white/20 h-full flex items-center">
+                  className="text-left text-white/20 h-full flex items-center font-bold">
                 <OptionText>{props.title}
                     {props.difficulty &&
                         <StarRating stars={props.difficulty}
