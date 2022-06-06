@@ -1,23 +1,34 @@
 import React, {useState} from "react";
 import {withRouter} from "react-router-dom";
-import CategoryFilter from "components/CategoryFilter/CategoryFilter";
+import ModeFilter from "components/ModeViewer/CategoryFilter/ModeFilter";
 import ModeCardViewer from "components/ModeViewer/ModeCardViewer";
 
 const SelectMusicGenre = () => {
 
     const [genres, setGenres] = useState([]);
+    const [titles, setTitles] = useState([]);
     const [groupDataBy, setGroupDataBy] = useState("genre");
     const [filterViewBy, setFilterViewBy] = useState("all");
 
     return (
-        <div className="blue-img-bg hero-height overflow-auto">
-            <div className="lg:px-20 md:px-10 px-2 mx-auto text-center">
-                <h1 className="text-neutral-200 text-7xl font-bold sm:px-0 tracking-tight mt-12">PLAY</h1>
-                <p className="text-neutral-300 mt-2 mb-6">Choose a music mode</p>
-                <CategoryFilter categories={genres} setFilterValue={setFilterViewBy}
-                                setGroupBy={setGroupDataBy}/>
-                <div className="container overflow-auto pt-5 px-10 mx-auto w-auto bg-base100/80 border-white/10 border">
-                    <ModeCardViewer groupViewBy={groupDataBy} filterValue={filterViewBy} setGenres={setGenres}/>
+        <div className="bg-base200 hero-height overflow-auto">
+            <div className="container lg:px-20 md:px-10 px-5 mx-auto text-center">
+                <h1 className="text-neutral-200 text-4xl text-left sm:px-0 tracking-wide mt-12 mb-3">Play</h1>
+
+                <ModeFilter
+                    categories={genres}
+                    titles={titles}
+                    setFilterValue={setFilterViewBy}
+                    setGroupBy={setGroupDataBy}/>
+
+                <div className="overflow-auto mx-auto w-auto">
+                    {/* Show the mode cards*/}
+                    <ModeCardViewer
+                        groupViewBy={groupDataBy}
+                        filterValue={filterViewBy}
+                        setGenres={setGenres} // Rock, hiphop...
+                        setTitles={setTitles} // Top 100 Global, 80s Rap...
+                    />
                 </div>
             </div>
         </div>

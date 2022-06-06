@@ -14,52 +14,53 @@ const DefaultParticles = () => {
     };
 
     return (
-        <Particles className="w-full h-full absolute"
+        <Particles className="w-full absolute"
                    init={particlesInit}
                    loaded={particlesLoaded}
                    options={{
                        fpsLimit: 60,
-                       number: {
-                           density: {
-                               enable: true,
-                               value_area: 1000
-                           },
-                           value: 100
-                       },
                        interactivity: {
                            events: {
                                onHover: {
                                    enable: true,
-                                   mode: "grab",
-                                   parallax: {
-                                       enable: true,
-                                       force: 65,
-                                       smooth: 10
-                                   }
+                                   // mode: "repulse",
+                                   parallax: {enable: false, force: 60, smooth: 10}
                                },
-                               resize: true,
+                               resize: true
                            },
+                           // modes: {
+                           //     repulse: {distance: 10, duration: 1}
+                           // }
                        },
                        retina_detect: true,
                        particles: {
-                           color: {
-                               value: "#454b93"
+                           color: {value: "#fff"},
+                           move: {
+                               direction: "none",
+                               enable: true,
+                               outModes: "out",
+                               random: false,
+                               speed: 2,
+                               straight: false
                            },
                            number: {
-                               density: {enable: true},
-                               value: 80,
-                           },
-                           links: {
-                               enable: true,
-                               color: "#21245e",
-                               distance: 150,
-                               opacity: 0.5,
+                               density: {
+                                   enable: true,
+                                   area: 800
+                               },
+                               value: 80
                            },
                            opacity: {
-                               value: 0.5,
+                               value: {
+                                   min: 0.1,
+                                   max: 0.2
+                               }
                            },
-                           move: {
-                               enable: true
+                           shape: {
+                               type: "square"
+                           },
+                           size: {
+                               value: {min: 1, max: 5}
                            }
                        }
                    }}

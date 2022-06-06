@@ -78,12 +78,12 @@ const CreateMode = () => {
     }
 
     return (
-        <div className="hero-height blue-img-bg overflow-auto">
+        <div className="hero-height bg-base300 overflow-auto">
             <Toaster
                 position="top-center"
                 reverseOrder={false}
             />
-            <div className="text-center px-4 sm:px-5 px-0">
+            <div className="text-center px-4 sm:px-5 px-0 relative">
                 <h1 className="text-5xl md:text-7xl font-bold sm:px-0 tracking-tight mt-12 text-white">Create Mode</h1>
                 <form onSubmit={(e) => createGame(e)}
                       className="bg-base200/80 border border-white/10 px-10 pt-10 pb-7 my-6 rounded text-left w-full md:w-3/5 lg:w-1/3 mx-auto">

@@ -14,7 +14,7 @@ const Footer = () => {
                 <span
                     className="text-sm text-center sm:text-left text-neutral-100">Copyright © 2022 - Ibai Farina</span>
                 <hr className="visible sm:hidden my-1 opacity-20 w-full mx-auto"/>
-                <ul className="grid grid-cols-2 gap-3 mx-auto sm:ml-auto sm:mr-0 text-sm text-neutral-400 sm:text-neutral-100">
+                <ul className="grid grid-cols-2 gap-3 mx-auto sm:ml-auto sm:mr-0 text-xs text-neutral-400 sm:text-neutral-100">
                     <li className="text-center">
                         <Link to="/privacy-policy" className="hover:underline">Privacy Policy</Link>
                     </li>

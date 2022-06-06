@@ -2,13 +2,26 @@ import React, {useState, useEffect} from 'react';
 import {withRouter} from "react-router-dom";
 import {Toaster, toast} from "react-hot-toast";
 import stringSimilarity from "string-similarity";
+import styled from "styled-components";
+import {BsFillPauseFill, BsFillPlayFill, BsFillSkipEndFill} from "react-icons/bs";
 
 import {useCountdown, useScore} from 'components';
 import {AnswerModal, InputAnswer, ProgressBar, ScoreModal, Track, VolumeSlider} from "./GameComponents";
 import {IdDoesNotExist, InvalidPlaylistId, TooManyRequests,} from "api/exceptions";
 import {fetchTracks} from "api/Api";
 import LoaderScreen from "components/Loading/LoaderScreen";
-import {BsFillPauseFill, BsFillPlayFill, BsFillSkipEndFill} from "react-icons/bs";
+import {Container} from "util/Styles";
+
+
+const GameControlsContainer = styled.div`
+  text-align: left;
+  display: flex;
+  margin-top: 5px;
+
+  & button, div {
+    margin-right: 5px;
+  }
+`;
 
 // TODO: fix progress bar progression when window's not focused
 const Game = (props) => {
@@ -180,7 +193,7 @@ const Game = (props) => {
         <div className="hero-height bg-base200">
             <Toaster position="top-center" reverseOrder={false}/>
             <AnswerModal track={tracks[currentTrackNo]} show={roundAnswer.show}/>
-            <div className="container mx-auto text-center px-4">
+            <Container className="mx-auto text-center px-4">
                 <h1 className="text-neutral-200 text-7xl font-bold sm:px-0 tracking-tight pt-12 mb-2">ROUND {currentTrackNo + 1}</h1>
                 {gameState === "init"
                     ? // Init
@@ -216,7 +229,7 @@ const Game = (props) => {
                 <Track track={tracks[currentTrackNo]} running={gameState === 'start'}
                        setPause={(p) => setGameState(p ? "pause" : "start")} volume={volume}/>
                 <InputAnswer submitAnswer={checkAnswer}/>
-                <div className="text-left flex justify-start items-center mt-2">
+                <GameControlsContainer>
                     <button id="pauseBtn"
                             className="btn btn-secondary text-white font-bold h-12"
                             onClick={() => {
@@ -236,8 +249,8 @@ const Game = (props) => {
                         <BsFillSkipEndFill size={"1.5em"}/>
                     </button>
                     <VolumeSlider volumeSetter={setVolume}/>
-                </div>
-            </div>
+                </GameControlsContainer>
+            </Container>
         </div>
     );
 }

@@ -8,7 +8,8 @@ const StarRating = (props) => {
                 {[...Array(props.stars)].map((_, i) => (
                     <li key={i}>
                         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star"
-                             className={`w-4 mr-1 ${props.starsClass ? props.starsClass : "text-yellow-500"}`}
+                             className="w-4 mr-1"
+                             style={props.customStarStyle}
                              role="img" xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 576 512">
                             <path fill="currentColor"
@@ -19,7 +20,8 @@ const StarRating = (props) => {
                 {[...Array(props.totalStars - props.stars)].map((_, i) => (
                     <li key={i}>
                         <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="star"
-                             className={`w-4 mr-1 ${props.starsClass ? props.starsClass : "text-yellow-500"}`}
+                             className="w-4 mr-1"
+                             style={props.customStarStyle}
                              role="img" xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 576 512">
                             <path fill="currentColor"
