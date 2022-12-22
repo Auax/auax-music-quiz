@@ -3,13 +3,14 @@ const dotenv = require("dotenv");
 const {app, allowed_origin} = require("./app/app")
 const {basicAuth} = require("./app/middleware/auth");
 const routes = require("./app/routes");
+const {SpotifyZLLSWrapper} = require("./app/spotify_api/spotifyWrapper");
 
 // Load ENV
 dotenv.config();
 
 /* ROUTES */
 
-app.get("/", (req, res) => res.send({allowed: allowed_origin}))
+app.get("/", (req, res) => res.send({allowed: allowed_origin}));
 
 // GET
 app.get("/api/get/modes", routes.getModesRoute);

@@ -17,7 +17,7 @@ admin.initializeApp({
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 const db = admin.firestore();
-const modesRef = db.collection("modes").orderBy("genre", "desc");
+const modesRef = db.collection("music-modes").orderBy("genre", "desc");
 
 module.exports = {
     db,

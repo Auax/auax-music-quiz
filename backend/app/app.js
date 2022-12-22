@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
+const logger = require("./log");
 
 // Load ENV
 dotenv.config();

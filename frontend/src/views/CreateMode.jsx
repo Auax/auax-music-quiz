@@ -4,7 +4,6 @@ import * as queryString from "query-string";
 import {Toaster, toast, useToasterStore} from "react-hot-toast";
 import axios, {AxiosError} from "axios";
 import {Buffer} from "buffer";
-import DefaultParticles from "../components/DefaultParticles/DefaultPageParticles";
 
 
 const CreateMode = () => {
@@ -29,9 +28,13 @@ const CreateMode = () => {
         setCanCreate(false);
 
         // Get and extract id
-        let id = document.getElementById("playlistId").value;
-        if (!(/^\d+$/.test(id))) {
-            toast.error("Please input a valid ID!");
+        let url = document.getElementById("playlistId").value;
+
+        const regex = /playlist\/(.{22})/;
+        const match = regex.exec(url);
+        const id = match[1]
+        if (!match || !id) {
+            toast.error("Please input a valid URL!");
             return;
         }
 
@@ -70,7 +73,7 @@ const CreateMode = () => {
 
         } else {
             let nOfTracks = document.getElementById("tracksNumber").value;
-            if (!id) toast.error(<span>Invalid Deezer playlist <b>URL</b> or <b>ID</b>!</span>);
+            if (!url) toast.error(<span>Invalid Spotify playlist <b>URL</b></span>);
             else {
                 window.location.replace("/play?" + queryString.stringify({mg: "custom", tn: nOfTracks, id: id}));
             }
@@ -88,8 +91,8 @@ const CreateMode = () => {
                 <form onSubmit={(e) => createGame(e)}
                       className="bg-base200/80 border border-white/10 px-10 pt-10 pb-7 my-6 rounded text-left w-full md:w-3/5 lg:w-1/3 mx-auto">
                     <h2 className="text-2xl font-bold text-white">Settings</h2>
-                    <label className="text-white/50"><span>Deezer playlist ID</span></label>
-                    <input type="text" name="playlistId" id="playlistId" placeholder="ID"
+                    <label className="text-white/50"><span>Paste any public playlist</span></label>
+                    <input type="text" name="playlistId" id="playlistId" placeholder="Spotify playlist link"
                            className="input bg-base-200 w-full"
                            autoComplete="off" required/>
                     {!adminMode &&

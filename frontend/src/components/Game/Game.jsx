@@ -151,17 +151,27 @@ const Game = (props) => {
         let inputAnswer = (inputRef.current.value).toLowerCase(); // Get answer in lowercase
 
         // Compare strings (punctuation removed in the comparison)
-        let similarityWithSong = stringSimilarity.compareTwoStrings(inputAnswer, track.title.toLowerCase().replace(/[.,\/#!$%&;:{}=\-_`~()]/g, ""));
-        let similarityWithArtist = stringSimilarity.compareTwoStrings(inputAnswer, track.artist.toLowerCase().replace(/[.,\/#!$%&;:{}=\-_`~()]/g, ""));
+        let similarityWithSong = stringSimilarity.compareTwoStrings(inputAnswer, track.title.toLowerCase().replace(/[.,/#!$%&;:{}=\-_`~()]/g, ""));
+        // Compare all artists
+        let similarityWithArtist = 0;
+        let guessedArtist;
+        track.artists.forEach(artist => {
+            const similarity = stringSimilarity.compareTwoStrings(inputAnswer, artist.name.toLowerCase().replace(/[.,/#!$%&;:{}=\-_`~()]/g, ""));
+            // New better guess
+            if (similarity >= similarityWithArtist) {
+                similarityWithArtist = similarity;
+                guessedArtist = artist.name;
+            }
+        });
 
         // Artist
         if (!roundAnswer.artist) {
             if (similarityWithArtist > similarityWithSong && similarityWithArtist > similarityThreshold) {
                 scoreAddPoint();
                 setArtistRoundAnswer(true);
-                toast.success(<span><b>{track.artist}</b> is the artist!</span>);
+                toast.success(<span><b>{guessedArtist}</b> is the artist!</span>);
 
-                console.log(`Correct! ${track.artist} is the artist!`);
+                console.log(`Correct! ${guessedArtist} is the artist!`);
             }
         }
 

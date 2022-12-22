@@ -140,26 +140,25 @@ const Home = () => {
                     <ModeCard key="3155776842"
                               dataId="3155776842"
                               hideLikeButton={true}
-                              link={"/play?" + queryString.stringify({id: "3155776842", tn: 10})}
-                              title="Top 100 Worldwide"
-                              img="https://firebasestorage.googleapis.com/v0/b/auax-music-quiz.appspot.com/o/global100.jpg?alt=media&token=f9b680d7-9b58-4a2a-afca-13dd0f60484c"
+                              link={"/play?" + queryString.stringify({id: "37i9dQZEVXbMDoHDwVN2tF", tn: 10})}
+                              title="Top 50 Global"
+                              img="https://charts-images.scdn.co/assets/locale_en/regional/daily/region_global_default.jpg"
                               difficulty="1"
                               customCardStyle={{marginBottom: "8px", marginTop: "8px"}}
                     />
 
                     <SectionSubtitle className="mt-8">Create a mode</SectionSubtitle>
                     <Note>You can also play a custom mode in the <RLink to="/create/mode">Creator</RLink>.</Note>
-                    <Note>Note that you will need a <b>Deezer</b> account to play with your own playlist.
-                        You don't need an account if you want to use someone else's playlist. For this, you'll need to
-                        find
-                        the <b>playlist ID</b></Note>
+                    <Note>The only thing you need is the <b>Spotify playlist link</b> and it must not be private.</Note>
                     <br/>
 
                     <SectionParagraph>
-                        To get the ID of a playlist, you can copy it from the URL:
+                        The playlist link should look like this. Make sure the ID of the playlist is included! It should
+                        be there by default
                     </SectionParagraph>
-                    <div className="w-full sm:w-1/2">
-                        <SearchBar text="deezer.com/us/playlist/" highlighted="10365785482"/>
+                    <div className="w-full">
+                        <SearchBar text="https://open.spotify.com/playlist/"
+                                   highlighted="37i9dQZEVXbMDoHDwVN2tF"/>
                     </div>
 
                 </Section>

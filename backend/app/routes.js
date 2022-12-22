@@ -1,10 +1,9 @@
-const {DeezerAPI} = require("./deezer_api/deezer");
 const {modesRef, db} = require("./database/database");
 const {modeSchema} = require("./database/modeSchema");
-const DeezerExceptions = require("./deezer_api/exceptions");
+const SpotifyExceptions = require("./spotify_api/exceptions");
+const logger = require("winston");
+const {SpotifyZLLSWrapper} = require("./spotify_api/spotifyWrapper");
 
-// Initialize Deezer API
-const deezerAPI = new DeezerAPI();
 
 /* GET ROUTES */
 
@@ -18,25 +17,27 @@ const getModesRoute = async (req, res) => {
         })
     });
     res.send(modes);
-    console.log(`Fetched ${modes.length} modes >> /api/get/modes`);
+    logger.info(`Fetched ${modes.length} modes`);
 }
 
 
 /** Fetch the songs `[get]` */
 const getSongsRoute = async (req, res) => {
-    const pid = req.query.id;
+    // Amount of songs to fetch
     const amount = req.query.amount || 10;
-
+    // Playlist ID
+    const pid = req.query.id;
+    // Return if there's no playlist id set
     if (!pid) return res.status(400).send({detail: "invalid id"});
 
     try {
-        let data = await deezerAPI.getSongs(pid, amount);
-        if (data) res.json(data);
-        // Data is null
-        else res.status(400).send({detail: "no songs"});
+        // Create Spotify Wrapper instance
+        const spotifyWrapper = new SpotifyZLLSWrapper(process.env.SPOTIFY_CLIENT_ID, process.env.SPOTIFY_CLIENT_SECRET);
+        const songs = await spotifyWrapper.getRandomTracks(pid, amount);
+        res.send(songs);
     } catch (err) {
         // Handle errors
-        if (err instanceof DeezerExceptions.InvalidPlaylistId) return res.status(404).send({detail: "id does not exist"});
+        if (err instanceof SpotifyExceptions.InvalidPlaylistId) return res.status(404).send({detail: "id does not exist"});
         // Unknown error
         res.status(500).send({detail: `Unknown error: ${err}`});
     }
@@ -51,13 +52,13 @@ const createModeRoute = async (req, res) => {
     const {error, value} = modeSchema.validate(req.body); // Validate the data received
     if (error) {
         res.status(422).send({detail: error.details[0].message}); // Invalid body data
+        logger.error(error);
         return;
     }
-    console.log(`Created mode with PID: '${value.pid}' TITLE: '${value.title}' >> /api/get/modes`);
+    logger.info(`Created mode with PID: '${value.pid}' TITLE: '${value.title}' >> /api/get/modes`);
 
     // Create new document in Firebase
-    await db.collection("modes").doc(value.pid).set(value);
-
+    await db.collection("music-modes").doc(value.pid).set(value);
     res.send("ok");
 }
 

@@ -99,7 +99,8 @@ export const AnswerModal = (props) => {
                     <img className="md:w-3/5 lg:w-2/5 mt-2 mx-auto shadow-lg rounded-lg" src={props.track.image}
                          draggable="false" alt="album"/>
                     <h1 className="text-3xl md:text-4xl text-center mt-5 font-bold text-white">{props.track.title}</h1>
-                    <p className="text-1xl md:text-2xl text-center break-words text-white/70">{props.track.artist}</p>
+                    <p className="text-sm md:text-md text-center break-words text-white/50">Main artist</p>
+                    <p className="text-1xl md:text-2xl text-center break-words text-white/70">{props.track.artists[0].name}</p>
                 </div>
             </ModalObj>
             <BgObj isVisible={showModal}/>
@@ -112,7 +113,7 @@ export const ScoreModal = (props) => {
 
     let tracks = [];
     props.tracks.forEach(track => {
-        tracks.push(<li key={track.title}><b>{track.title}</b> - {track.artist}</li>);
+        tracks.push(<li key={track.title}><b>{track.title}</b> - {track.artists[0].name}</li>);
     });
     // const tracks = []
 
@@ -129,7 +130,7 @@ export const ScoreModal = (props) => {
                     <div className="w-full border-t border-white/10"></div>
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold">Correct: <span
-                    className="text-neutral-400">{props.score / props.maxScore * 100}%</span></h2>
+                    className="text-neutral-400">{Math.round(props.score / props.maxScore * 100)}%</span></h2>
                 <h2 className="text-2xl md:text-3xl font-bold mt-5">Tracks:
                     <span className="text-neutral-400"> {tracks.length}</span></h2>
                 <div className="overflow-y-scroll max-h-64">
@@ -144,7 +145,8 @@ export const ScoreModal = (props) => {
                     <button className="btn btn-primary mb-5 font-bold">Leave</button>
                 </Link>
 
-                <button onClick={() => window.location.reload(false)} className="btn btn-primary ml-2 font-bold">Play Again
+                <button onClick={() => window.location.reload(false)} className="btn btn-primary ml-2 font-bold">Play
+                    Again
                 </button>
             </div>
         </ScoreModalObj>

@@ -1,7 +1,27 @@
 import React, {useState} from "react";
-import {withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import ModeFilter from "components/ModeViewer/CategoryFilter/ModeFilter";
 import ModeCardViewer from "components/ModeViewer/ModeCardViewer";
+import ModeCard from "../components/ModeViewer/Card/ModeCard";
+import * as queryString from "query-string";
+import styled from "styled-components";
+import {colors, shadows} from "../util/Styles";
+
+const Card = styled.div`
+  width: 100%;
+  text-align: left;
+  box-shadow: ${shadows.shadowLg};
+  background-color: ${colors.base300};
+  transition: all .1s ease-in-out;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid rgba(79, 79, 79, 0.22);
+  padding: 14px;
+
+  &:hover {
+    background-color: #2a2b33;
+  }
+`;
 
 const SelectMusicGenre = () => {
 
@@ -22,6 +42,15 @@ const SelectMusicGenre = () => {
                     setGroupBy={setGroupDataBy}/>
 
                 <div className="overflow-auto mx-auto w-auto">
+
+                    <Link to="/create/mode">
+                        <Card className="mt-2">
+                            <h1 className="text-white text-xl">Custom mode</h1>
+                            <p className="text-white/50 text-md">Use any public Spotify playlist and select the number
+                                of songs to use!</p>
+                        </Card>
+                    </Link>
+
                     {/* Show the mode cards*/}
                     <ModeCardViewer
                         groupViewBy={groupDataBy}

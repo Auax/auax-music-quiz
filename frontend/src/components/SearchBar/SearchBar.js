@@ -18,7 +18,7 @@ const SearchBox = styled.div`
 `;
 
 const HighlightedSpan = styled.span`
-  background-color: rgba(255, 115, 0, 0.47);
+  background-color: rgba(4, 111, 193, 0.47);
   border-radius: 3px;
   display: inline-flex;
   align-items: center;
