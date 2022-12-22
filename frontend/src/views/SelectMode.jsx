@@ -2,8 +2,6 @@ import React, {useState} from "react";
 import {Link, withRouter} from "react-router-dom";
 import ModeFilter from "components/ModeViewer/CategoryFilter/ModeFilter";
 import ModeCardViewer from "components/ModeViewer/ModeCardViewer";
-import ModeCard from "../components/ModeViewer/Card/ModeCard";
-import * as queryString from "query-string";
 import styled from "styled-components";
 import {colors, shadows} from "../util/Styles";
 
