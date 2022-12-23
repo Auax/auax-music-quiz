@@ -17,6 +17,7 @@ class SpotifyZLLSWrapper {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.authToken = Buffer.from(`${this.clientId}:${this.clientSecret}`, 'utf-8').toString('base64');
+        this.accessToken = this.getAccessToken();
         this.market = market;
     }
 
@@ -53,7 +54,7 @@ class SpotifyZLLSWrapper {
         try {
             const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
                 headers: {
-                    Authorization: `Bearer ${await this.getAccessToken()}`,
+                    Authorization: `Bearer ${await this.accessToken}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -61,6 +62,21 @@ class SpotifyZLLSWrapper {
         } catch (error) {
             throw error;
         }
+    }
+
+    /**
+     * Gets the name and image of a playlist using the Spotify API.
+     * @param {string} playlistId - The ID of the playlist.
+     * @returns {Promise} - A promise that resolves to an object containing the playlist's data
+     */
+    async getPlaylistInfo(playlistId) {
+        const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+            headers: {
+                Authorization: `Bearer ${await this.accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
     }
 
     /**

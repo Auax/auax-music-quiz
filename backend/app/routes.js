@@ -3,6 +3,7 @@ const {modeSchema} = require("./database/modeSchema");
 const SpotifyExceptions = require("./spotify_api/exceptions");
 const logger = require("winston");
 const {SpotifyZLLSWrapper} = require("./spotify_api/spotifyWrapper");
+const {response} = require("express");
 
 
 /* GET ROUTES */
@@ -34,7 +35,22 @@ const getSongsRoute = async (req, res) => {
         // Create Spotify Wrapper instance
         const spotifyWrapper = new SpotifyZLLSWrapper(process.env.SPOTIFY_CLIENT_ID, process.env.SPOTIFY_CLIENT_SECRET);
         const songs = await spotifyWrapper.getRandomTracks(pid, amount);
-        res.send(songs);
+
+        // Extract the playlist name and image from the playlist
+        const playlistData = await spotifyWrapper.getPlaylistInfo(pid);
+        const playlistName = playlistData.name;
+        const playlistImage = playlistData.images[0].url;
+
+        // Craft response object
+        const responseData = {
+            playlist: {
+                name: playlistName,
+                image: playlistImage
+            },
+            songs: [...songs]
+        }
+
+        res.send(responseData);
     } catch (err) {
         // Handle errors
         if (err instanceof SpotifyExceptions.InvalidPlaylistId) return res.status(404).send({detail: "id does not exist"});

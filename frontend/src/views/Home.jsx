@@ -103,10 +103,10 @@ const Home = () => {
                 <DefaultParticles/>
                 <div className="text-center px-4 z-1 relative z-10">
                     <MainPageTitle className="text-7xl sm:text-8xl md:text-9xl text-white">Music
-                        <span className="text-blue-700"> Quiz</span></MainPageTitle>
-                    <h2 className="text-white/70">By Ibai Farina</h2>
+                        <span className="text-blue-700">Quiz</span></MainPageTitle>
+                    <h2 className="text-white/70 absolute mr-4 sm:mt-2 md:mt-0 right-0">By Ibai Farina</h2>
                     <Link to="/choose">
-                        <button className="btn btn-primary mt-3 px-10">PLAY</button>
+                        <button className="btn btn-primary mt-3 px-7 font-bold">PLAY</button>
                     </Link>
                 </div>
                 <ChevronDown/>
@@ -144,9 +144,8 @@ const Home = () => {
                               title="Top 50 Global"
                               img="https://charts-images.scdn.co/assets/locale_en/regional/daily/region_global_default.jpg"
                               difficulty="1"
-                              customCardStyle={{marginBottom: "8px", marginTop: "8px"}}
+                              customCardStyle={{marginBottom: "8px", marginTop: "8px", width: "33%", height: "100px"}}
                     />
-
                     <SectionSubtitle className="mt-8">Create a mode</SectionSubtitle>
                     <Note>You can also play a custom mode in the <RLink to="/create/mode">Creator</RLink>.</Note>
                     <Note>The only thing you need is the <b>Spotify playlist link</b> and it must not be private.</Note>

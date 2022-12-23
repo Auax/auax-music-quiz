@@ -10,40 +10,51 @@ import {FaHeart, FaRegHeart} from "react-icons/fa";
 
 const Card = styled.div`
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+  height: 150px;
   box-shadow: ${shadows.shadowLg};
   background-color: ${colors.base300};
   transition: all .1s ease-in-out;
-  border-radius: 5px;
   overflow: hidden;
+  position: relative;
+  border-radius: 5px;
   display: grid;
-  border: 1px solid rgba(79, 79, 79, 0.22);
   grid-template-rows: repeat(1, minmax(0, 1fr));
-  grid-template-columns: 90px auto 70px;
+  grid-template-columns: 30px auto 70px;
   padding: 14px;
 
   &:hover {
     background-color: #2a2b33;
+
+    img {
+      transform: scale(105%);
+    }
   }
 `;
 
-const Image = styled.img`
-  width: 69px;
-  height: 69px;
-  object-fit: cover;
-  outline: 1px solid rgba(255, 255, 255, 0.05);
-  outline-offset: -1px;
+const Image = styled.div`
+  position: absolute;
+  z-index: 0;
+  width: 85%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: ${({img}) => `URL(${img})`};
+  background-position-y: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: opacity(0.35);
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  transition: all .5s ease-in-out;
   border-radius: 5px;
 `;
 
 const OptionText = styled.span`
-  font-size: 1.3em;
+  font-size: 1.6em;
   color: ${({color = "#fff"}) => color};
   transition: .2s ease-in-out;
   z-index: 1;
   position: relative;
-  font-weight: lighter;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   text-transform: capitalize;
   text-align: ${({textAlign = "left"}) => textAlign};
   ${({marginLeft}) => marginLeft && css`margin-left: ${marginLeft}px;`}
@@ -51,14 +62,16 @@ const OptionText = styled.span`
 `;
 
 const HeartButtonStyle = styled.button`
-  //background-color: #2D2E34;
-  //margin: 10px;
-  //border: 1px solid rgba(237, 237, 237, 0.03);
   border-radius: 5px;
   transition: 0.15s all ease-in-out;
+  position: relative;
+  z-index: 1;
+  border: 1px solid transparent;
 
   &:hover {
-    background-color: #3a3b42;
+    backdrop-filter: brightness(110%) blur(5px);
+    border-color: rgba(101, 101, 101, 0.1);
+    //background-color: rgba(58, 59, 66, 0.29);
   }
 `
 
@@ -108,7 +121,7 @@ const FavoriteButton = (props) => {
 const ModeCard = (props) => {
     return (
         <Card style={props.customCardStyle}>
-            <Link to={props.link}><Image src={props.img} alt={props.title}/></Link>
+            <Link to={props.link}><Image img={props.img}/></Link>
             <Link to={props.link}
                   className="text-left text-white/20 h-full flex items-center font-bold">
                 <OptionText>{props.title}
@@ -116,7 +129,10 @@ const ModeCard = (props) => {
                         <StarRating stars={props.difficulty}
                                     totalStars={3}
                                     customContainerStyle={{display: "flex", marginTop: "2px"}}
-                                    customStarStyle={{width: "13px", color: "#FFE290",}}/>
+                                    customStarStyle={{
+                                        width: "13px",
+                                        color: "#ffdf7a",
+                                    }}/>
                     }
                 </OptionText>
             </Link>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, {useEffect, useRef, useState} from "react";
-import {BsVolumeMuteFill, BsVolumeUpFill} from "react-icons/bs";
+import {HiVolumeUp, HiVolumeOff} from "react-icons/hi";
 
 export const VolumeSliderInput = styled.input`
   max-width: 50px;
@@ -30,13 +30,14 @@ export const VolumeSlider = (props) => {
 
 
     return (
-        <div className="flex items-center btn btn-secondary h-12 text-white">
-            <VolumeSliderInput type="range" ref={RangeRef} min="0" max="100"
-                               onChange={(e) => setVolume(e.target.value)}/>
-            <button onClick={muteSound} className="p-1 hover:scale-110">
+        <div className="flex btn bg-neutral-600/30 items-center h-12 text-white">
+            <VolumeSliderInput
+                type="range" ref={RangeRef} min="0" max="100"
+                onChange={(e) => setVolume(e.target.value)}/>
+            <button onClick={muteSound} className="p-1 transition-all hover:scale-110">
                 {volume > 0 ?
-                    <BsVolumeUpFill  size={"1.5em"}/> :
-                    <BsVolumeMuteFill size={"1.5em"}/>}
+                    <HiVolumeUp size={"1.5em"}/> :
+                    <HiVolumeOff size={"1.5em"}/>}
             </button>
         </div>
 

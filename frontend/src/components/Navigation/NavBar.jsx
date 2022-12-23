@@ -53,7 +53,7 @@ const NavBar = () => {
                     </a>
                 </div>
                 <div className="my-6 mx-3 sm:m-0">
-                    <a href="/create/mode" className="btn btn-secondary-outline">Custom Mode </a>
+                    <Link to="/create/mode" className="btn btn-secondary-outline">Custom Mode </Link>
                 </div>
             </div>
         </nav>

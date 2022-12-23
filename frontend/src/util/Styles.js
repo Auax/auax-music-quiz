@@ -13,9 +13,8 @@ export const colors = {
     semiBlack: "#050505",
     darkBlue: "#0f172a",
     electricBlue: "#256cd3",
-
     heartBase: "#c6c6c6",
-    heartRed: "#d26159"
+    heartRed: "#9b4641"
 };
 
 export const shadows = {

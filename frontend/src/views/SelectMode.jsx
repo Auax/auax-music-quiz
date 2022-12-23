@@ -39,8 +39,7 @@ const SelectMusicGenre = () => {
                     setFilterValue={setFilterViewBy}
                     setGroupBy={setGroupDataBy}/>
 
-                <div className="overflow-auto mx-auto w-auto">
-
+                <div>
                     <Link to="/create/mode">
                         <Card className="mt-2">
                             <h1 className="text-white text-xl">Custom mode</h1>

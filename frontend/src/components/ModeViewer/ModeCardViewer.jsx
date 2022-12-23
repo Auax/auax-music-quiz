@@ -65,13 +65,15 @@ const ModeCardViewer = (props) => {
             });
             let container = (
                 <div className="container mx-auto mb-5 w-full" key={identifier + new Date().getTime()}>
-                    {<div className="relative flex py-5 items-center">
+                    <div className="relative flex py-5 items-center">
                         <div className="flex-grow border-t border-white/30"/>
                         <span
                             className="flex-shrink mx-4 text-white text-sm font-roboto"><b>{identifier.toUpperCase()}</b></span>
                         <div className="flex-grow border-t border-white/30"/>
-                    </div>}
-                    {cards}
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
+                        {cards}
+                    </div>
                 </div>
             )
             setToRender(old => [...old, container]);

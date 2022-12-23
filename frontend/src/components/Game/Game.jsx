@@ -8,7 +8,7 @@ import {BsFillPauseFill, BsFillPlayFill, BsFillSkipEndFill} from "react-icons/bs
 import {useCountdown, useScore} from 'components';
 import {AnswerModal, InputAnswer, ProgressBar, ScoreModal, Track, VolumeSlider} from "./GameComponents";
 import {IdDoesNotExist, InvalidPlaylistId, TooManyRequests,} from "api/exceptions";
-import {fetchTracks} from "api/Api";
+import {fetchGameData} from "api/Api";
 import LoaderScreen from "components/Loading/LoaderScreen";
 import {Container} from "util/Styles";
 
@@ -22,6 +22,19 @@ const GameControlsContainer = styled.div`
     margin-right: 5px;
   }
 `;
+
+const PlaylistBgImage = styled.div`
+  background-image: ${({img}) => `URL(${img})`};
+  background-size: cover;
+  background-position-y: 40%;
+  filter: opacity(0.3) blur(10px);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  height: 60%;
+  width: 100%;
+  top: 0%;
+  position: absolute;
+  z-index: 0;
+`
 
 // TODO: fix progress bar progression when window's not focused
 const Game = (props) => {
@@ -39,6 +52,8 @@ const Game = (props) => {
     const [currentTrackNo, setCurrentTrackNo] = useState(0);
     const [gameState, setGameState] = useState("init");
     const [volume, setVolume] = useState(100);
+    const [playlistName, setPlaylistName] = useState("");
+    const [playlistImage, setPlaylistImage] = useState("");
 
     const [roundAnswer, setRoundAnswer] = useState({
         "show": false,
@@ -64,13 +79,23 @@ const Game = (props) => {
     // Fetch the tracks (already shuffled and filtered) from the server
     useEffect(() => {
         const execute = async () => {
-            const fetchedTracks = await fetchTracks(
+            const fetchedGameData = await fetchGameData(
                 playlist_id, // Music genre
                 tn, // Tracks number
             );
+
+            // Set the tracks
+            const fetchedTracks = fetchedGameData.songs;
             setTracks(fetchedTracks);
+
+            // Set playlist's name and image
+            setPlaylistName(fetchedGameData.playlist.name);
+            setPlaylistImage(fetchedGameData.playlist.image);
+
+            // Check that if we got fewer tracks than requested
             if (fetchedTracks.length < tn) {
                 setTn(fetchedTracks.length);
+                // Alert user
                 toast(<p>Could only get {fetchedTracks.length} songs! This might be because the playlist has less songs
                     than the rounds set.</p>, {icon: "ℹ️", duration: 4000})
             }
@@ -203,22 +228,22 @@ const Game = (props) => {
         <div className="hero-height bg-base200">
             <Toaster position="top-center" reverseOrder={false}/>
             <AnswerModal track={tracks[currentTrackNo]} show={roundAnswer.show}/>
-            <Container className="mx-auto text-center px-4">
-                <h1 className="text-neutral-200 text-7xl font-bold sm:px-0 tracking-tight pt-12 mb-2">ROUND {currentTrackNo + 1}</h1>
+            <PlaylistBgImage img={playlistImage}/>
+            <Container className="mx-auto text-center px-4 z-10 relative">
+                <h1 className="text-neutral-200 text-5xl md:text-7xl font-bold sm:px-0 tracking-tight pt-12 mb-2">{playlistName}</h1>
                 {gameState === "init"
                     ? // Init
                     <div>
-                        <p className="text-neutral-300 mt-2">Guess the song and the artist!</p>
                         <button id="startRoundBtn"
-                                className="btn btn-primary font-bold mt-4"
+                                className="btn btn-primary font-bold mt-4 uppercase px-7"
                                 onClick={() => {
                                     setGameState("start")
-                                }}>Start
+                                }}>Play
                         </button>
                     </div>
                     : // start
                     <div>
-                        <span className="text-neutral-300">Score: {score.correct} / {tn * 2}</span>
+                        <span className="text-neutral-300 text-xl font-bold">Score: {score.correct} / {tn * 2}</span>
                         <br/>
                         <button id="startRoundBtn"
                                 className="btn btn-primary font-bold mt-4"
@@ -229,7 +254,12 @@ const Game = (props) => {
                     </div>
                 }
                 <div className="my-5 text-left text-neutral-300">
-                    <span>{printTime()}</span>
+
+                    <div className="flex justify-between font-bold">
+                        <span>{printTime()}</span>
+                        <span>ROUND {currentTrackNo + 1}</span>
+                    </div>
+
                     <ProgressBar
                         bgcolor="#005FFF"
                         gameState={gameState}
@@ -241,7 +271,7 @@ const Game = (props) => {
                 <InputAnswer submitAnswer={checkAnswer}/>
                 <GameControlsContainer>
                     <button id="pauseBtn"
-                            className="btn btn-secondary text-white font-bold h-12"
+                            className="btn bg-neutral-600/30 hover:bg-neutral-500/50 transition-all text-white font-bold h-12"
                             onClick={() => {
                                 if (gameState === "pause" || gameState !== "start") setGameState("start");
                                 else setGameState("pause");
@@ -252,7 +282,7 @@ const Game = (props) => {
                         }
                     </button>
                     <button id="skipRoundBtn"
-                            className="btn btn-secondary text-white font-bold h-12"
+                            className="btn bg-neutral-600/30 hover:bg-neutral-500/50 transition-all text-white font-bold h-12"
                             onClick={() => {
                                 if (gameState === "start" || gameState === "pause") setGameState("next");
                             }}>

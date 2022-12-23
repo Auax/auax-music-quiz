@@ -32,10 +32,11 @@ export const fetchModes = async () => {
     return data;
 }
 
-export const fetchTracks = async (
+export const fetchGameData = async (
     playlist_id: string,
     tracksNo: number = 10): Object => {
     let songs_ = []
+    let playlistData = {};
 
     // Craft params
     let params = queryString.stringify({
@@ -50,10 +51,11 @@ export const fetchTracks = async (
             // Handle success
             if (response.status === 200) {
                 // Remove "remastered" and other useless string tags from the song's name
-                response.data.forEach(song => {
+                response.data.songs.forEach(song => {
                     song["title"] = metadataCustomFilter.filterField("track", song["title"]).replace(/ *\([^)]*\) */g, "");
                     songs_.push(song);
                 });
+                playlistData = response.data.playlist;
             } else {
                 throw Error("Error retrieving the songs: " + response.status);
             }
@@ -66,5 +68,9 @@ export const fetchTracks = async (
             else if (detail === "too many requests") throw new TooManyRequests(detail);
             throw Error(reason);
         });
-    return songs_.length === 0 ? null : songs_;
+
+    return {
+        songs: songs_.length === 0 ? null : songs_,
+        playlist: {...playlistData}
+    };
 }

@@ -45,7 +45,7 @@ export const ProgressBar = (props) => {
     }
 
     return (
-        <div ref={barRef} style={containerStyles} id="trackProgressbar" className="bg-base300 shadow-lg rounded-sm">
+        <div ref={barRef} style={containerStyles} id="trackProgressbar" className="bg-neutral-500/50 shadow-lg rounded-sm">
             <AnimateFiller ref={fillerRef} active={isBarActive} width={width}
                            className="bg-blue-600 "/>
         </div>
