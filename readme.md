@@ -2,7 +2,7 @@
 <p align="center">
   Test your music knowledge with our interactive music quiz – challenge yourself and your friends to see who's the ultimate music mastermind!
   <br/>
-  <a href="https:musicquiz.me"><b>Check it out!</b></a>
+  <a href="https://musicquiz.me"><b>Check it out!</b></a>
   <br/>
   <br/>
   <img src="https://user-images.githubusercontent.com/16353807/219961620-451bd412-64fe-482b-8e27-b7ad984667d1.png" width="80%"/>
